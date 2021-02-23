@@ -25,7 +25,7 @@ class MainViewController: UIViewController {
     label.textColor = .white
     return label
   }()
-  private let textField: UITextField = {
+  private let inputAmount: UITextField = {
     let textField = UITextField()
     textField.keyboardType = .numberPad
     return textField
@@ -36,5 +36,43 @@ class MainViewController: UIViewController {
     button.setTitleColor(.white, for: .normal)
     return button
   }()
+
+
+  // MARK: View LifeCycle
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.configure()
+  }
+
+
+  // MARK: Configuration
+
+  func configure() {
+    self.viewConfigure()
+    self.imageConfigure()
+    self.layout()
+  }
+
+  func viewConfigure() {
+    self.view.backgroundColor = #colorLiteral(red: 0.1220295802, green: 0.2095552683, blue: 0.5259671807, alpha: 1)
+    self.navigationController?.navigationBar.isHidden = true
+  }
+
+  func imageConfigure() {
+    self.mainImageView.image = UIImage(named: "upbit")
+  }
+
+  func layout() {
+    self.view.addSubview(self.mainImageView)
+    self.view.addSubview(self.mainLabel)
+    self.view.addSubview(self.inputAmount)
+    self.view.addSubview(self.nextButton)
+
+    self.mainImageView.snp.makeConstraints {
+      $0.top.equalTo(self.view.snp.top).inset(50)
+      $0.centerX.equalToSuperview()
+    }
+  }
 
 }
