@@ -15,12 +15,13 @@ class MainViewController: UIViewController {
 
   private let mainImageView: UIImageView = {
     let imgView = UIImageView()
+    imgView.contentMode = .scaleAspectFit
     return imgView
   }()
   private let mainLabel: UILabel = {
     let label = UILabel()
     label.text = "사용할 가상 계좌 금액을 입력해주세요."
-    label.font = .systemFont(ofSize: 15)
+    label.font = .systemFont(ofSize: 18)
     label.sizeToFit()
     label.textColor = .white
     return label
@@ -28,6 +29,8 @@ class MainViewController: UIViewController {
   private let inputAmount: UITextField = {
     let textField = UITextField()
     textField.keyboardType = .numberPad
+    textField.backgroundColor = .white
+    textField.borderStyle = .roundedRect
     return textField
   }()
   private let nextButton: UIButton = {
@@ -70,7 +73,21 @@ class MainViewController: UIViewController {
     self.view.addSubview(self.nextButton)
 
     self.mainImageView.snp.makeConstraints {
-      $0.top.equalTo(self.view.snp.top).inset(50)
+      $0.top.equalTo(self.view.snp.top).inset(100)
+      $0.width.equalToSuperview().multipliedBy(0.8)
+      $0.centerX.equalToSuperview()
+    }
+    self.mainLabel.snp.makeConstraints {
+      $0.top.equalTo(self.mainImageView.snp.bottom).offset(20)
+      $0.centerX.equalToSuperview()
+    }
+    self.inputAmount.snp.makeConstraints {
+      $0.top.equalTo(self.mainLabel.snp.bottom).offset(30)
+      $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.6)
+    }
+    self.nextButton.snp.makeConstraints {
+      $0.top.equalTo(self.inputAmount.snp.bottom).offset(50)
       $0.centerX.equalToSuperview()
     }
   }
