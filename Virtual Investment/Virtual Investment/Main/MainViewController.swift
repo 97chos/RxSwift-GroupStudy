@@ -75,8 +75,8 @@ class MainViewController: UIViewController {
     let inputedNumber = Int(self.inputAmount.text ?? "") ?? 0
     BalanceData.shared.balance = inputedNumber
 
-    let firstVC = VirtualMoneyListViewController()
-    let secondVC = PurchasedViewController()
+    let firstVC = UINavigationController(rootViewController: VirtualMoneyListViewController())
+    let secondVC = UINavigationController(rootViewController: PurchasedViewController())
 
     firstVC.tabBarItem = UITabBarItem(title: "거래소", image: firstTabBarImage, tag: 0)
     secondVC.tabBarItem = UITabBarItem(title: "투자내역", image: secondTabBarImage, tag: 1)
