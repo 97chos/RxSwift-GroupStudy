@@ -3,27 +3,30 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D73497472A16F72C7339B54B /* Pods_Virtual_Investment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAAFD8171714065AA747A442 /* Pods_Virtual_Investment.framework */; };
 		FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42AF4C25E5331500CEA875 /* AppDelegate.swift */; };
 		FF42AF4F25E5331500CEA875 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42AF4E25E5331500CEA875 /* SceneDelegate.swift */; };
-		FF42AF5125E5331500CEA875 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42AF5025E5331500CEA875 /* ViewController.swift */; };
-		FF42AF5425E5331500CEA875 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF42AF5225E5331500CEA875 /* Main.storyboard */; };
 		FF42AF5625E5331600CEA875 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF42AF5525E5331600CEA875 /* Assets.xcassets */; };
 		FF42AF5925E5331600CEA875 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF42AF5725E5331600CEA875 /* LaunchScreen.storyboard */; };
+		FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42AF6325E5349800CEA875 /* MainViewController.swift */; };
+		FF42B01525E5477000CEA875 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SocketIO */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A88B1E191F12A6935C0E4BC7 /* Pods-Virtual Investment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Virtual Investment.release.xcconfig"; path = "Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment.release.xcconfig"; sourceTree = "<group>"; };
+		B76FE9C6FE6728731BB1A2D1 /* Pods-Virtual Investment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Virtual Investment.debug.xcconfig"; path = "Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment.debug.xcconfig"; sourceTree = "<group>"; };
+		EAAFD8171714065AA747A442 /* Pods_Virtual_Investment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Virtual_Investment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF42AF4925E5331500CEA875 /* Virtual Investment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Investment.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF42AF4C25E5331500CEA875 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF42AF4E25E5331500CEA875 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		FF42AF5025E5331500CEA875 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		FF42AF5325E5331500CEA875 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF42AF5525E5331600CEA875 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF42AF5825E5331600CEA875 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FF42AF5A25E5331600CEA875 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FF42AF6325E5349800CEA875 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +34,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D73497472A16F72C7339B54B /* Pods_Virtual_Investment.framework in Frameworks */,
+				FF42B01525E5477000CEA875 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F3F0DD57D55E2D38983AAB7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B76FE9C6FE6728731BB1A2D1 /* Pods-Virtual Investment.debug.xcconfig */,
+				A88B1E191F12A6935C0E4BC7 /* Pods-Virtual Investment.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		B0422BEFC9D3E0FEAD6E976D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EAAFD8171714065AA747A442 /* Pods_Virtual_Investment.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FF42AF4025E5331500CEA875 = {
 			isa = PBXGroup;
 			children = (
 				FF42AF4B25E5331500CEA875 /* Virtual Investment */,
 				FF42AF4A25E5331500CEA875 /* Products */,
+				4F3F0DD57D55E2D38983AAB7 /* Pods */,
+				B0422BEFC9D3E0FEAD6E976D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,13 +82,20 @@
 			children = (
 				FF42AF4C25E5331500CEA875 /* AppDelegate.swift */,
 				FF42AF4E25E5331500CEA875 /* SceneDelegate.swift */,
-				FF42AF5025E5331500CEA875 /* ViewController.swift */,
-				FF42AF5225E5331500CEA875 /* Main.storyboard */,
+				FF42AF6225E5341600CEA875 /* Main */,
 				FF42AF5525E5331600CEA875 /* Assets.xcassets */,
 				FF42AF5725E5331600CEA875 /* LaunchScreen.storyboard */,
 				FF42AF5A25E5331600CEA875 /* Info.plist */,
 			);
 			path = "Virtual Investment";
+			sourceTree = "<group>";
+		};
+		FF42AF6225E5341600CEA875 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				FF42AF6325E5349800CEA875 /* MainViewController.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,15 +105,20 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FF42AF5D25E5331600CEA875 /* Build configuration list for PBXNativeTarget "Virtual Investment" */;
 			buildPhases = (
+				81479F9D0A121373EA92C609 /* [CP] Check Pods Manifest.lock */,
 				FF42AF4525E5331500CEA875 /* Sources */,
 				FF42AF4625E5331500CEA875 /* Frameworks */,
 				FF42AF4725E5331500CEA875 /* Resources */,
+				928B5A4E4A44ADF62E052B2A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "Virtual Investment";
+			packageProductDependencies = (
+				FF42B01425E5477000CEA875 /* SocketIO */,
+			);
 			productName = "Virtual Investment";
 			productReference = FF42AF4925E5331500CEA875 /* Virtual Investment.app */;
 			productType = "com.apple.product-type.application";
@@ -110,6 +146,9 @@
 				Base,
 			);
 			mainGroup = FF42AF4025E5331500CEA875;
+			packageReferences = (
+				FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
+			);
 			productRefGroup = FF42AF4A25E5331500CEA875 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -126,18 +165,59 @@
 			files = (
 				FF42AF5925E5331600CEA875 /* LaunchScreen.storyboard in Resources */,
 				FF42AF5625E5331600CEA875 /* Assets.xcassets in Resources */,
-				FF42AF5425E5331500CEA875 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		81479F9D0A121373EA92C609 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Virtual Investment-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		928B5A4E4A44ADF62E052B2A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FF42AF4525E5331500CEA875 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF42AF5125E5331500CEA875 /* ViewController.swift in Sources */,
+				FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */,
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,
 				FF42AF4F25E5331500CEA875 /* SceneDelegate.swift in Sources */,
 			);
@@ -146,14 +226,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FF42AF5225E5331500CEA875 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FF42AF5325E5331500CEA875 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		FF42AF5725E5331600CEA875 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -283,6 +355,7 @@
 		};
 		FF42AF5E25E5331600CEA875 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B76FE9C6FE6728731BB1A2D1 /* Pods-Virtual Investment.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -301,6 +374,7 @@
 		};
 		FF42AF5F25E5331600CEA875 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A88B1E191F12A6935C0E4BC7 /* Pods-Virtual Investment.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -339,6 +413,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FF42B01425E5477000CEA875 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FF42AF4125E5331500CEA875 /* Project object */;
 }
