@@ -49,24 +49,31 @@ class MainViewController: UIViewController {
   }
 
 
+  // MARK: Events
+
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+  }
+
+
   // MARK: Configuration
 
-  func configure() {
+  private func configure() {
     self.viewConfigure()
     self.imageConfigure()
     self.layout()
   }
 
-  func viewConfigure() {
+  private func viewConfigure() {
     self.view.backgroundColor = #colorLiteral(red: 0.1220295802, green: 0.2095552683, blue: 0.5259671807, alpha: 1)
     self.navigationController?.navigationBar.isHidden = true
   }
 
-  func imageConfigure() {
+  private func imageConfigure() {
     self.mainImageView.image = UIImage(named: "upbit")
   }
 
-  func layout() {
+  private func layout() {
     self.view.addSubview(self.mainImageView)
     self.view.addSubview(self.mainLabel)
     self.view.addSubview(self.inputAmount)
