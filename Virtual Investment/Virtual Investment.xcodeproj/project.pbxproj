@@ -14,6 +14,7 @@
 		FF42AF5925E5331600CEA875 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF42AF5725E5331600CEA875 /* LaunchScreen.storyboard */; };
 		FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42AF6325E5349800CEA875 /* MainViewController.swift */; };
 		FF42B01525E5477000CEA875 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SocketIO */; };
+		FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		FF42AF5825E5331600CEA875 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FF42AF5A25E5331600CEA875 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF42AF6325E5349800CEA875 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMoneyListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,12 +82,10 @@
 		FF42AF4B25E5331500CEA875 /* Virtual Investment */ = {
 			isa = PBXGroup;
 			children = (
-				FF42AF4C25E5331500CEA875 /* AppDelegate.swift */,
-				FF42AF4E25E5331500CEA875 /* SceneDelegate.swift */,
+				FF42B01A25E5549C00CEA875 /* Application */,
 				FF42AF6225E5341600CEA875 /* Main */,
-				FF42AF5525E5331600CEA875 /* Assets.xcassets */,
-				FF42AF5725E5331600CEA875 /* LaunchScreen.storyboard */,
-				FF42AF5A25E5331600CEA875 /* Info.plist */,
+				FF42B01C25E554D400CEA875 /* VirtualMoneyListView */,
+				FF42B01B25E554BD00CEA875 /* Utilities */,
 			);
 			path = "Virtual Investment";
 			sourceTree = "<group>";
@@ -96,6 +96,33 @@
 				FF42AF6325E5349800CEA875 /* MainViewController.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		FF42B01A25E5549C00CEA875 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				FF42AF5725E5331600CEA875 /* LaunchScreen.storyboard */,
+				FF42AF4C25E5331500CEA875 /* AppDelegate.swift */,
+				FF42AF4E25E5331500CEA875 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		FF42B01B25E554BD00CEA875 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				FF42AF5525E5331600CEA875 /* Assets.xcassets */,
+				FF42AF5A25E5331600CEA875 /* Info.plist */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		FF42B01C25E554D400CEA875 /* VirtualMoneyListView */ = {
+			isa = PBXGroup;
+			children = (
+				FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */,
+			);
+			path = VirtualMoneyListView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */,
+				FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */,
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,
 				FF42AF4F25E5331500CEA875 /* SceneDelegate.swift in Sources */,
 			);
