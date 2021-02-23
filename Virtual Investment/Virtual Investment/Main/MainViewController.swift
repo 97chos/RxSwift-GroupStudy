@@ -56,6 +56,18 @@ class MainViewController: UIViewController {
   }
 
 
+  // MARK: Actions
+
+  @objc private func selectNextButton() {
+
+    let inputedNumber = Int(self.inputAmount.text ?? "") ?? 0
+
+    let virtualMoneyListVC = VirtualMoneyListViewController()
+    BalanceData.shared.balance = inputedNumber
+    self.navigationController?.pushViewController(virtualMoneyListVC, animated: true)
+  }
+
+
   // MARK: Configuration
 
   private func configure() {
@@ -67,6 +79,7 @@ class MainViewController: UIViewController {
   private func viewConfigure() {
     self.view.backgroundColor = #colorLiteral(red: 0.1220295802, green: 0.2095552683, blue: 0.5259671807, alpha: 1)
     self.navigationController?.navigationBar.isHidden = true
+    self.nextButton.addTarget(self, action: #selector(self.selectNextButton), for: .touchUpInside)
   }
 
   private func imageConfigure() {
