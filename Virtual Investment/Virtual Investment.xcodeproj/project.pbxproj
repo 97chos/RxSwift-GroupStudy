@@ -16,6 +16,7 @@
 		FF42B01525E5477000CEA875 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SocketIO */; };
 		FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */; };
 		FF42B02225E556F800CEA875 /* BalanceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02125E556F800CEA875 /* BalanceData.swift */; };
+		FF42B02F25E55DCA00CEA875 /* PurchasedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* PurchasedViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		FF42AF6325E5349800CEA875 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMoneyListViewController.swift; sourceTree = "<group>"; };
 		FF42B02125E556F800CEA875 /* BalanceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceData.swift; sourceTree = "<group>"; };
+		FF42B02E25E55DCA00CEA875 /* PurchasedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,10 +86,11 @@
 		FF42AF4B25E5331500CEA875 /* Virtual Investment */ = {
 			isa = PBXGroup;
 			children = (
-				FF42B02025E5560000CEA875 /* DataBase */,
-				FF42B01A25E5549C00CEA875 /* Application */,
 				FF42AF6225E5341600CEA875 /* Main */,
 				FF42B01C25E554D400CEA875 /* VirtualMoneyListView */,
+				FF42B02925E55D7A00CEA875 /* PurchasedVirtualMoneyView */,
+				FF42B02025E5560000CEA875 /* DataBase */,
+				FF42B01A25E5549C00CEA875 /* Application */,
 				FF42B01B25E554BD00CEA875 /* Utilities */,
 			);
 			path = "Virtual Investment";
@@ -134,6 +137,14 @@
 				FF42B02125E556F800CEA875 /* BalanceData.swift */,
 			);
 			path = DataBase;
+			sourceTree = "<group>";
+		};
+		FF42B02925E55D7A00CEA875 /* PurchasedVirtualMoneyView */ = {
+			isa = PBXGroup;
+			children = (
+				FF42B02E25E55DCA00CEA875 /* PurchasedViewController.swift */,
+			);
+			path = PurchasedVirtualMoneyView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +268,7 @@
 			files = (
 				FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */,
 				FF42B02225E556F800CEA875 /* BalanceData.swift in Sources */,
+				FF42B02F25E55DCA00CEA875 /* PurchasedViewController.swift in Sources */,
 				FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */,
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,
 				FF42AF4F25E5331500CEA875 /* SceneDelegate.swift in Sources */,

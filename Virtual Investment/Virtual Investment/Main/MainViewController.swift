@@ -18,6 +18,18 @@ class MainViewController: UIViewController {
     imgView.contentMode = .scaleAspectFit
     return imgView
   }()
+  private lazy var firstTabBarImage: UIImage = {
+    guard let image = UIImage(systemName: "bitcoinsign.square")?.withRenderingMode(.alwaysTemplate) else {
+      return UIImage()
+    }
+    return image
+  }()
+  private lazy var secondTabBarImage: UIImage = {
+    guard let image = UIImage(systemName: "cart")?.withRenderingMode(.alwaysTemplate) else {
+      return UIImage()
+    }
+    return image
+  }()
   private let mainLabel: UILabel = {
     let label = UILabel()
     label.text = "사용할 가상 계좌 금액을 입력해주세요."
@@ -62,10 +74,17 @@ class MainViewController: UIViewController {
 
     let inputedNumber = Int(self.inputAmount.text ?? "") ?? 0
     BalanceData.shared.balance = inputedNumber
-    
-    let virtualMoneyListVC = VirtualMoneyListViewController()
-    virtualMoneyListVC.modalPresentationStyle = .fullScreen
-    self.present(virtualMoneyListVC, animated: true)
+
+    let firstVC = VirtualMoneyListViewController()
+    let secondVC = PurchasedViewController()
+
+    firstVC.tabBarItem = UITabBarItem(title: "거래소", image: firstTabBarImage, tag: 0)
+    secondVC.tabBarItem = UITabBarItem(title: "투자내역", image: secondTabBarImage, tag: 1)
+
+    let tabBarController = UITabBarController()
+    tabBarController.setViewControllers([firstVC,secondVC], animated: true)
+    tabBarController.modalPresentationStyle = .fullScreen
+    self.present(tabBarController, animated: true)
   }
 
 
