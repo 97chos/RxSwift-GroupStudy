@@ -15,6 +15,7 @@
 		FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42AF6325E5349800CEA875 /* MainViewController.swift */; };
 		FF42B01525E5477000CEA875 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SocketIO */; };
 		FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */; };
+		FF42B02225E556F800CEA875 /* BalanceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02125E556F800CEA875 /* BalanceData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		FF42AF5A25E5331600CEA875 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FF42AF6325E5349800CEA875 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMoneyListViewController.swift; sourceTree = "<group>"; };
+		FF42B02125E556F800CEA875 /* BalanceData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 		FF42AF4B25E5331500CEA875 /* Virtual Investment */ = {
 			isa = PBXGroup;
 			children = (
+				FF42B02025E5560000CEA875 /* DataBase */,
 				FF42B01A25E5549C00CEA875 /* Application */,
 				FF42AF6225E5341600CEA875 /* Main */,
 				FF42B01C25E554D400CEA875 /* VirtualMoneyListView */,
@@ -123,6 +126,14 @@
 				FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */,
 			);
 			path = VirtualMoneyListView;
+			sourceTree = "<group>";
+		};
+		FF42B02025E5560000CEA875 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				FF42B02125E556F800CEA875 /* BalanceData.swift */,
+			);
+			path = DataBase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */,
+				FF42B02225E556F800CEA875 /* BalanceData.swift in Sources */,
 				FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */,
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,
 				FF42AF4F25E5331500CEA875 /* SceneDelegate.swift in Sources */,
@@ -388,7 +400,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Virtual Investment/Info.plist";
+				INFOPLIST_FILE = "/Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual Investment/Virtual Investment/Utilities/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -407,7 +419,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Virtual Investment/Info.plist";
+				INFOPLIST_FILE = "/Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual Investment/Virtual Investment/Utilities/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
