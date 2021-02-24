@@ -17,6 +17,7 @@
 		FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */; };
 		FF42B02225E556F800CEA875 /* BalanceData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02125E556F800CEA875 /* BalanceData.swift */; };
 		FF42B02F25E55DCA00CEA875 /* PurchasedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* PurchasedViewController.swift */; };
+		FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* Starscream */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 			files = (
 				D73497472A16F72C7339B54B /* Pods_Virtual_Investment.framework in Frameworks */,
 				FF42B01525E5477000CEA875 /* SocketIO in Frameworks */,
+				FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +169,7 @@
 			name = "Virtual Investment";
 			packageProductDependencies = (
 				FF42B01425E5477000CEA875 /* SocketIO */,
+				FF42B03225E63CDC00CEA875 /* Starscream */,
 			);
 			productName = "Virtual Investment";
 			productReference = FF42AF4925E5331500CEA875 /* Virtual Investment.app */;
@@ -197,6 +200,7 @@
 			mainGroup = FF42AF4025E5331500CEA875;
 			packageReferences = (
 				FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
+				FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			productRefGroup = FF42AF4A25E5331500CEA875 /* Products */;
 			projectDirPath = "";
@@ -475,6 +479,14 @@
 				minimumVersion = 16.0.1;
 			};
 		};
+		FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -482,6 +494,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
 			productName = SocketIO;
+		};
+		FF42B03225E63CDC00CEA875 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

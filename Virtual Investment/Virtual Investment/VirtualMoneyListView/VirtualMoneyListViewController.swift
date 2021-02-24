@@ -8,8 +8,14 @@
 import Foundation
 import UIKit
 import SnapKit
+import Starscream
 
 class VirtualMoneyListViewController: UIViewController {
+
+  // MARK: Properties
+
+  var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
+  lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
 
 
   // MARK: UI
@@ -32,6 +38,8 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+    self.connect()
+    self.didReceive(event: .connected(["이게":"뭐지"]), client: webSocket)
   }
 
   override func viewDidLayoutSubviews() {
@@ -61,3 +69,52 @@ class VirtualMoneyListViewController: UIViewController {
     }
   }
 }
+
+extension VirtualMoneyListViewController: WebSocketDelegate {
+
+  func connect() {
+    request.timeoutInterval = 10
+    webSocket.delegate = self
+    webSocket.connect()
+  }
+
+  func disconnect() {
+    webSocket.disconnect()
+  }
+
+  func didReceive(event: WebSocketEvent, client: WebSocket) {
+    switch(event) {
+    case .connected(let headers):
+      print(".connected - \(headers)")
+
+
+      let params = [["ticket":"test"],
+                    ["format":"SIMPLE"],
+                    ["type":"ticker","codes":["KRW-BTC"],"isOnlyRealtime":"true"],
+                    ["type":"trade","codes":["KRW-BTC"]]]
+
+      let jParams = try! JSONSerialization.data(withJSONObject: params, options: [])
+      client.write(string: String(data:jParams, encoding: .utf8)!, completion: nil)
+      break
+    case .disconnected(let reason, let code):
+      print(".disconnected - \(reason), \(code)")
+      break
+    case .text(let string):
+      print("text", string)
+      //parse(data: string.data(using: .utf8)!)
+
+      break
+    case .binary(let data):
+
+      //parse(data: data)
+
+      break
+    case .error(let error):
+      print(error?.localizedDescription ?? "")
+      break
+    default:
+      break
+    }
+  }
+}
+
