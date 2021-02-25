@@ -24,3 +24,15 @@ struct Coin: Codable {
   }
 }
 
+struct ticker: Codable {
+
+  // MARK: Json Keys
+
+  let currentPrice: Double
+  let code: String
+
+  enum CodingKeys: String, CodingKey {
+    case currentPrice = "tp"
+    case code = "cd"
+  }
+}

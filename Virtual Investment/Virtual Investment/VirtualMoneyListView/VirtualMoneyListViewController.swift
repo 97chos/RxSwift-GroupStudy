@@ -10,10 +10,20 @@ import UIKit
 import SnapKit
 import Starscream
 
+enum ReueseIdentifier {
+  static let coinListCell = "coinListCell"
+}
+
+protocol changeCurrentPriceDelegation: class {
+  func reloadData(price: Double?, code: String?)
+}
+
 class VirtualMoneyListViewController: UIViewController {
 
   // MARK: Properties
 
+  private var coinList: [Coin]!
+  weak var delegate: changeCurrentPriceDelegation!
   var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
 
@@ -39,7 +49,7 @@ class VirtualMoneyListViewController: UIViewController {
     super.viewDidLoad()
     self.configure()
     self.connect()
-    self.didReceive(event: .connected(["이게":"뭐지"]), client: webSocket)
+    self.didReceive(event: .connected(["coinList":"list"]), client: webSocket)
   }
 
   override func viewDidLayoutSubviews() {
@@ -52,11 +62,22 @@ class VirtualMoneyListViewController: UIViewController {
   private func configure() {
     self.viewConfigure()
     self.layout()
+    self.initConfigure()
   }
 
   private func viewConfigure() {
     self.view.backgroundColor = .white
     self.title = "거래소"
+
+    self.tableView.delegate = self
+    self.tableView.dataSource = self
+
+    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReueseIdentifier.coinListCell)
+    self.tableView.rowHeight = 60
+  }
+
+  private func initConfigure() {
+    self.coinList = APIService().lookupVirtualList()
   }
 
   private func layout() {
@@ -73,7 +94,7 @@ class VirtualMoneyListViewController: UIViewController {
 extension VirtualMoneyListViewController: WebSocketDelegate {
 
   func connect() {
-    request.timeoutInterval = 10
+    request.timeoutInterval = 100
     webSocket.delegate = self
     webSocket.connect()
   }
@@ -90,8 +111,7 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
       let params = [["ticket":"test"],
                     ["format":"SIMPLE"],
-                    ["type":"ticker","codes":["KRW-BTC"],"isOnlyRealtime":"true"],
-                    ["type":"trade","codes":["KRW-BTC"]]]
+                    ["type":"ticker","codes":["KRW-BTC"],"isOnlyRealtime":"true"]]
 
       let jParams = try! JSONSerialization.data(withJSONObject: params, options: [])
       client.write(string: String(data:jParams, encoding: .utf8)!, completion: nil)
@@ -101,12 +121,18 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
       break
     case .text(let string):
       print("text", string)
-      //parse(data: string.data(using: .utf8)!)
 
       break
     case .binary(let data):
 
-      //parse(data: data)
+      do {
+        let decoder = JSONDecoder()
+        let tickerData = try decoder.decode(ticker.self, from: data)
+
+        print(tickerData)
+      } catch {
+        print(error.localizedDescription)
+      }
 
       break
     case .error(let error):
@@ -118,3 +144,25 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
   }
 }
 
+
+extension VirtualMoneyListViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.coinList.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReueseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
+      return UITableViewCell()
+    }
+
+    cell.set(coinData: self.coinList[indexPath.row])
+
+    return cell
+  }
+
+
+}
+
+extension VirtualMoneyListViewController: UITableViewDelegate {
+
+}
