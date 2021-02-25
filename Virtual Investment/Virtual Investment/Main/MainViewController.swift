@@ -19,7 +19,7 @@ class MainViewController: UIViewController {
     return imgView
   }()
   private lazy var firstTabBarImage: UIImage = {
-    guard let image = UIImage(systemName: "bitcoinsign.square")?.withRenderingMode(.alwaysTemplate) else {
+    guard let image = UIImage(systemName: "dollarsign.square")?.withRenderingMode(.alwaysTemplate) else {
       return UIImage()
     }
     return image
