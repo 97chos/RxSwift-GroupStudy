@@ -120,6 +120,13 @@ class CoinInformationViewController: UIViewController {
   }
 
 
+  // MARK: Actions
+
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    self.view.endEditing(true)
+  }
+  
+
   // MARK: Configuration
 
   private func configure() {
