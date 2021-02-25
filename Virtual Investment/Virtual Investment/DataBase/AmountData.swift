@@ -7,11 +7,11 @@
 
 import Foundation
 
-class BalanceData {
-  static var shared = BalanceData()
-  var balance: Int = 0
-  var evaluadtedPrice: Float = 0
-  var investmentAmount: Float = 0
+class AmountData {
+  static var shared = AmountData()
+  var deposit: Int = 0
+  var evaluatedPrice: Float = 0
+  var investmentAccount: Float = 0
 
   private init() {
   }
