@@ -76,7 +76,7 @@ class MainViewController: UIViewController {
     AmountData.shared.deposit = inputedNumber
 
     let firstVC = UINavigationController(rootViewController: VirtualMoneyListViewController())
-    let secondVC = UINavigationController(rootViewController: PurchasedViewController())
+    let secondVC = UINavigationController(rootViewController: InvestedViewController())
 
     firstVC.tabBarItem = UITabBarItem(title: "거래소", image: firstTabBarImage, tag: 0)
     secondVC.tabBarItem = UITabBarItem(title: "투자내역", image: secondTabBarImage, tag: 1)

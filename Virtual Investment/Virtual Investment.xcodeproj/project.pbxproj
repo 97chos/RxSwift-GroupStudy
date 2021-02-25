@@ -20,7 +20,7 @@
 		FF42B01525E5477000CEA875 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SocketIO */; };
 		FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */; };
 		FF42B02225E556F800CEA875 /* AmountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02125E556F800CEA875 /* AmountData.swift */; };
-		FF42B02F25E55DCA00CEA875 /* PurchasedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* PurchasedViewController.swift */; };
+		FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */; };
 		FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* Starscream */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +40,7 @@
 		FF42AF6325E5349800CEA875 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMoneyListViewController.swift; sourceTree = "<group>"; };
 		FF42B02125E556F800CEA875 /* AmountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountData.swift; sourceTree = "<group>"; };
-		FF42B02E25E55DCA00CEA875 /* PurchasedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasedViewController.swift; sourceTree = "<group>"; };
+		FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,7 +186,7 @@
 		FF42B02925E55D7A00CEA875 /* PurchasedVirtualMoneyView */ = {
 			isa = PBXGroup;
 			children = (
-				FF42B02E25E55DCA00CEA875 /* PurchasedViewController.swift */,
+				FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */,
 				FF41E37B25E76CAA003139A7 /* View */,
 			);
 			path = PurchasedVirtualMoneyView;
@@ -319,7 +319,7 @@
 				FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */,
 				FF41E34C25E64C73003139A7 /* APIService.swift in Sources */,
 				FF42B02225E556F800CEA875 /* AmountData.swift in Sources */,
-				FF42B02F25E55DCA00CEA875 /* PurchasedViewController.swift in Sources */,
+				FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */,
 				FF41E35125E65015003139A7 /* CoinModel.swift in Sources */,
 				FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */,
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,

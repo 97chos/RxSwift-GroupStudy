@@ -1,5 +1,5 @@
 //
-//  PurchasedViewController.swift
+//  InvestedViewController.swift
 //  Virtual Investment
 //
 //  Created by sangho Cho on 2021/02/24.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class PurchasedViewController: UIViewController {
+class InvestedViewController: UIViewController {
 
   // MARK: Properties
 
@@ -108,7 +108,7 @@ class PurchasedViewController: UIViewController {
     self.view.backgroundColor = .systemBackground
     self.title = "투자 내역"
 
-    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReueseIdentifier.purchasedCoinListCell)
+    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReueseIdentifier.investedCoinListCell)
     self.tableView.delegate = self
     self.tableView.dataSource = self
 
@@ -178,22 +178,22 @@ class PurchasedViewController: UIViewController {
   }
 }
 
-extension PurchasedViewController: UITableViewDataSource {
+extension InvestedViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.amountData.purchasedCoins.count
+    return self.amountData.investededCoins.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReueseIdentifier.purchasedCoinListCell , for: indexPath) as? CoinCell else {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReueseIdentifier.investedCoinListCell , for: indexPath) as? CoinCell else {
       return UITableViewCell()
     }
 
-    cell.set(coinData: self.amountData.purchasedCoins[indexPath.row])
+    cell.set(coinData: self.amountData.investededCoins[indexPath.row])
 
     return cell
   }
 
 }
 
-extension PurchasedViewController: UITableViewDelegate {
+extension InvestedViewController: UITableViewDelegate {
 }
