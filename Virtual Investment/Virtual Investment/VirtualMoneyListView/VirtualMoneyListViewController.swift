@@ -49,8 +49,15 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
     self.connect()
     self.didReceive(event: .connected(["coinList":"list"]), client: webSocket)
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    self.disconnect()
   }
 
   override func viewDidLayoutSubviews() {
@@ -165,5 +172,8 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
 }
 
 extension VirtualMoneyListViewController: UITableViewDelegate {
-
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let vc = CoinInformationViewController(coin: self.coinList[indexPath.row])
+    self.navigationController?.pushViewController(vc, animated: true)
+  }
 }
