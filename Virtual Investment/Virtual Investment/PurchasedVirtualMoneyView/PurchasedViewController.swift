@@ -78,10 +78,14 @@ class PurchasedViewController: UIViewController {
     view.layer.borderColor = UIColor.white.cgColor
     return view
   }()
-  private let allContainerView: UIView = {
-    let view = UIView()
+  private lazy var allContainerView: UIView = {
+    let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.2))
     view.backgroundColor = .systemBackground
     return view
+  }()
+  private let tableView: UITableView = {
+    let tableView = UITableView()
+    return tableView
   }()
 
 
@@ -103,6 +107,11 @@ class PurchasedViewController: UIViewController {
   private func viewConfigure() {
     self.view.backgroundColor = .systemBackground
     self.title = "투자 내역"
+
+    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReueseIdentifier.purchasedCoinListCell)
+    self.tableView.delegate = self
+    self.tableView.dataSource = self
+
   }
 
 
@@ -118,13 +127,11 @@ class PurchasedViewController: UIViewController {
     self.allContainerView.addSubview(self.depositContainerView)
     self.allContainerView.addSubview(self.evaluatedContainerView)
     self.allContainerView.addSubview(self.investmentContainerView)
-    self.view.addSubview(self.allContainerView)
+    self.view.addSubview(self.tableView)
+    self.tableView.tableHeaderView = allContainerView
 
-    self.allContainerView.snp.makeConstraints {
-      $0.width.equalToSuperview()
-      $0.leading.equalToSuperview()
-      $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-      $0.height.equalToSuperview().multipliedBy(0.2)
+    self.tableView.snp.makeConstraints {
+      $0.edges.equalTo(self.view.safeAreaLayoutGuide)
     }
     self.investmentContainerView.snp.makeConstraints {
       $0.width.equalToSuperview().multipliedBy(0.5)
@@ -169,4 +176,24 @@ class PurchasedViewController: UIViewController {
       $0.trailing.equalToSuperview().inset(10)
     }
   }
+}
+
+extension PurchasedViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.amountData.purchasedCoins.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReueseIdentifier.purchasedCoinListCell , for: indexPath) as? CoinCell else {
+      return UITableViewCell()
+    }
+
+    cell.set(coinData: self.amountData.purchasedCoins[indexPath.row])
+
+    return cell
+  }
+
+}
+
+extension PurchasedViewController: UITableViewDelegate {
 }

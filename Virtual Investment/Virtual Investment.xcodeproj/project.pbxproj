@@ -99,6 +99,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		FF41E37B25E76CAA003139A7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		FF42AF4025E5331500CEA875 = {
 			isa = PBXGroup;
 			children = (
@@ -180,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				FF42B02E25E55DCA00CEA875 /* PurchasedViewController.swift */,
+				FF41E37B25E76CAA003139A7 /* View */,
 			);
 			path = PurchasedVirtualMoneyView;
 			sourceTree = "<group>";

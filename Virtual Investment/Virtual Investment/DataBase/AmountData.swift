@@ -12,6 +12,7 @@ class AmountData {
   var deposit: Int = 0
   var evaluatedPrice: Float = 0
   var investmentAccount: Float = 0
+  var purchasedCoins: [Coin] = []
 
   private init() {
   }

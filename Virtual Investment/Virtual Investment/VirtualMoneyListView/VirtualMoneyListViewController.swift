@@ -12,6 +12,7 @@ import Starscream
 
 enum ReueseIdentifier {
   static let coinListCell = "coinListCell"
+  static let purchasedCoinListCell = "purchasedCoinListCell"
 }
 
 protocol changeCurrentPriceDelegation: class {
