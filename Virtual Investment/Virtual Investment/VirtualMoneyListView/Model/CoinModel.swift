@@ -14,13 +14,13 @@ struct Coin: Codable {
   let koreanName: String
   let englishName: String
   let code: String
-  let tradePrice: Double?
+  let prices: ticker?
 
   enum CodingKeys: String, CodingKey {
     case koreanName = "korean_name"
     case englishName = "english_name"
     case code = "market"
-    case tradePrice = "tp"
+    case prices
   }
 }
 
@@ -30,9 +30,13 @@ struct ticker: Codable {
 
   let currentPrice: Double
   let code: String
+  let highPrice: Double
+  let lowPrice: Double
 
   enum CodingKeys: String, CodingKey {
     case currentPrice = "tp"
     case code = "cd"
+    case highPrice = "hp"
+    case lowPrice = "lp"
   }
 }

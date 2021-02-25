@@ -52,6 +52,7 @@ class CoinCell: UITableViewCell {
     self.koreanName.text = coinData.koreanName
     self.englishName.text = coinData.englishName
     self.code = coinData.code
+    self.currentPrice.text = "10,000,000"
 
     self.koreanName.sizeToFit()
     self.englishName.sizeToFit()
