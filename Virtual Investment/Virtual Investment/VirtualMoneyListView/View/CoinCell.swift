@@ -11,10 +11,6 @@ import SnapKit
 
 class CoinCell: UITableViewCell {
 
-  // MARK: Properties
-
-  private var code: String!
-
   // MARK: UI
 
   private let koreanName: UILabel = {
@@ -51,7 +47,6 @@ class CoinCell: UITableViewCell {
   func set(coinData: Coin) {
     self.koreanName.text = coinData.koreanName
     self.englishName.text = coinData.englishName
-    self.code = coinData.code
     if let price = coinData.prices {
       self.currentPrice.text = Int(price.currentPrice).cutDecimal()
     }
