@@ -203,9 +203,9 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
 
     cell.set(coinData: self.coinList[indexPath.row])
 
+
     return cell
   }
-
 
 }
 
@@ -213,5 +213,6 @@ extension VirtualMoneyListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let vc = CoinInformationViewController(coin: self.coinList[indexPath.row])
     self.navigationController?.pushViewController(vc, animated: true)
+    tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
   }
 }

@@ -23,6 +23,7 @@
 		FF42B02225E556F800CEA875 /* AmountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02125E556F800CEA875 /* AmountData.swift */; };
 		FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */; };
 		FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* Starscream */; };
+		FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DE725E895A9009B0170 /* ParameterModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMoneyListViewController.swift; sourceTree = "<group>"; };
 		FF42B02125E556F800CEA875 /* AmountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountData.swift; sourceTree = "<group>"; };
 		FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedViewController.swift; sourceTree = "<group>"; };
+		FFC31DE725E895A9009B0170 /* ParameterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				FF41E35025E65015003139A7 /* CoinModel.swift */,
+				FFC31DE725E895A9009B0170 /* ParameterModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */,
+				FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */,
 				FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */,
 				FF41E34C25E64C73003139A7 /* APIService.swift in Sources */,
 				FF42B02225E556F800CEA875 /* AmountData.swift in Sources */,
