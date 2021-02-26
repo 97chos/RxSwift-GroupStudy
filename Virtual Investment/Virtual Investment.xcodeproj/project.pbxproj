@@ -24,6 +24,7 @@
 		FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */; };
 		FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* Starscream */; };
 		FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DE725E895A9009B0170 /* ParameterModel.swift */; };
+		FFC31DEF25E8CEB9009B0170 /* Int+currencyKRW.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DEE25E8CEB9009B0170 /* Int+currencyKRW.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		FF42B02125E556F800CEA875 /* AmountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountData.swift; sourceTree = "<group>"; };
 		FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedViewController.swift; sourceTree = "<group>"; };
 		FFC31DE725E895A9009B0170 /* ParameterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterModel.swift; sourceTree = "<group>"; };
+		FFC31DEE25E8CEB9009B0170 /* Int+currencyKRW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+currencyKRW.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,8 +212,17 @@
 		FFC31DEA25E8CCCA009B0170 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				FFC31DEC25E8CE9E009B0170 /* Int */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		FFC31DEC25E8CE9E009B0170 /* Int */ = {
+			isa = PBXGroup;
+			children = (
+				FFC31DEE25E8CEB9009B0170 /* Int+currencyKRW.swift */,
+			);
+			path = Int;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -339,6 +350,7 @@
 			files = (
 				FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */,
 				FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */,
+				FFC31DEF25E8CEB9009B0170 /* Int+currencyKRW.swift in Sources */,
 				FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */,
 				FF41E34C25E64C73003139A7 /* APIService.swift in Sources */,
 				FF42B02225E556F800CEA875 /* AmountData.swift in Sources */,
