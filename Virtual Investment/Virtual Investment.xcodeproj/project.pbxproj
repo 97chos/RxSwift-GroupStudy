@@ -26,6 +26,7 @@
 		FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DE725E895A9009B0170 /* ParameterModel.swift */; };
 		FFC31DEF25E8CEB9009B0170 /* Int+currencyKRW.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DEE25E8CEB9009B0170 /* Int+currencyKRW.swift */; };
 		FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */; };
+		FFC31E0225E94E56009B0170 /* Double+cutDecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		FFC31DE725E895A9009B0170 /* ParameterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterModel.swift; sourceTree = "<group>"; };
 		FFC31DEE25E8CEB9009B0170 /* Int+currencyKRW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+currencyKRW.swift"; sourceTree = "<group>"; };
 		FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+cutDecimal.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +216,7 @@
 		FFC31DEA25E8CCCA009B0170 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				FFC31E0025E94E49009B0170 /* Double */,
 				FFC31DF925E9413D009B0170 /* UIViewController */,
 				FFC31DEC25E8CE9E009B0170 /* Int */,
 			);
@@ -234,6 +237,14 @@
 				FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */,
 			);
 			path = UIViewController;
+			sourceTree = "<group>";
+		};
+		FFC31E0025E94E49009B0170 /* Double */ = {
+			isa = PBXGroup;
+			children = (
+				FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */,
+			);
+			path = Double;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -368,6 +379,7 @@
 				FF42B02225E556F800CEA875 /* AmountData.swift in Sources */,
 				FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */,
 				FF41E35125E65015003139A7 /* CoinModel.swift in Sources */,
+				FFC31E0225E94E56009B0170 /* Double+cutDecimal.swift in Sources */,
 				FF41E38625E78C9E003139A7 /* CoinInfromationViewController.swift in Sources */,
 				FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */,
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,

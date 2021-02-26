@@ -48,7 +48,7 @@ class CoinCell: UITableViewCell {
     self.koreanName.text = coinData.koreanName
     self.englishName.text = coinData.englishName
     if let price = coinData.prices {
-      self.currentPrice.text = Int(price.currentPrice).cutDecimal()
+      self.currentPrice.text = price.currentPrice.cutDecimal()
     }
 
     self.koreanName.sizeToFit()
