@@ -52,10 +52,13 @@ class CoinCell: UITableViewCell {
     self.koreanName.text = coinData.koreanName
     self.englishName.text = coinData.englishName
     self.code = coinData.code
-    self.currentPrice.text = "10,000,000"
+    if let price = coinData.prices {
+      self.currentPrice.text = "\(price.currentPrice)"
+    }
 
     self.koreanName.sizeToFit()
     self.englishName.sizeToFit()
+    self.currentPrice.sizeToFit()
   }
 
 
@@ -78,6 +81,12 @@ class CoinCell: UITableViewCell {
       $0.centerY.equalToSuperview()
       $0.trailing.equalToSuperview().inset(10)
     }
+  }
+
+  // MARK: Prepare Set
+
+  override func prepareForReuse() {
+    self.currentPrice.text = nil
   }
 }
 
