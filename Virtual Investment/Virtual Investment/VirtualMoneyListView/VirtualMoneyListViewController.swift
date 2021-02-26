@@ -157,8 +157,6 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
       break
     case .binary(let data):
-      print(data)
-
       do {
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
@@ -174,8 +172,11 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
         self.coinList[index] = coin
 
-        self.tableView.reloadData()
+        let indexInteger = coinList.index(0, offsetBy: index)
 
+        DispatchQueue.main.async {
+          self.tableView.reloadRows(at: [IndexPath(row: indexInteger, section: 0)], with: .none)
+        }
       } catch {
         print(error.localizedDescription)
       }
@@ -202,7 +203,6 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
     }
 
     cell.set(coinData: self.coinList[indexPath.row])
-
 
     return cell
   }
