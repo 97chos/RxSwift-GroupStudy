@@ -24,6 +24,7 @@ class VirtualMoneyListViewController: UIViewController {
   // MARK: Properties
 
   private var coinList: [Coin] = []
+  private var coinCodeList: [String] = []
   weak var delegate: changeCurrentPriceDelegation!
   var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
@@ -49,6 +50,7 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+    self.getCoinCode()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -62,6 +64,15 @@ class VirtualMoneyListViewController: UIViewController {
 
   override func viewDidLayoutSubviews() {
     self.searchBar.frame.origin = CGPoint(x: 0, y: self.view.safeAreaInsets.top)
+  }
+
+
+  // MARK: Actions
+
+  private func getCoinCode() {
+    self.coinList.forEach { coin in
+      self.coinCodeList.append("\(coin.code)")
+    }
   }
 
 
