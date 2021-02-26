@@ -23,7 +23,7 @@ class VirtualMoneyListViewController: UIViewController {
 
   // MARK: Properties
 
-  private var coinList: [Coin]!
+  private var coinList: [Coin] = []
   weak var delegate: changeCurrentPriceDelegation!
   var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
@@ -116,12 +116,26 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
     case .connected(let headers):
       print(".connected - \(headers)")
 
+      let ticket = TicketField(ticket: "test")
+      let format = FormatField(format: "SIMPLE")
+      let type = TypeField(type: "ticker", codes: self.coinList.map{ $0.code }, isOnlySnapshot: false, isOnlyRealtime: true)
 
-      let params = [["ticket":"test"],
-                    ["format":"SIMPLE"],
-                    ["type":"ticker","codes":["KRW-BTC"],"isOnlyRealtime":"true"]]
+      let encoder = JSONEncoder()
 
-      let jParams = try! JSONSerialization.data(withJSONObject: params, options: [])
+      let parameterStrings = [
+        try? encoder.encode(ticket),
+        try? encoder.encode(format),
+        try? encoder.encode(type)
+      ]
+      .compactMap{$0}
+      .compactMap { String(data: $0, encoding: .utf8) }
+
+      let params = "[" + parameterStrings.joined(separator: ",") + "]"
+
+      let data = params.data(using: .utf8)
+      let json = try! JSONSerialization.jsonObject(with: data!, options: []) as? [[String:AnyObject]]
+
+      let jParams = try! JSONSerialization.data(withJSONObject: json, options: [])
       client.write(string: String(data:jParams, encoding: .utf8)!, completion: nil)
       break
     case .disconnected(let reason, let code):
@@ -133,11 +147,21 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
       break
     case .binary(let data):
 
+      print(data)
+
       do {
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
+//
+//        self.coinList.map {
+//          $0.map {
+//            if $0.code == tickerData.code {
+//              $0.prices = tickerData
+//            }
+//          }
+//        }
 
-        print(tickerData)
+
       } catch {
         print(error.localizedDescription)
       }
