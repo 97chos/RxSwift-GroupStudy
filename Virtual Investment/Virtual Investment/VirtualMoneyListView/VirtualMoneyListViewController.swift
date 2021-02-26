@@ -15,16 +15,12 @@ enum ReueseIdentifier {
   static let investedCoinListCell = "investedCoinListCell"
 }
 
-protocol changeCurrentPriceDelegation: class {
-  func reloadData(price: Double?, code: String?)
-}
 
 class VirtualMoneyListViewController: UIViewController {
 
   // MARK: Properties
 
   private var coinList: [Coin] = []
-  weak var delegate: changeCurrentPriceDelegation!
   var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
 
@@ -41,6 +37,12 @@ class VirtualMoneyListViewController: UIViewController {
   private let tableView: UITableView = {
     let tableView = UITableView()
     return tableView
+  }()
+  private let loadingIndicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView(style: .large)
+    indicator.tintColor = .darkGray
+    indicator.hidesWhenStopped = true
+    return indicator
   }()
 
 
@@ -95,10 +97,12 @@ class VirtualMoneyListViewController: UIViewController {
     APIService().loadCoinsData(codes: codeList) { result in
       switch result {
       case .success(let coinPriceList) :
+        self.loadingIndicator.startAnimating()
         coinPriceList.enumerated().forEach { index, prices in
           self.coinList[index].prices = prices
         }
         self.tableView.reloadData()
+        self.loadingIndicator.stopAnimating()
       case .failure(let error) :
         print(error.localizedDescription)
         // 에러 처리
@@ -109,6 +113,7 @@ class VirtualMoneyListViewController: UIViewController {
   private func layout() {
     self.view.addSubview(self.tableView)
     self.view.addSubview(self.searchBar)
+    self.view.addSubview(self.loadingIndicator)
 
     self.tableView.snp.makeConstraints {
       $0.leading.trailing.bottom.equalToSuperview()
