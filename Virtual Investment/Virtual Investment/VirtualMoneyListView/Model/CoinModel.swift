@@ -14,7 +14,7 @@ struct Coin: Codable {
   let koreanName: String
   let englishName: String
   let code: String
-  let prices: ticker?
+  var prices: ticker?
 
   enum CodingKeys: String, CodingKey {
     case koreanName = "korean_name"
