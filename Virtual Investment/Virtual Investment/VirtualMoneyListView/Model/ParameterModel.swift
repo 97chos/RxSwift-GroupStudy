@@ -7,12 +7,6 @@
 
 import Foundation
 
-struct RequestParamOnConnected {
-  let ticket: String
-  let format: String
-  let type: String
-}
-
 struct TicketField: Codable {
   let ticket: String
 }

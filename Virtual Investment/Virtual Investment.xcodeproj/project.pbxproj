@@ -140,6 +140,7 @@
 		FF42AF4B25E5331500CEA875 /* Virtual Investment */ = {
 			isa = PBXGroup;
 			children = (
+				FFC31DEA25E8CCCA009B0170 /* Extensions */,
 				FF41E38225E78637003139A7 /* CoinInformationView */,
 				FF41E33E25E6493C003139A7 /* APIService */,
 				FF42AF6225E5341600CEA875 /* Main */,
@@ -204,6 +205,13 @@
 				FF41E37B25E76CAA003139A7 /* View */,
 			);
 			path = PurchasedVirtualMoneyView;
+			sourceTree = "<group>";
+		};
+		FFC31DEA25E8CCCA009B0170 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
