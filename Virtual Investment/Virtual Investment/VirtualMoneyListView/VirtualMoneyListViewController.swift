@@ -86,6 +86,24 @@ class VirtualMoneyListViewController: UIViewController {
 
   private func initConfigure() {
     self.coinList = APIService().lookupVirtualList()
+
+    var codeList: [String] = []
+    self.coinList.forEach {
+      codeList.append($0.code)
+    }
+
+    APIService().loadCoinsData(codes: codeList) { result in
+      switch result {
+      case .success(let coinPriceList) :
+        coinPriceList.enumerated().forEach { index, prices in
+          self.coinList[index].prices = prices
+        }
+        self.tableView.reloadData()
+      case .failure(let error) :
+        print(error.localizedDescription)
+        // 에러 처리
+      }
+    }
   }
 
   private func layout() {
