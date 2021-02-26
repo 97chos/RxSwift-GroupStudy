@@ -24,7 +24,6 @@ class VirtualMoneyListViewController: UIViewController {
   // MARK: Properties
 
   private var coinList: [Coin] = []
-  private var coinCodeList: [String] = []
   weak var delegate: changeCurrentPriceDelegation!
   var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
@@ -50,7 +49,6 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
-    self.getCoinCode()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -64,15 +62,6 @@ class VirtualMoneyListViewController: UIViewController {
 
   override func viewDidLayoutSubviews() {
     self.searchBar.frame.origin = CGPoint(x: 0, y: self.view.safeAreaInsets.top)
-  }
-
-
-  // MARK: Actions
-
-  private func getCoinCode() {
-    self.coinList.forEach { coin in
-      self.coinCodeList.append("\(coin.code)")
-    }
   }
 
 
@@ -157,6 +146,7 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
       break
     case .binary(let data):
+      
       do {
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
@@ -169,9 +159,7 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
         guard let index = self.coinList.firstIndex(where: { $0.code == coin.code }) else { return }
         
         coin.prices = tickerData
-
         self.coinList[index] = coin
-
         let indexInteger = coinList.index(0, offsetBy: index)
 
         DispatchQueue.main.async {
