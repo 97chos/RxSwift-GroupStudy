@@ -157,21 +157,24 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
       break
     case .binary(let data):
-
       print(data)
 
       do {
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
-//
-//        self.coinList.map {
-//          $0.map {
-//            if $0.code == tickerData.code {
-//              $0.prices = tickerData
-//            }
-//          }
-//        }
 
+        let codeDic = Dictionary(grouping: self.coinList, by: { coin in
+          coin.code
+        })
+
+        guard var coin = codeDic[tickerData.code]?.first else { return }
+        guard let index = self.coinList.firstIndex(where: { $0.code == coin.code }) else { return }
+        
+        coin.prices = tickerData
+
+        self.coinList[index] = coin
+
+        self.tableView.reloadData()
 
       } catch {
         print(error.localizedDescription)
