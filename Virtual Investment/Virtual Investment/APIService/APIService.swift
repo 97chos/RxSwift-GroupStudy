@@ -9,7 +9,10 @@ import Foundation
 import Alamofire
 
 enum APIError: Error {
+  case urlError
+  case networkError
   case parseError
+  case requestAPIError
 }
 
 class APIService {
@@ -27,7 +30,6 @@ class APIService {
         let data = try decoder.decode([Coin].self, from: response)
         return data
       } catch {
-        print(error.localizedDescription)
         return []
       }
     } catch {
@@ -44,11 +46,11 @@ class APIService {
     var priceListData: [ticker] = []
 
     let param: Parameters = ["markets" : codeList]
-    guard let url: URL = URL(string: "https://api.upbit.com/v1/ticker") else { return }
+    guard let url: URL = URL(string: "https://api.upbit.com/v1/ticker") else { completion(.failure(APIError.urlError)) }
 
     AF.request(url, method: .get, parameters: param, encoding: URLEncoding.queryString).responseJSON { response in
       do {
-        guard let result = try response.result.get() as? [[String:Any]] else { return }
+        guard let result = try response.result.get() as? [[String:Any]] else { completion(.failure(APIError.parseError)) }
 
         result.forEach {
           guard let currentPrice = $0["trade_price"] as? Double else { return }
@@ -60,7 +62,7 @@ class APIService {
           completion(.success(priceListData))
         }
       } catch {
-        print(error.localizedDescription)
+        completion(.failure(APIError.networkError))
       }
     }
   }

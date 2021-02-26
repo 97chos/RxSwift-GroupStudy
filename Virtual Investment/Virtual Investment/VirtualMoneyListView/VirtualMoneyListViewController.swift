@@ -72,7 +72,7 @@ class VirtualMoneyListViewController: UIViewController {
   private func configure() {
     self.viewConfigure()
     self.layout()
-    self.initConfigure()
+    self.initDataConfigure()
   }
 
   private func viewConfigure() {
@@ -86,7 +86,7 @@ class VirtualMoneyListViewController: UIViewController {
     self.tableView.rowHeight = 60
   }
 
-  private func initConfigure() {
+  private func initDataConfigure() {
     self.coinList = APIService().lookupVirtualList()
 
     var codeList: [String] = []
@@ -104,11 +104,22 @@ class VirtualMoneyListViewController: UIViewController {
         self.tableView.reloadData()
         self.loadingIndicator.stopAnimating()
       case .failure(let error) :
-        print(error.localizedDescription)
-        // 에러 처리
+        switch error {
+        case APIError.urlError :
+          self.alert(title: "호출 URL이 잘못되었습니다.", message: nil, completion: nil)
+        case APIError.networkError :
+          self.alert(title: "네트워크가 불안정합니다.", message: "잠시 후 다시 시도해주세요.", completion: nil)
+        case APIError.parseError :
+          self.alert(title: "데이터 파싱에 실패하였습니다.", message: nil, completion: nil)
+        default :
+          break
+        }
       }
     }
   }
+
+
+  // MARK: Layout
 
   private func layout() {
     self.view.addSubview(self.tableView)
@@ -155,28 +166,26 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
       let params = "[" + parameterStrings.joined(separator: ",") + "]"
 
-      let data = params.data(using: .utf8)
-      let json = try! JSONSerialization.jsonObject(with: data!, options: []) as? [[String:AnyObject]]
-
-      let jParams = try! JSONSerialization.data(withJSONObject: json, options: [])
-      client.write(string: String(data:jParams, encoding: .utf8)!, completion: nil)
-      break
-    case .disconnected(let reason, let code):
-      print(".disconnected - \(reason), \(code)")
-      break
-    case .text(let string):
-      print("text", string)
-
+      guard let data = params.data(using: .utf8) else {
+        self.alert(title: "데이터 인코딩에 실패하였습니다.", message: nil, completion: nil)
+        return
+      }
+      guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String:AnyObject]] else {
+        self.alert(title: "잘못된 데이터 요청 값입니다.", message: nil, completion: nil)
+        return
+      }
+      guard let jParams = try? JSONSerialization.data(withJSONObject: json, options: []) else {
+        self.alert(title: "잘못된 데이터 요청 값입니다.", message: nil, completion: nil)
+        return
+      }
+      client.write(string: String(data:jParams, encoding: .utf8) ?? "", completion: nil)
       break
     case .binary(let data):
       
       do {
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
-
-        let codeDic = Dictionary(grouping: self.coinList, by: { coin in
-          coin.code
-        })
+        let codeDic = Dictionary(grouping: self.coinList, by: { $0.code })
 
         guard var coin = codeDic[tickerData.code]?.first else { return }
         guard let index = self.coinList.firstIndex(where: { $0.code == coin.code }) else { return }
@@ -212,12 +221,10 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReueseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
       return UITableViewCell()
     }
-
     cell.set(coinData: self.coinList[indexPath.row])
 
     return cell
   }
-
 }
 
 extension VirtualMoneyListViewController: UITableViewDelegate {
