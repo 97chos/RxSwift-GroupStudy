@@ -46,11 +46,15 @@ class APIService {
     var priceListData: [ticker] = []
 
     let param: Parameters = ["markets" : codeList]
-    guard let url: URL = URL(string: "https://api.upbit.com/v1/ticker") else { completion(.failure(APIError.urlError)) }
+    guard let url: URL = URL(string: "https://api.upbit.com/v1/ticker") else { completion(.failure(APIError.urlError))
+      return
+    }
 
     AF.request(url, method: .get, parameters: param, encoding: URLEncoding.queryString).responseJSON { response in
       do {
-        guard let result = try response.result.get() as? [[String:Any]] else { completion(.failure(APIError.parseError)) }
+        guard let result = try response.result.get() as? [[String:Any]] else { completion(.failure(APIError.parseError))
+          return
+        }
 
         result.forEach {
           guard let currentPrice = $0["trade_price"] as? Double else { return }

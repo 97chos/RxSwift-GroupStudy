@@ -133,6 +133,9 @@ class VirtualMoneyListViewController: UIViewController {
   }
 }
 
+
+// MARK: WebScoket Delegation
+
 extension VirtualMoneyListViewController: WebSocketDelegate {
 
   func connect() {
@@ -167,15 +170,12 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
       let params = "[" + parameterStrings.joined(separator: ",") + "]"
 
       guard let data = params.data(using: .utf8) else {
-        self.alert(title: "데이터 인코딩에 실패하였습니다.", message: nil, completion: nil)
         return
       }
       guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String:AnyObject]] else {
-        self.alert(title: "잘못된 데이터 요청 값입니다.", message: nil, completion: nil)
         return
       }
       guard let jParams = try? JSONSerialization.data(withJSONObject: json, options: []) else {
-        self.alert(title: "잘못된 데이터 요청 값입니다.", message: nil, completion: nil)
         return
       }
       client.write(string: String(data:jParams, encoding: .utf8) ?? "", completion: nil)
@@ -198,12 +198,12 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
           self.tableView.reloadRows(at: [IndexPath(row: indexInteger, section: 0)], with: .none)
         }
       } catch {
-        print(error.localizedDescription)
+        self.alert(title: "JSON Decoding에 실패하였습니다.", message: nil, completion: nil)
       }
 
       break
     case .error(let error):
-      print(error?.localizedDescription ?? "")
+      self.alert(title: "WebSocket 연결에 실패하였습니다.", message: "\(error?.localizedDescription ?? "")", completion: nil)
       break
     default:
       break
@@ -211,6 +211,8 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
   }
 }
 
+
+// MARK: TableView DataSource
 
 extension VirtualMoneyListViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -226,6 +228,9 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
     return cell
   }
 }
+
+
+// MARK: TableView Delegation
 
 extension VirtualMoneyListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
