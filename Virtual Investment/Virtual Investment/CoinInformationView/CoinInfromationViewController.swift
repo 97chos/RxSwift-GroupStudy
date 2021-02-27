@@ -12,8 +12,23 @@ class CoinInformationViewController: UIViewController {
 
   // MARK: Properties
 
-  var coin: Coin
-  let accountData = AmountData.shared
+  private var coin: Coin
+  private let accountData = AmountData.shared
+  private lazy var holdingCount: Int = {
+    if self.accountData.investededCoins.contains(where: { $0.code == coin.code }) {
+      guard let index = self.accountData.investededCoins.firstIndex(where: { $0.code == self.coin.code }) else {
+        return 0
+      }
+      return self.accountData.investededCoins[index].holdingCount
+    } else {
+      return 0
+    }
+  }() {
+    didSet {
+      self.holdingCountLabel.text = "보유 수량 : \(self.holdingCount)"
+    }
+  }
+
 
 
   // MARK: UI
@@ -77,6 +92,13 @@ class CoinInformationViewController: UIViewController {
     label.font = .boldSystemFont(ofSize: 18)
     return label
   }()
+  private let holdingCountLabel: UILabel = {
+    let label = UILabel()
+    label.font = .systemFont(ofSize: 13)
+    label.textColor = .systemGray2
+    return label
+  }()
+
   private let inputCount: UITextField = {
     let textField = UITextField()
     textField.keyboardType = .numberPad
@@ -133,10 +155,12 @@ class CoinInformationViewController: UIViewController {
         guard let index = self.accountData.investededCoins.firstIndex(where: { $0.code == self.coin.code }) else {
           return
         }
-        self.accountData.investededCoins[index].havingCount += Int(count)
+        self.accountData.investededCoins[index].holdingCount += Int(count)
+        self.holdingCount = self.accountData.investededCoins[index].holdingCount
       } else {
-        self.coin.havingCount += Int(count)
+        self.coin.holdingCount += Int(count)
         self.accountData.investededCoins.append(self.coin)
+        self.holdingCount = self.coin.holdingCount
       }
 
       let totalPrice = (self.coin.prices?.currentPrice ?? 0) * count
@@ -188,6 +212,7 @@ class CoinInformationViewController: UIViewController {
     self.currentPriceLabel.text = "\((self.coin.prices?.currentPrice ?? 0).currenyKRW())"
     self.lowPriceLabel.text = "\((self.coin.prices?.lowPrice ?? 0).currenyKRW())"
     self.highPriceLabel.text = "\((self.coin.prices?.highPrice ?? 0).currenyKRW())"
+    self.holdingCountLabel.text = "보유 수량 : \(self.holdingCount)"
   }
 
   private func buttonConfigure() {
@@ -208,6 +233,7 @@ class CoinInformationViewController: UIViewController {
     self.view.addSubview(self.highPriceLabel)
     self.view.addSubview(self.countLabel)
     self.view.addSubview(self.inputCount)
+    self.view.addSubview(self.holdingCountLabel)
     self.view.addSubview(self.buyButton)
     self.view.addSubview(self.sellButton)
 
@@ -251,6 +277,10 @@ class CoinInformationViewController: UIViewController {
       $0.centerY.equalTo(self.countLabel)
       $0.width.equalToSuperview().multipliedBy(0.3)
       $0.trailing.equalToSuperview().inset(20)
+    }
+    self.holdingCountLabel.snp.makeConstraints {
+      $0.top.equalTo(self.inputCount.snp.bottom).offset(10)
+      $0.trailing.equalTo(self.inputCount)
     }
     self.buyButton.snp.makeConstraints {
       $0.top.equalTo(self.inputCount).offset(100)
