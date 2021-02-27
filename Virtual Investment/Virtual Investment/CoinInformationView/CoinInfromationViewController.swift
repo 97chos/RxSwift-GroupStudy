@@ -139,6 +139,12 @@ class CoinInformationViewController: UIViewController {
     self.view.backgroundColor = .systemBackground
   }
 
+  private func pricesConfigure() {
+    self.currentPriceLabel.text = "\((self.coin.prices?.currentPrice ?? 0).currenyKRW())"
+    self.lowPriceLabel.text = "\((self.coin.prices?.lowPrice ?? 0).currenyKRW())"
+    self.highPriceLabel.text = "\((self.coin.prices?.highPrice ?? 0).currenyKRW())"
+  }
+
 
   // MARK: Layout
 
@@ -164,19 +170,19 @@ class CoinInformationViewController: UIViewController {
       $0.top.equalTo(self.coinNameLabel.snp.bottom).offset(10)
       $0.leading.equalTo(self.coinNameLabel)
     }
-    self.lowPriceNameLabel.snp.makeConstraints {
+    self.highPriceNameLabel.snp.makeConstraints {
       $0.top.equalTo(self.coinCodeLabel).offset(70)
       $0.leading.equalTo(self.coinNameLabel)
     }
-    self.lowPriceLabel.snp.makeConstraints {
+    self.highPriceLabel.snp.makeConstraints {
       $0.centerY.equalTo(self.lowPriceNameLabel)
       $0.trailing.equalToSuperview().inset(20)
     }
-    self.highPriceNameLabel.snp.makeConstraints {
+    self.lowPriceNameLabel.snp.makeConstraints {
       $0.top.equalTo(self.lowPriceLabel).offset(25)
       $0.leading.equalTo(self.coinNameLabel)
     }
-    self.highPriceLabel.snp.makeConstraints {
+    self.lowPriceLabel.snp.makeConstraints {
       $0.centerY.equalTo(self.highPriceNameLabel)
       $0.trailing.equalToSuperview().inset(20)
     }
