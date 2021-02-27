@@ -23,6 +23,8 @@ class InvestedViewController: UIViewController {
   private lazy var depositLabel: UILabel = {
     let label = UILabel()
     label.font = .boldSystemFont(ofSize: 20)
+    label.textAlignment = .right
+    label.adjustsFontSizeToFitWidth = true
     return label
   }()
   private let evaluatedLabelTitle: UILabel = {
@@ -36,6 +38,7 @@ class InvestedViewController: UIViewController {
     let label = UILabel()
     label.textAlignment = .right
     label.font = .boldSystemFont(ofSize: 25)
+    label.adjustsFontSizeToFitWidth = true
     return label
   }()
   private let invesetmentLabelTitle: UILabel = {
@@ -49,6 +52,7 @@ class InvestedViewController: UIViewController {
     let label = UILabel()
     label.textAlignment = .right
     label.font = .boldSystemFont(ofSize: 25)
+    label.adjustsFontSizeToFitWidth = true
     return label
   }()
   private let depositContainerView: UIView = {
@@ -90,6 +94,7 @@ class InvestedViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     self.setPrices()
+    self.tableView.reloadData()
   }
 
 
@@ -110,9 +115,9 @@ class InvestedViewController: UIViewController {
   }
 
   private func setPrices() {
-    self.depositLabel.text = "\(AmountData.shared.deposit)"
-    self.evaluatedLabel.text = "\(AmountData.shared.evaluatedPrice)"
-    self.investmentLabel.text = "\(AmountData.shared.investmentAccount)"
+    self.depositLabel.text = "\(AmountData.shared.deposit.currenyKRW())"
+    self.evaluatedLabel.text = "\(AmountData.shared.evaluatedPrice.currenyKRW())"
+    self.investmentLabel.text = "\(AmountData.shared.investmentAccount.currenyKRW())"
   }
 
 
@@ -162,18 +167,22 @@ class InvestedViewController: UIViewController {
     }
     self.depositLabelTitle.snp.makeConstraints {
       $0.leading.equalToSuperview().inset(10)
+      $0.width.equalToSuperview().multipliedBy(0.35)
       $0.centerY.equalToSuperview()
     }
     self.evaluatedLabel.snp.makeConstraints {
       $0.trailing.equalToSuperview().inset(10)
+      $0.width.equalToSuperview().multipliedBy(0.9)
       $0.centerY.equalToSuperview().offset(20)
     }
     self.investmentLabel.snp.makeConstraints {
       $0.trailing.equalToSuperview().inset(10)
+      $0.width.equalToSuperview().multipliedBy(0.9)
       $0.centerY.equalToSuperview().offset(20)
     }
     self.depositLabel.snp.makeConstraints {
       $0.centerY.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.6)
       $0.trailing.equalToSuperview().inset(10)
     }
   }
