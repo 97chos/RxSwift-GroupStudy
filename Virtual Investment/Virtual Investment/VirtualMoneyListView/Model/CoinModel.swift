@@ -22,7 +22,6 @@ struct Coin: Codable {
     case englishName = "english_name"
     case code = "market"
     case prices
-    case havingCount
   }
 }
 
