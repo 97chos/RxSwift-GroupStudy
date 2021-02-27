@@ -15,12 +15,14 @@ struct Coin: Codable {
   let englishName: String
   let code: String
   var prices: ticker?
+  var havingCount: Int = 0
 
   enum CodingKeys: String, CodingKey {
     case koreanName = "korean_name"
     case englishName = "english_name"
     case code = "market"
     case prices
+    case havingCount
   }
 }
 
