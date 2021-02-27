@@ -11,11 +11,6 @@ import SnapKit
 
 class InvestedViewController: UIViewController {
 
-  // MARK: Properties
-
-  private let amountData = AmountData.shared
-
-
   // MARK: UI
 
   private let depositLabelTitle: UILabel = {
@@ -27,7 +22,6 @@ class InvestedViewController: UIViewController {
   }()
   private lazy var depositLabel: UILabel = {
     let label = UILabel()
-    label.text = "\(self.amountData.deposit)"
     label.font = .boldSystemFont(ofSize: 20)
     return label
   }()
@@ -40,7 +34,6 @@ class InvestedViewController: UIViewController {
   }()
   private lazy var evaluatedLabel: UILabel = {
     let label = UILabel()
-    label.text = "\(self.amountData.evaluatedPrice)"
     label.textAlignment = .right
     label.font = .boldSystemFont(ofSize: 25)
     return label
@@ -54,7 +47,6 @@ class InvestedViewController: UIViewController {
   }()
   private lazy var investmentLabel: UILabel = {
     let label = UILabel()
-    label.text = "\(self.amountData.investmentAccount)"
     label.textAlignment = .right
     label.font = .boldSystemFont(ofSize: 25)
     return label
@@ -96,6 +88,10 @@ class InvestedViewController: UIViewController {
     self.configure()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    self.setPrices()
+  }
+
 
   // MARK: Configuration
 
@@ -111,7 +107,12 @@ class InvestedViewController: UIViewController {
     self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReueseIdentifier.investedCoinListCell)
     self.tableView.delegate = self
     self.tableView.dataSource = self
+  }
 
+  private func setPrices() {
+    self.depositLabel.text = "\(AmountData.shared.deposit)"
+    self.evaluatedLabel.text = "\(AmountData.shared.evaluatedPrice)"
+    self.investmentLabel.text = "\(AmountData.shared.investmentAccount)"
   }
 
 
@@ -180,7 +181,7 @@ class InvestedViewController: UIViewController {
 
 extension InvestedViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.amountData.investededCoins.count
+    return AmountData.shared.investededCoins.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -188,7 +189,7 @@ extension InvestedViewController: UITableViewDataSource {
       return UITableViewCell()
     }
 
-    cell.set(coinData: self.amountData.investededCoins[indexPath.row])
+    cell.set(coinData: AmountData.shared.investededCoins[indexPath.row])
 
     return cell
   }
