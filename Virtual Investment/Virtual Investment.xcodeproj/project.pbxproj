@@ -24,7 +24,6 @@
 		FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */; };
 		FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* Starscream */; };
 		FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DE725E895A9009B0170 /* ParameterModel.swift */; };
-		FFC31DEF25E8CEB9009B0170 /* Int+currencyKRW.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DEE25E8CEB9009B0170 /* Int+currencyKRW.swift */; };
 		FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */; };
 		FFC31E0225E94E56009B0170 /* Double+cutDecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */; };
 /* End PBXBuildFile section */
@@ -48,7 +47,6 @@
 		FF42B02125E556F800CEA875 /* AmountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountData.swift; sourceTree = "<group>"; };
 		FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedViewController.swift; sourceTree = "<group>"; };
 		FFC31DE725E895A9009B0170 /* ParameterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterModel.swift; sourceTree = "<group>"; };
-		FFC31DEE25E8CEB9009B0170 /* Int+currencyKRW.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+currencyKRW.swift"; sourceTree = "<group>"; };
 		FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+cutDecimal.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -218,17 +216,8 @@
 			children = (
 				FFC31E0025E94E49009B0170 /* Double */,
 				FFC31DF925E9413D009B0170 /* UIViewController */,
-				FFC31DEC25E8CE9E009B0170 /* Int */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		FFC31DEC25E8CE9E009B0170 /* Int */ = {
-			isa = PBXGroup;
-			children = (
-				FFC31DEE25E8CEB9009B0170 /* Int+currencyKRW.swift */,
-			);
-			path = Int;
 			sourceTree = "<group>";
 		};
 		FFC31DF925E9413D009B0170 /* UIViewController */ = {
@@ -372,7 +361,6 @@
 			files = (
 				FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */,
 				FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */,
-				FFC31DEF25E8CEB9009B0170 /* Int+currencyKRW.swift in Sources */,
 				FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */,
 				FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */,
 				FF41E34C25E64C73003139A7 /* APIService.swift in Sources */,

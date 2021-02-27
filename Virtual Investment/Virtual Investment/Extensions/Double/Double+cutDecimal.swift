@@ -17,4 +17,15 @@ extension Double {
       return "\(self)"
     }
   }
+  
+  func currenyKRW() -> String {
+    let formatter = NumberFormatter()
+    if self > 100 {
+      formatter.numberStyle = .currency
+      formatter.locale = Locale(identifier: "ko_KR")
+      return formatter.string(from: NSNumber(value: self)) ?? ""
+    } else {
+      return "₩\(self)"
+    }
+  }
 }
