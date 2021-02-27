@@ -13,6 +13,7 @@ class CoinInformationViewController: UIViewController {
   // MARK: Properties
 
   var coin: Coin
+  let accountData = AmountData.shared
 
 
   // MARK: UI
@@ -125,13 +126,57 @@ class CoinInformationViewController: UIViewController {
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     self.view.endEditing(true)
   }
-  
+
+  @objc private func buyButtonAction() {
+    if let count = self.checkCount() {
+      if self.accountData.investededCoins.contains(where: { $0.code == coin.code }) {
+        guard let index = self.accountData.investededCoins.firstIndex(where: { $0.code == self.coin.code }) else {
+          return
+        }
+        self.accountData.investededCoins[index].havingCount += Int(count)
+      } else {
+        self.coin.havingCount += Int(count)
+        self.accountData.investededCoins.append(self.coin)
+      }
+
+      let totalPrice = (self.coin.prices?.currentPrice ?? 0) * count
+
+      self.accountData.deposit -= totalPrice
+      self.accountData.evaluatedPrice += totalPrice
+      self.accountData.investmentAccount += totalPrice
+
+      self.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
+    }
+  }
+
+  private func checkCount() -> Double? {
+    let optText = self.inputCount.text
+    guard let text = optText else {
+      self.alert(title: "매매할 수량을 입력해주세요.", message: nil, completion: nil)
+      return nil
+    }
+    guard let count: Double = Double(text) else {
+      self.alert(title: "숫자 외 다른 문자는 입력이 불가능합니다.", message: nil, completion: nil)
+      return nil
+    }
+    guard count > 0 else {
+      self.alert(title: "1 이상의 숫자만 입력 가능합니다.", message: nil, completion: nil)
+      return nil
+    }
+    guard self.accountData.deposit > count * (coin.prices?.currentPrice ?? 0) else {
+      self.alert(title: "보유 중인 예수금이 부족합니다.", message: nil, completion: nil)
+      return nil
+    }
+    return count
+  }
 
   // MARK: Configuration
 
   private func configure() {
     self.viewConfigure()
     self.layout()
+    self.pricesConfigure()
+    self.buttonConfigure()
   }
 
   private func viewConfigure() {
@@ -143,6 +188,10 @@ class CoinInformationViewController: UIViewController {
     self.currentPriceLabel.text = "\((self.coin.prices?.currentPrice ?? 0).currenyKRW())"
     self.lowPriceLabel.text = "\((self.coin.prices?.lowPrice ?? 0).currenyKRW())"
     self.highPriceLabel.text = "\((self.coin.prices?.highPrice ?? 0).currenyKRW())"
+  }
+
+  private func buttonConfigure() {
+    self.buyButton.addTarget(self, action: #selector(self.buyButtonAction), for: .touchUpInside)
   }
 
 
