@@ -312,15 +312,15 @@ class CoinInformationViewController: UIViewController {
       $0.leading.equalTo(self.coinNameLabel)
     }
     self.highPriceLabel.snp.makeConstraints {
-      $0.centerY.equalTo(self.lowPriceNameLabel)
+      $0.centerY.equalTo(self.highPriceNameLabel)
       $0.trailing.equalToSuperview().inset(20)
     }
     self.lowPriceNameLabel.snp.makeConstraints {
-      $0.top.equalTo(self.lowPriceLabel).offset(25)
+      $0.top.equalTo(self.highPriceNameLabel).offset(25)
       $0.leading.equalTo(self.coinNameLabel)
     }
     self.lowPriceLabel.snp.makeConstraints {
-      $0.centerY.equalTo(self.highPriceNameLabel)
+      $0.centerY.equalTo(self.lowPriceNameLabel)
       $0.trailing.equalToSuperview().inset(20)
     }
     self.currentPriceNameLabel.snp.makeConstraints {
