@@ -190,7 +190,7 @@ class InvestedViewController: UIViewController {
 
 extension InvestedViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return AmountData.shared.investededCoins.count
+    return AmountData.shared.boughtCoins.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -198,7 +198,7 @@ extension InvestedViewController: UITableViewDataSource {
       return UITableViewCell()
     }
 
-    cell.set(coinData: AmountData.shared.investededCoins[indexPath.row])
+    cell.set(coinData: AmountData.shared.boughtCoins[indexPath.row])
 
     return cell
   }
