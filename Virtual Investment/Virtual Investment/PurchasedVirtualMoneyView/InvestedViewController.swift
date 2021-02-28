@@ -241,7 +241,6 @@ extension InvestedViewController: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.investedCoinListCell , for: indexPath) as? InvestedCoinCell else {
       return UITableViewCell()
     }
-
     cell.set(coinData: AmountData.shared.boughtCoins[indexPath.row])
 
     return cell
@@ -251,7 +250,6 @@ extension InvestedViewController: UITableViewDataSource {
     guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifier.investeSectionHeaderView) as? InvestedSectionHeaderView else {
       return UIView()
     }
-
     return view
   }
 
@@ -261,5 +259,9 @@ extension InvestedViewController: UITableViewDataSource {
 }
 
 extension InvestedViewController: UITableViewDelegate {
-
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let informationVC = CoinInformationViewController(coin: AmountData.shared.boughtCoins[indexPath.row])
+    self.navigationController?.pushViewController(informationVC, animated: true)
+    tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+  }
 }
