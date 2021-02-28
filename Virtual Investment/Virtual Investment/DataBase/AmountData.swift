@@ -9,14 +9,13 @@ import Foundation
 
 class AmountData {
   static var shared = AmountData()
-  var inputtedDeposit: Double = 0
-  var deposit: Double {
+  var deposit: Double = 0
+  var evaluatedPrice: Double = 0
+  var investedPrice: Double{
     get {
-      return inputtedDeposit - boughtCoins.reduce(0){ $0 + $1.totalBoughtPrice}
+      return boughtCoins.reduce(0){ $0 + $1.totalBoughtPrice}
     }
   }
-  var evaluatedPrice: Double = 0
-  var investmentAccount: Double = 0
   var boughtCoins: [Coin] = []
 
   private init() {

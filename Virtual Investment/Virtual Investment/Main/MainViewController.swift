@@ -73,7 +73,7 @@ class MainViewController: UIViewController {
   @objc private func selectNextButton() {
 
     let inputedNumber = Double(self.inputAmount.text ?? "") ?? 0
-    AmountData.shared.inputtedDeposit = inputedNumber
+    AmountData.shared.deposit = inputedNumber
 
     let firstVC = UINavigationController(rootViewController: VirtualMoneyListViewController())
     let secondVC = UINavigationController(rootViewController: InvestedViewController())

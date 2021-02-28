@@ -152,6 +152,7 @@ class CoinInformationViewController: UIViewController {
         }
 
         self.amountData.boughtCoins[index].totalBoughtPrice += totalPrice
+        self.amountData.deposit -= totalPrice
         self.amountData.boughtCoins[index].holdingCount += count
         self.coin.holdingCount = self.amountData.boughtCoins[index].holdingCount
 
@@ -163,6 +164,7 @@ class CoinInformationViewController: UIViewController {
         let totalPrice = (self.coin.prices?.currentPrice ?? 0) * Double(count)
 
         self.coin.totalBoughtPrice = totalPrice
+        self.amountData.deposit -= totalPrice
         self.coin.holdingCount = count
 
         self.amountData.boughtCoins.append(self.coin)
@@ -183,10 +185,12 @@ class CoinInformationViewController: UIViewController {
         return
       }
 
-      let remaingCount = self.amountData.boughtCoins[index].holdingCount - count
-      let totalPrice = (self.coin.prices?.currentPrice ?? 0) * Double(remaingCount)
+      let remainingCount = self.amountData.boughtCoins[index].holdingCount - count
+      let totalRemainingPrice = (self.coin.prices?.currentPrice ?? 0) * Double(remainingCount)
+      let totalCellPrice =  (self.coin.prices?.currentPrice ?? 0) * Double(count)
 
-      self.amountData.boughtCoins[index].totalBoughtPrice -= max(self.amountData.boughtCoins[index].totalBoughtPrice - totalPrice, 0)
+      self.amountData.boughtCoins[index].totalBoughtPrice -= max(self.amountData.boughtCoins[index].totalBoughtPrice - totalRemainingPrice, 0)
+      self.amountData.deposit += totalCellPrice
       self.amountData.boughtCoins[index].holdingCount -= count
       self.coin.holdingCount = self.amountData.boughtCoins[index].holdingCount
 
@@ -217,7 +221,7 @@ class CoinInformationViewController: UIViewController {
       return nil
     }
     if sender == self.buyButton {
-      guard self.amountData.deposit > Double(count) * (coin.prices?.currentPrice ?? 0) else {
+      guard self.amountData.deposit >= Double(count) * (coin.prices?.currentPrice ?? 0) else {
         self.alert(title: "보유 중인 예수금이 부족합니다.", message: nil, completion: nil)
         return nil
       }
