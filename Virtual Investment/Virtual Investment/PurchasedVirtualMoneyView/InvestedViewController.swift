@@ -124,6 +124,14 @@ class InvestedViewController: UIViewController {
     self.depositLabel.text = "\(AmountData.shared.deposit.currenyKRW())"
     self.evaluatedLabel.text = "\(AmountData.shared.getEvaluatedPrice().currenyKRW())"
     self.investmentLabel.text = "\(AmountData.shared.investedPrice.currenyKRW())"
+
+    if AmountData.shared.getEvaluatedPrice() < AmountData.shared.investedPrice {
+      self.evaluatedLabel.textColor = .systemBlue
+    } else if AmountData.shared.getEvaluatedPrice() > AmountData.shared.investedPrice {
+      self.evaluatedLabel.textColor = .systemRed
+    } else {
+      self.evaluatedLabel.textColor = .black
+    }
   }
 
 

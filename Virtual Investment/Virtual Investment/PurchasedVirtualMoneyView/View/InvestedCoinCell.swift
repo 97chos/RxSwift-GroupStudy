@@ -51,10 +51,19 @@ class InvestedCoinCell: UITableViewCell {
 
   func set(coinData: Coin) {
     var coin = coinData
+    let evalutatedPrice = (coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount)
     self.nameLabel.text = "\(coin.koreanName)(\(coin.code))"
     self.holdingCountLabel.text = "보유 수량 : \(coin.holdingCount)"
     self.currentPriceLabel.text = "\(coin.totalBoughtPrice)"
-    self.evaluatedPriceLabel.text = "\((coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount))"
+    self.evaluatedPriceLabel.text = "\(evalutatedPrice)"
+
+    if coin.totalBoughtPrice > evalutatedPrice {
+      self.evaluatedPriceLabel.textColor = .systemBlue
+    } else if coin.totalBoughtPrice < evalutatedPrice {
+      self.evaluatedPriceLabel.textColor = .systemRed
+    } else {
+      self.evaluatedPriceLabel.textColor = .black
+    }
   }
 
 
