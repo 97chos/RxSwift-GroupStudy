@@ -103,16 +103,20 @@ class InvestedViewController: UIViewController {
   private func configure() {
     self.viewConfigure()
     self.layout()
+    self.tableViewConfigure()
   }
 
   private func viewConfigure() {
     self.view.backgroundColor = .systemBackground
     self.title = "투자 내역"
+  }
 
-    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.investedCoinListCell)
+  private func tableViewConfigure() {
+    self.tableView.register(InvestedCoinCell.self, forCellReuseIdentifier: ReuseIdentifier.investedCoinListCell)
     self.tableView.register(InvestedSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifier.investeSectionHeaderView)
     self.tableView.delegate = self
     self.tableView.dataSource = self
+    self.tableView.rowHeight = 60
   }
 
   private func setPrices() {
@@ -195,7 +199,7 @@ extension InvestedViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.investedCoinListCell , for: indexPath) as? CoinCell else {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.investedCoinListCell , for: indexPath) as? InvestedCoinCell else {
       return UITableViewCell()
     }
 
