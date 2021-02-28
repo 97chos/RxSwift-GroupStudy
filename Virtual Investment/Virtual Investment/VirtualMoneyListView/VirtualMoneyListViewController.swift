@@ -10,12 +10,6 @@ import UIKit
 import SnapKit
 import Starscream
 
-enum ReuseIdentifier {
-  static let coinListCell = "coinListCell"
-  static let investedCoinListCell = "investedCoinListCell"
-}
-
-
 class VirtualMoneyListViewController: UIViewController {
 
   // MARK: Properties

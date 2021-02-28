@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		D73497472A16F72C7339B54B /* Pods_Virtual_Investment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAAFD8171714065AA747A442 /* Pods_Virtual_Investment.framework */; };
+		FF36368D25EBDD0B0048C3F6 /* InvestedCoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36368C25EBDD0B0048C3F6 /* InvestedCoinCell.swift */; };
+		FF36369225EBDFF00048C3F6 /* InvestedSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36369125EBDFF00048C3F6 /* InvestedSectionHeaderView.swift */; };
+		FF36369725EBE2E90048C3F6 /* ReuseIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36369625EBE2E90048C3F6 /* ReuseIdentifier.swift */; };
 		FF41E34925E64C62003139A7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FF41E34825E64C62003139A7 /* Alamofire */; };
 		FF41E34C25E64C73003139A7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E34B25E64C73003139A7 /* APIService.swift */; };
 		FF41E35125E65015003139A7 /* CoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E35025E65015003139A7 /* CoinModel.swift */; };
@@ -32,6 +35,9 @@
 		A88B1E191F12A6935C0E4BC7 /* Pods-Virtual Investment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Virtual Investment.release.xcconfig"; path = "Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment.release.xcconfig"; sourceTree = "<group>"; };
 		B76FE9C6FE6728731BB1A2D1 /* Pods-Virtual Investment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Virtual Investment.debug.xcconfig"; path = "Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment.debug.xcconfig"; sourceTree = "<group>"; };
 		EAAFD8171714065AA747A442 /* Pods_Virtual_Investment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Virtual_Investment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF36368C25EBDD0B0048C3F6 /* InvestedCoinCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedCoinCell.swift; sourceTree = "<group>"; };
+		FF36369125EBDFF00048C3F6 /* InvestedSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedSectionHeaderView.swift; sourceTree = "<group>"; };
+		FF36369625EBE2E90048C3F6 /* ReuseIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifier.swift; sourceTree = "<group>"; };
 		FF41E34B25E64C73003139A7 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		FF41E35025E65015003139A7 /* CoinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinModel.swift; sourceTree = "<group>"; };
 		FF41E35C25E6805F003139A7 /* CoinCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCell.swift; sourceTree = "<group>"; };
@@ -83,6 +89,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		FF36369525EBE2D10048C3F6 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				FF36369625EBE2E90048C3F6 /* ReuseIdentifier.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		FF41E33E25E6493C003139A7 /* APIService */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +125,8 @@
 		FF41E37B25E76CAA003139A7 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FF36368C25EBDD0B0048C3F6 /* InvestedCoinCell.swift */,
+				FF36369125EBDFF00048C3F6 /* InvestedSectionHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -144,6 +160,7 @@
 		FF42AF4B25E5331500CEA875 /* Virtual Investment */ = {
 			isa = PBXGroup;
 			children = (
+				FF36369525EBE2D10048C3F6 /* Utilities */,
 				FFC31DEA25E8CCCA009B0170 /* Extensions */,
 				FF41E38225E78637003139A7 /* CoinInformationView */,
 				FF41E33E25E6493C003139A7 /* APIService */,
@@ -359,11 +376,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF36369225EBDFF00048C3F6 /* InvestedSectionHeaderView.swift in Sources */,
 				FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */,
 				FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */,
 				FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */,
 				FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */,
+				FF36368D25EBDD0B0048C3F6 /* InvestedCoinCell.swift in Sources */,
 				FF41E34C25E64C73003139A7 /* APIService.swift in Sources */,
+				FF36369725EBE2E90048C3F6 /* ReuseIdentifier.swift in Sources */,
 				FF42B02225E556F800CEA875 /* AmountData.swift in Sources */,
 				FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */,
 				FF41E35125E65015003139A7 /* CoinModel.swift in Sources */,
@@ -512,6 +532,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T7JU69Q47J;
 				INFOPLIST_FILE = "/Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual Investment/Virtual Investment/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -531,6 +552,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T7JU69Q47J;
 				INFOPLIST_FILE = "/Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual Investment/Virtual Investment/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
