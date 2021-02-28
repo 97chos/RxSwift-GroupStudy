@@ -94,6 +94,7 @@ class InvestedViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     self.setPrices()
+    self.updateCurrentPrice()
     self.tableView.reloadData()
   }
 
@@ -123,6 +124,34 @@ class InvestedViewController: UIViewController {
     self.depositLabel.text = "\(AmountData.shared.deposit.currenyKRW())"
     self.evaluatedLabel.text = "\(AmountData.shared.evaluatedPrice.currenyKRW())"
     self.investmentLabel.text = "\(AmountData.shared.investedPrice.currenyKRW())"
+  }
+
+
+  // MARK: Functions
+
+  private func updateCurrentPrice() {
+    let investedCoinsCodeList = AmountData.shared.boughtCoins.map{ $0.code }
+
+    APIService().loadCoinsData(codes: investedCoinsCodeList) { result in
+      switch result {
+      case .success(let coinPriceList):
+        coinPriceList.enumerated().forEach { index, prices in
+          AmountData.shared.boughtCoins[index].prices?.currentPrice = prices.currentPrice
+        }
+
+      case .failure(let error):
+        switch error {
+        case APIError.urlError :
+          self.alert(title: "호출 URL이 잘못되었습니다.", message: nil, completion: nil)
+        case APIError.networkError :
+          self.alert(title: "네트워크가 불안정합니다.", message: "잠시 후 다시 시도해주세요.", completion: nil)
+        case APIError.parseError :
+          self.alert(title: "초기 데이터 파싱에 실패하였습니다.", message: nil, completion: nil)
+        default :
+          break
+        }
+      }
+    }
   }
 
 

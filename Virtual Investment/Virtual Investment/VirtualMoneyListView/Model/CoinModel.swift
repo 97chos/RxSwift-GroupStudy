@@ -36,7 +36,7 @@ struct ticker: Codable {
 
   // MARK: Json Keys
 
-  let currentPrice: Double
+  var currentPrice: Double
   let code: String
   let highPrice: Double
   let lowPrice: Double
