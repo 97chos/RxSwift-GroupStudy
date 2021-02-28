@@ -110,6 +110,7 @@ class InvestedViewController: UIViewController {
     self.title = "투자 내역"
 
     self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.investedCoinListCell)
+    self.tableView.register(InvestedSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifier.investeSectionHeaderView)
     self.tableView.delegate = self
     self.tableView.dataSource = self
   }
@@ -203,7 +204,19 @@ extension InvestedViewController: UITableViewDataSource {
     return cell
   }
 
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifier.investeSectionHeaderView) as? InvestedSectionHeaderView else {
+      return UIView()
+    }
+
+    return view
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 50
+  }
 }
 
 extension InvestedViewController: UITableViewDelegate {
+
 }
