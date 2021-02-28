@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Starscream
 
-enum ReueseIdentifier {
+enum ReuseIdentifier {
   static let coinListCell = "coinListCell"
   static let investedCoinListCell = "investedCoinListCell"
 }
@@ -82,7 +82,7 @@ class VirtualMoneyListViewController: UIViewController {
     self.tableView.delegate = self
     self.tableView.dataSource = self
 
-    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReueseIdentifier.coinListCell)
+    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.coinListCell)
     self.tableView.rowHeight = 60
   }
 
@@ -220,7 +220,7 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReueseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
       return UITableViewCell()
     }
     cell.set(coinData: self.coinList[indexPath.row])

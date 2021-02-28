@@ -109,7 +109,7 @@ class InvestedViewController: UIViewController {
     self.view.backgroundColor = .systemBackground
     self.title = "투자 내역"
 
-    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReueseIdentifier.investedCoinListCell)
+    self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.investedCoinListCell)
     self.tableView.delegate = self
     self.tableView.dataSource = self
   }
@@ -117,7 +117,7 @@ class InvestedViewController: UIViewController {
   private func setPrices() {
     self.depositLabel.text = "\(AmountData.shared.deposit.currenyKRW())"
     self.evaluatedLabel.text = "\(AmountData.shared.evaluatedPrice.currenyKRW())"
-    self.investmentLabel.text = "\(AmountData.shared.investmentAccount.currenyKRW())"
+    self.investmentLabel.text = "\(AmountData.shared.investedPrice.currenyKRW())"
   }
 
 
@@ -194,7 +194,7 @@ extension InvestedViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReueseIdentifier.investedCoinListCell , for: indexPath) as? CoinCell else {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.investedCoinListCell , for: indexPath) as? CoinCell else {
       return UITableViewCell()
     }
 
