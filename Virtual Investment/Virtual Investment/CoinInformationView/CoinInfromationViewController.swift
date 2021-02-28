@@ -12,23 +12,10 @@ class CoinInformationViewController: UIViewController {
 
   // MARK: Properties
 
+  private var boughtCoinsIndex: Array<Coin>.Index?
   private var coin: Coin
-  private let accountData = AmountData.shared
-  private lazy var holdingCount: Int = {
-    if self.accountData.investededCoins.contains(where: { $0.code == coin.code }) {
-      guard let index = self.accountData.investededCoins.firstIndex(where: { $0.code == self.coin.code }) else {
-        return 0
-      }
-      return self.accountData.investededCoins[index].holdingCount
-    } else {
-      return 0
-    }
-  }() {
-    didSet {
-      self.holdingCountLabel.text = "보유 수량 : \(self.holdingCount)"
-    }
-  }
-
+  private let amountData = AmountData.shared
+  private var holdingCount: Int?
 
 
   // MARK: UI
@@ -142,6 +129,11 @@ class CoinInformationViewController: UIViewController {
     self.configure()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    self.getIndexAndHoldingCountInBoughtList()
+    self.getPrices()
+  }
+
 
   // MARK: Actions
 
@@ -150,36 +142,73 @@ class CoinInformationViewController: UIViewController {
   }
 
   @objc private func buyButtonAction() {
-    if let count = self.checkCount() {
-      if self.accountData.investededCoins.contains(where: { $0.code == coin.code }) {
-        guard let index = self.accountData.investededCoins.firstIndex(where: { $0.code == self.coin.code }) else {
+    if let count = self.checkInputtedCount(self.buyButton) {
+      switch isContainCoinInBoughtList() {
+      case true:
+        let totalPrice = (self.coin.prices?.currentPrice ?? 0) * Double(count)
+
+        guard let index = self.boughtCoinsIndex else {
           return
         }
-        self.accountData.investededCoins[index].holdingCount += Int(count)
-        self.holdingCount = self.accountData.investededCoins[index].holdingCount
-      } else {
-        self.coin.holdingCount += Int(count)
-        self.accountData.investededCoins.append(self.coin)
-        self.holdingCount = self.coin.holdingCount
+
+        self.amountData.boughtCoins[index].totalBoughtPrice += totalPrice
+        self.amountData.boughtCoins[index].holdingCount += count
+        self.coin.holdingCount = self.amountData.boughtCoins[index].holdingCount
+
+        self.holdingCountLabel.text = "보유 수량 : \(self.coin.holdingCount)"
+
+        self.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
+
+      case false:
+        let totalPrice = (self.coin.prices?.currentPrice ?? 0) * Double(count)
+
+        self.coin.totalBoughtPrice = totalPrice
+        self.coin.holdingCount = count
+
+        self.amountData.boughtCoins.append(self.coin)
+
+        self.holdingCountLabel.text = "보유 수량 : \(self.coin.holdingCount)"
+
+        self.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
       }
-
-      let totalPrice = (self.coin.prices?.currentPrice ?? 0) * count
-
-      self.accountData.deposit -= totalPrice
-      self.accountData.evaluatedPrice += totalPrice
-      self.accountData.investmentAccount += totalPrice
-
-      self.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
+    } else {
+      return
     }
   }
 
-  private func checkCount() -> Double? {
+  @objc private func sellButtonAction() {
+    if let count = self.checkInputtedCount(self.sellButton) {
+
+      guard let index = self.boughtCoinsIndex else {
+        return
+      }
+
+      let remaingCount = self.amountData.boughtCoins[index].holdingCount - count
+      let totalPrice = (self.coin.prices?.currentPrice ?? 0) * Double(remaingCount)
+
+      self.amountData.boughtCoins[index].totalBoughtPrice -= max(self.amountData.boughtCoins[index].totalBoughtPrice - totalPrice, 0)
+      self.amountData.boughtCoins[index].holdingCount -= count
+      self.coin.holdingCount = self.amountData.boughtCoins[index].holdingCount
+
+      if self.amountData.boughtCoins[index].holdingCount == 0 {
+        self.amountData.boughtCoins.remove(at: index)
+      }
+      self.holdingCountLabel.text = "보유 수량 : \(self.coin.holdingCount)"
+
+      self.alert(title: "매도 체결이 완료되었습니다.", message: nil, completion: nil)
+    } else {
+      return
+    }
+  }
+
+
+  private func checkInputtedCount(_ sender: UIButton) -> Int? {
     let optText = self.inputCount.text
     guard let text = optText else {
       self.alert(title: "매매할 수량을 입력해주세요.", message: nil, completion: nil)
       return nil
     }
-    guard let count: Double = Double(text) else {
+    guard let count: Int = Int(text) else {
       self.alert(title: "숫자 외 다른 문자는 입력이 불가능합니다.", message: nil, completion: nil)
       return nil
     }
@@ -187,19 +216,47 @@ class CoinInformationViewController: UIViewController {
       self.alert(title: "1 이상의 숫자만 입력 가능합니다.", message: nil, completion: nil)
       return nil
     }
-    guard self.accountData.deposit > count * (coin.prices?.currentPrice ?? 0) else {
-      self.alert(title: "보유 중인 예수금이 부족합니다.", message: nil, completion: nil)
-      return nil
+    if sender == self.buyButton {
+      guard self.amountData.deposit > Double(count) * (coin.prices?.currentPrice ?? 0) else {
+        self.alert(title: "보유 중인 예수금이 부족합니다.", message: nil, completion: nil)
+        return nil
+      }
+    } else if sender == self.sellButton {
+      guard self.coin.holdingCount >= count else {
+        self.alert(title: "보유 중인 수량이 부족합니다.", message: nil, completion: nil)
+        return nil
+      }
     }
     return count
   }
+
+  private func isContainCoinInBoughtList() -> Bool {
+    if self.amountData.boughtCoins.contains(where: {$0.code == self.coin.code}) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  private func getIndexAndHoldingCountInBoughtList() {
+    if self.isContainCoinInBoughtList() {
+      guard let index = self.amountData.boughtCoins.firstIndex(where: { $0.code == self.coin.code }) else {
+        return
+      }
+      self.boughtCoinsIndex = index
+      self.coin.holdingCount = self.amountData.boughtCoins[index].holdingCount
+    } else {
+      self.boughtCoinsIndex = nil
+      self.coin.holdingCount = 0
+    }
+  }
+
 
   // MARK: Configuration
 
   private func configure() {
     self.viewConfigure()
     self.layout()
-    self.pricesConfigure()
     self.buttonConfigure()
   }
 
@@ -208,15 +265,16 @@ class CoinInformationViewController: UIViewController {
     self.view.backgroundColor = .systemBackground
   }
 
-  private func pricesConfigure() {
+  private func getPrices() {
     self.currentPriceLabel.text = "\((self.coin.prices?.currentPrice ?? 0).currenyKRW())"
     self.lowPriceLabel.text = "\((self.coin.prices?.lowPrice ?? 0).currenyKRW())"
     self.highPriceLabel.text = "\((self.coin.prices?.highPrice ?? 0).currenyKRW())"
-    self.holdingCountLabel.text = "보유 수량 : \(self.holdingCount)"
+    self.holdingCountLabel.text = "보유 수량 : \(self.coin.holdingCount)"
   }
 
   private func buttonConfigure() {
     self.buyButton.addTarget(self, action: #selector(self.buyButtonAction), for: .touchUpInside)
+    self.sellButton.addTarget(self, action: #selector(self.sellButtonAction), for: .touchUpInside)
   }
 
 

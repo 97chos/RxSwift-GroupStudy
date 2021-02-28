@@ -9,10 +9,15 @@ import Foundation
 
 class AmountData {
   static var shared = AmountData()
-  var deposit: Double = 0
+  var inputtedDeposit: Double = 0
+  var deposit: Double {
+    get {
+      return inputtedDeposit - boughtCoins.reduce(0){ $0 + $1.totalBoughtPrice}
+    }
+  }
   var evaluatedPrice: Double = 0
   var investmentAccount: Double = 0
-  var investededCoins: [Coin] = []
+  var boughtCoins: [Coin] = []
 
   private init() {
   }
