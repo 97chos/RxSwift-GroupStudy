@@ -8,8 +8,14 @@
 import Foundation
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class MainViewController: UIViewController {
+
+  // MARK: Properties
+
+  var disposeBag = DisposeBag()
 
   // MARK: UI
 
@@ -49,6 +55,8 @@ class MainViewController: UIViewController {
     let button = UIButton(type: .system)
     button.setTitle("다음", for: .normal)
     button.setTitleColor(.white, for: .normal)
+    button.setTitle("금액을 입력해주세요.", for: .disabled)
+    button.setTitleColor(.systemGray4, for: .disabled)
     return button
   }()
 
@@ -58,6 +66,11 @@ class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+    self.bind()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    self.disposeBag = DisposeBag()
   }
 
 
@@ -85,6 +98,18 @@ class MainViewController: UIViewController {
     tabBarController.setViewControllers([firstVC,secondVC], animated: true)
     tabBarController.modalPresentationStyle = .fullScreen
     self.present(tabBarController, animated: true)
+  }
+
+
+  // MARK: Logic
+
+  private func bind() {
+    self.inputDeposit.rx.text.orEmpty
+      .map { !$0.isEmpty }
+      .subscribe(onNext: { boolean in
+        self.nextButton.isEnabled = boolean
+      })
+      .disposed(by: disposeBag)
   }
 
 
