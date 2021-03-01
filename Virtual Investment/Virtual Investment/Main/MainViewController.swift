@@ -38,7 +38,7 @@ class MainViewController: UIViewController {
     label.textColor = .white
     return label
   }()
-  private let inputAmount: UITextField = {
+  private let inputDeposit: UITextField = {
     let textField = UITextField()
     textField.keyboardType = .numberPad
     textField.backgroundColor = .white
@@ -72,7 +72,7 @@ class MainViewController: UIViewController {
 
   @objc private func selectNextButton() {
 
-    let inputedNumber = Double(self.inputAmount.text ?? "") ?? 0
+    let inputedNumber = Double(self.inputDeposit.text ?? "") ?? 0
     AmountData.shared.deposit = inputedNumber
 
     let firstVC = UINavigationController(rootViewController: VirtualMoneyListViewController())
@@ -108,7 +108,7 @@ class MainViewController: UIViewController {
   private func layout() {
     self.view.addSubview(self.mainImageView)
     self.view.addSubview(self.mainLabel)
-    self.view.addSubview(self.inputAmount)
+    self.view.addSubview(self.inputDeposit)
     self.view.addSubview(self.nextButton)
 
     self.mainImageView.snp.makeConstraints {
@@ -120,13 +120,13 @@ class MainViewController: UIViewController {
       $0.top.equalTo(self.mainImageView.snp.bottom).offset(20)
       $0.centerX.equalToSuperview()
     }
-    self.inputAmount.snp.makeConstraints {
+    self.inputDeposit.snp.makeConstraints {
       $0.top.equalTo(self.mainLabel.snp.bottom).offset(30)
       $0.centerX.equalToSuperview()
       $0.width.equalToSuperview().multipliedBy(0.6)
     }
     self.nextButton.snp.makeConstraints {
-      $0.top.equalTo(self.inputAmount.snp.bottom).offset(50)
+      $0.top.equalTo(self.inputDeposit.snp.bottom).offset(50)
       $0.centerX.equalToSuperview()
     }
   }
