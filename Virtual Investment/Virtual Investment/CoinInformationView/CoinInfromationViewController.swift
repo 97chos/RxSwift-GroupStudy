@@ -85,7 +85,6 @@ class CoinInformationViewController: UIViewController {
     label.textColor = .systemGray2
     return label
   }()
-
   private let inputCount: UITextField = {
     let textField = UITextField()
     textField.keyboardType = .numberPad
