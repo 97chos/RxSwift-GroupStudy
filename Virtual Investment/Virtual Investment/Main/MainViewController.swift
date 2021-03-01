@@ -107,9 +107,7 @@ class MainViewController: UIViewController {
   private func isNumericCheck() {
     self.inputDeposit.rx.text.orEmpty
       .map { !$0.isEmpty }
-      .subscribe(onNext: { boolean in
-        self.nextButton.isEnabled = boolean
-      })
+      .bind(to: self.nextButton.rx.isEnabled)
       .disposed(by: disposeBag)
   }
 
@@ -156,5 +154,4 @@ class MainViewController: UIViewController {
       $0.centerX.equalToSuperview()
     }
   }
-
 }
