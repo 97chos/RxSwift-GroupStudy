@@ -16,25 +16,15 @@ class MainViewController: UIViewController {
   // MARK: Properties
 
   var disposeBag = DisposeBag()
+  var viewModel: MainViewModel
 
+  
   // MARK: UI
 
   private let mainImageView: UIImageView = {
     let imgView = UIImageView()
     imgView.contentMode = .scaleAspectFit
     return imgView
-  }()
-  private lazy var firstTabBarImage: UIImage = {
-    guard let image = UIImage(systemName: "dollarsign.square")?.withRenderingMode(.alwaysTemplate) else {
-      return UIImage()
-    }
-    return image
-  }()
-  private lazy var secondTabBarImage: UIImage = {
-    guard let image = UIImage(systemName: "cart")?.withRenderingMode(.alwaysTemplate) else {
-      return UIImage()
-    }
-    return image
   }()
   private let mainLabel: UILabel = {
     let label = UILabel()
@@ -61,12 +51,24 @@ class MainViewController: UIViewController {
   }()
 
 
+  // MARK: Initializing
+
+  init(viewModel: MainViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+
   // MARK: View LifeCycle
 
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
-    self.bind()
+    self.isNumericCheck()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -84,26 +86,25 @@ class MainViewController: UIViewController {
   // MARK: Actions
 
   @objc private func selectNextButton() {
-
-    let inputedNumber = Double(self.inputDeposit.text ?? "") ?? 0
-    AmountData.shared.deposit = inputedNumber
-
-    let firstVC = UINavigationController(rootViewController: VirtualMoneyListViewController())
-    let secondVC = UINavigationController(rootViewController: InvestedViewController())
-
-    firstVC.tabBarItem = UITabBarItem(title: "거래소", image: firstTabBarImage, tag: 0)
-    secondVC.tabBarItem = UITabBarItem(title: "투자내역", image: secondTabBarImage, tag: 1)
-
-    let tabBarController = UITabBarController()
-    tabBarController.setViewControllers([firstVC,secondVC], animated: true)
-    tabBarController.modalPresentationStyle = .fullScreen
-    self.present(tabBarController, animated: true)
+    self.viewModel.checkInputtedValue(self.inputDeposit.text)
+      .subscribe(onNext: { [weak self] in
+        AmountData.shared.deposit = $0
+        self?.present(self?.viewModel.returnTabBarController() ?? UITabBarController(), animated: true)
+      }, onError: { [weak self] error in
+        switch error {
+        case valueError.invalidValueError:
+          self?.alert(title: "숫자만 입력 가능합니다.", message: nil, completion: nil)
+        default:
+          break
+        }
+      })
+      .disposed(by: disposeBag)
   }
 
 
-  // MARK: Logic
+  // MARK: Rx Logic
 
-  private func bind() {
+  private func isNumericCheck() {
     self.inputDeposit.rx.text.orEmpty
       .map { !$0.isEmpty }
       .subscribe(onNext: { boolean in
