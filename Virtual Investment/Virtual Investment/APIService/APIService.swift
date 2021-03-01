@@ -8,12 +8,7 @@
 import Foundation
 import Alamofire
 
-enum APIError: Error {
-  case urlError
-  case networkError
-  case parseError
-  case requestAPIError
-}
+
 
 class APIService {
 
