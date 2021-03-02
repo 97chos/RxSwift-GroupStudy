@@ -8,8 +8,20 @@
 import Foundation
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
+
+enum checkProfit {
+  case equal
+  case profit
+  case loss
+}
 
 class InvestedViewController: UIViewController {
+
+  // MARK: Properties
+
+  private let bag = DisposeBag()
 
   // MARK: UI
 
@@ -93,9 +105,8 @@ class InvestedViewController: UIViewController {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    self.updateCurrentPrice()
-    self.setPrices()
     self.tableView.reloadData()
+    self.getCurrentPrice()
   }
 
 
@@ -105,6 +116,7 @@ class InvestedViewController: UIViewController {
     self.viewConfigure()
     self.layout()
     self.tableViewConfigure()
+    self.RxConfigure()
   }
 
   private func viewConfigure() {
@@ -120,33 +132,58 @@ class InvestedViewController: UIViewController {
     self.tableView.rowHeight = 60
   }
 
-  private func setPrices() {
-    self.depositLabel.text = "\(AmountData.shared.deposit.currenyKRW())"
-    self.evaluatedLabel.text = "\(AmountData.shared.getEvaluatedPrice().currenyKRW())"
-    self.investmentLabel.text = "\(AmountData.shared.investedPrice.currenyKRW())"
+  private func RxConfigure() {
+    self.setPrices()
+  }
 
-    if AmountData.shared.getEvaluatedPrice() < AmountData.shared.investedPrice {
-      self.evaluatedLabel.textColor = .systemBlue
-    } else if AmountData.shared.getEvaluatedPrice() > AmountData.shared.investedPrice {
-      self.evaluatedLabel.textColor = .systemRed
-    } else {
-      self.evaluatedLabel.textColor = .black
-    }
+  private func setPrices() {
+    AmountData.shared.deposit.asObserver()
+      .map{ $0.currenyKRW() }
+      .bind(to: self.depositLabel.rx.text)
+      .disposed(by: bag)
+
+    AmountData.shared.evaluatedPrice
+      .map{ $0.currenyKRW() }
+      .bind(to: self.evaluatedLabel.rx.text)
+      .disposed(by: bag)
+
+    AmountData.shared.investedPrice
+      .map{ $0.currenyKRW() }
+      .bind(to: self.investmentLabel.rx.text)
+      .disposed(by: bag)
+
+    Observable.combineLatest(
+      AmountData.shared.evaluatedPrice,
+      AmountData.shared.investedPrice,
+      resultSelector: { self.checkProfit($0, $1) }
+    )
+    .subscribe(onNext: { result in
+      switch result {
+      case .equal:
+        self.evaluatedLabel.textColor = .black
+      case .loss:
+        self.evaluatedLabel.textColor = .systemBlue
+      case .profit:
+        self.evaluatedLabel.textColor = .systemRed
+      }
+    })
+    .disposed(by: bag)
   }
 
 
   // MARK: Functions
 
-  private func updateCurrentPrice() {
-    if !AmountData.shared.boughtCoins.isEmpty {
-      let investedCoinsCodeList = AmountData.shared.boughtCoins.map{ $0.code }
-
-      APIService().loadCoinsTickerData(codes: investedCoinsCodeList) { result in
+  private func getCurrentPrice() {
+    let codeList = AmountData.shared.boughtCoins.value.map{ $0.code }
+    if !codeList.isEmpty {
+      APIService().loadCoinsTickerData(codes: codeList) { result in
         switch result {
         case .success(let coinPriceList):
+          var copyCoinList = AmountData.shared.boughtCoins.value
           coinPriceList.enumerated().forEach { index, prices in
-            AmountData.shared.boughtCoins[index].prices?.currentPrice = prices.currentPrice
+            copyCoinList[index].prices?.currentPrice = prices.currentPrice
           }
+          AmountData.shared.boughtCoins.accept(copyCoinList)
 
         case .failure(let error):
           switch error {
@@ -161,6 +198,18 @@ class InvestedViewController: UIViewController {
           }
         }
       }
+    } else {
+      return
+    }
+  }
+
+  func checkProfit(_ investedPrice: Double, _ evaluatedPrice: Double) -> checkProfit {
+    if investedPrice > evaluatedPrice {
+      return .profit
+    } else if investedPrice < evaluatedPrice {
+      return .loss
+    } else {
+      return .equal
     }
   }
 
@@ -234,14 +283,14 @@ class InvestedViewController: UIViewController {
 
 extension InvestedViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return AmountData.shared.boughtCoins.count
+    return AmountData.shared.boughtCoins.value.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.investedCoinListCell , for: indexPath) as? InvestedCoinCell else {
       return UITableViewCell()
     }
-    cell.set(coinData: AmountData.shared.boughtCoins[indexPath.row])
+    cell.set(coinData: AmountData.shared.boughtCoins.value[indexPath.row])
 
     return cell
   }
@@ -260,7 +309,7 @@ extension InvestedViewController: UITableViewDataSource {
 
 extension InvestedViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let informationVC = CoinInformationViewController(coin: AmountData.shared.boughtCoins[indexPath.row])
+    let informationVC = CoinInformationViewController(coin: AmountData.shared.boughtCoins.value[indexPath.row])
     self.navigationController?.pushViewController(informationVC, animated: true)
     tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
   }
