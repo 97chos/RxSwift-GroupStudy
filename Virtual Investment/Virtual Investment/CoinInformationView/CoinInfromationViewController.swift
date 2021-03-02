@@ -140,21 +140,45 @@ class CoinInformationViewController: UIViewController {
     self.view.endEditing(true)
   }
 
+  private func isContainTrueChangeAmountDataByBuyAction(count: Int) {
+    let totalPrice = (self.coin.prices?.currentPrice ?? 0) * Double(count)
+
+    guard let index = self.boughtCoinsIndex else {
+      return
+    }
+
+    _ = self.amountData.deposit
+      .map{
+        var currentTotalPrice = $0
+        currentTotalPrice -= totalPrice
+        return currentTotalPrice
+      }
+      .take(1)
+      .subscribe(onNext: {
+        self.amountData.deposit.onNext($0)
+      })
+
+    _ = self.amountData.boughtCoins
+      .map{
+        var coinList = $0
+        coinList[index].holdingCount += count
+        coinList[index].totalBoughtPrice += totalPrice
+        return coinList
+      }
+      .take(1)
+      .subscribe(onNext: {
+        self.amountData.boughtCoins.accept($0)
+      })
+
+    var indexCoin = self.amountData.boughtCoins.value[index]
+    self.holdingCount = indexCoin.holdingCount
+  }
+
   @objc private func buyButtonAction() {
     if let count = self.checkInputtedCount(self.buyButton) {
       switch isContainCoinInBoughtList() {
       case true:
-        let totalPrice = (self.coin.prices?.currentPrice ?? 0) * Double(count)
-
-        guard let index = self.boughtCoinsIndex else {
-          return
-        }
-
-        self.amountData.boughtCoins[index].totalBoughtPrice += totalPrice
-        self.amountData.deposit -= totalPrice
-        self.amountData.boughtCoins[index].holdingCount += count
-        self.coin.holdingCount = self.amountData.boughtCoins[index].holdingCount
-
+        self.isContainTrueChangeAmountDataByBuyAction(count: count)
         self.holdingCountLabel.text = "보유 수량 : \(self.coin.holdingCount)"
 
         self.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
@@ -163,11 +187,19 @@ class CoinInformationViewController: UIViewController {
         let totalPrice = (self.coin.prices?.currentPrice ?? 0) * Double(count)
 
         self.coin.totalBoughtPrice = totalPrice
-        self.amountData.deposit -= totalPrice
         self.coin.holdingCount = count
 
-        self.amountData.boughtCoins.append(self.coin)
-
+        _ = self.amountData.deposit
+          .map{
+            var currentTotalPrice = $0
+            currentTotalPrice -= totalPrice
+            return currentTotalPrice
+          }
+          .take(1)
+          .subscribe(onNext: {
+            self.amountData.deposit.onNext($0)
+          })
+        self.amountData.boughtCoins.accept(self.amountData.boughtCoins.value + [self.coin])
         self.holdingCountLabel.text = "보유 수량 : \(self.coin.holdingCount)"
 
         self.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
@@ -177,25 +209,46 @@ class CoinInformationViewController: UIViewController {
     }
   }
 
+  private func changeAmountDataBySellAction(count: Int, index: Array<Coin>.Index) {
+    var currentCoin = self.amountData.boughtCoins.value[index]
+    let remainingCount = currentCoin.holdingCount - count
+    let totalRemainingPrice = (self.coin.prices?.currentPrice ?? 0) * Double(remainingCount)
+    let totalCellPrice =  (self.coin.prices?.currentPrice ?? 0) * Double(count)
+
+    _ = self.amountData.boughtCoins
+      .take(1)
+      .map{
+        var coinList = $0
+        coinList[index].totalBoughtPrice -= max(coinList[index].totalBoughtPrice - totalRemainingPrice, 0)
+        coinList[index].holdingCount -= count
+        return coinList
+      }
+      .subscribe(onNext: {
+        self.amountData.boughtCoins.accept($0)
+      })
+
+    _ = self.amountData.deposit
+      .map{
+        var deposit = $0
+        deposit += totalCellPrice
+        return deposit
+      }
+      .take(1)
+      .subscribe(onNext: {
+        self.amountData.deposit.onNext($0)
+      })
+
+    var indexCoin = self.amountData.boughtCoins.value[index]
+    self.holdingCount = indexCoin.holdingCount
+  }
+
   @objc private func sellButtonAction() {
     if let count = self.checkInputtedCount(self.sellButton) {
-
       guard let index = self.boughtCoinsIndex else {
         return
       }
 
-      let remainingCount = self.amountData.boughtCoins[index].holdingCount - count
-      let totalRemainingPrice = (self.coin.prices?.currentPrice ?? 0) * Double(remainingCount)
-      let totalCellPrice =  (self.coin.prices?.currentPrice ?? 0) * Double(count)
-
-      self.amountData.boughtCoins[index].totalBoughtPrice -= max(self.amountData.boughtCoins[index].totalBoughtPrice - totalRemainingPrice, 0)
-      self.amountData.deposit += totalCellPrice
-      self.amountData.boughtCoins[index].holdingCount -= count
-      self.coin.holdingCount = self.amountData.boughtCoins[index].holdingCount
-
-      if self.amountData.boughtCoins[index].holdingCount == 0 {
-        self.amountData.boughtCoins.remove(at: index)
-      }
+      self.changeAmountDataBySellAction(count: count, index: index)
       self.holdingCountLabel.text = "보유 수량 : \(self.coin.holdingCount)"
 
       self.alert(title: "매도 체결이 완료되었습니다.", message: nil, completion: nil)
@@ -220,7 +273,7 @@ class CoinInformationViewController: UIViewController {
       return nil
     }
     if sender == self.buyButton {
-      guard self.amountData.deposit >= Double(count) * (coin.prices?.currentPrice ?? 0) else {
+      guard let deposit = try? self.amountData.deposit.value(), deposit >= Double(count) * (coin.prices?.currentPrice ?? 0) else {
         self.alert(title: "보유 중인 예수금이 부족합니다.", message: nil, completion: nil)
         return nil
       }
@@ -234,7 +287,7 @@ class CoinInformationViewController: UIViewController {
   }
 
   private func isContainCoinInBoughtList() -> Bool {
-    if self.amountData.boughtCoins.contains(where: {$0.code == self.coin.code}) {
+    if self.amountData.boughtCoins.value.contains(where: {$0.code == self.coin.code}) {
       return true
     } else {
       return false
@@ -243,11 +296,12 @@ class CoinInformationViewController: UIViewController {
 
   private func getIndexAndHoldingCountInBoughtList() {
     if self.isContainCoinInBoughtList() {
-      guard let index = self.amountData.boughtCoins.firstIndex(where: { $0.code == self.coin.code }) else {
+      guard let index = self.amountData.boughtCoins.value.firstIndex(where: { $0.code == self.coin.code }) else {
         return
       }
       self.boughtCoinsIndex = index
-      self.coin.holdingCount = self.amountData.boughtCoins[index].holdingCount
+      var indexCoin = self.amountData.boughtCoins.value[index]
+      self.holdingCount = indexCoin.holdingCount
     } else {
       self.boughtCoinsIndex = nil
       self.coin.holdingCount = 0
