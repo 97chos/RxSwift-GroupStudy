@@ -16,6 +16,7 @@
 		FF3636A225EC92C60048C3F6 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636A125EC92C60048C3F6 /* RxRelay */; };
 		FF3636B825ED3F1B0048C3F6 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636B725ED3F1B0048C3F6 /* Error.swift */; };
 		FF3636BD25ED41380048C3F6 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636BC25ED41380048C3F6 /* MainViewModel.swift */; };
+		FF3636C125EE066B0048C3F6 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636C025EE066B0048C3F6 /* RxDataSources */; };
 		FF41E34925E64C62003139A7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FF41E34825E64C62003139A7 /* Alamofire */; };
 		FF41E34C25E64C73003139A7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E34B25E64C73003139A7 /* APIService.swift */; };
 		FF41E35125E65015003139A7 /* CoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E35025E65015003139A7 /* CoinModel.swift */; };
@@ -74,6 +75,7 @@
 				FF3636A225EC92C60048C3F6 /* RxRelay in Frameworks */,
 				FF41E34925E64C62003139A7 /* Alamofire in Frameworks */,
 				FF36369E25EC92C60048C3F6 /* RxSwift in Frameworks */,
+				FF3636C125EE066B0048C3F6 /* RxDataSources in Frameworks */,
 				FF42B01525E5477000CEA875 /* SocketIO in Frameworks */,
 				FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */,
 			);
@@ -306,6 +308,7 @@
 				FF36369D25EC92C60048C3F6 /* RxSwift */,
 				FF36369F25EC92C60048C3F6 /* RxCocoa */,
 				FF3636A125EC92C60048C3F6 /* RxRelay */,
+				FF3636C025EE066B0048C3F6 /* RxDataSources */,
 			);
 			productName = "Virtual Investment";
 			productReference = FF42AF4925E5331500CEA875 /* Virtual Investment.app */;
@@ -339,6 +342,7 @@
 				FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */,
 				FF41E34725E64C62003139A7 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = FF42AF4A25E5331500CEA875 /* Products */;
 			projectDirPath = "";
@@ -631,6 +635,14 @@
 				minimumVersion = 6.1.0;
 			};
 		};
+		FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		FF41E34725E64C62003139A7 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -672,6 +684,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
+		};
+		FF3636C025EE066B0048C3F6 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 		FF41E34825E64C62003139A7 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
