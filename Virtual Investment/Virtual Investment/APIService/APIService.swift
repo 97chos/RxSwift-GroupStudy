@@ -14,28 +14,29 @@ class APIService {
 
   // MARK: Lookup Virtual List
 
-  func lookupVirtualList() -> [Coin] {
+  func lookupCoinList(completion: @escaping (Result<[Coin],Error>) -> Void) {
     guard let url: URL = URL(string:"https://api.upbit.com/v1/market/all") else {
-      return []
+      completion(.failure(APIError.urlError))
+      return
     }
     do {
       let response = try Data(contentsOf: url)
       let decoder = JSONDecoder()
       do {
         let data = try decoder.decode([Coin].self, from: response)
-        return data
+        completion(.success(data))
       } catch {
-        return []
+        completion(.failure(APIError.parseError))
       }
     } catch {
-      return []
+      completion(.failure(APIError.networkError))
     }
   }
 
 
   // MARK: Load Initializing Data
 
-  func loadCoinsData(codes: [String], completion: @escaping (Result<[ticker],Error>) -> Void) {
+  func loadCoinsTickerData(codes: [String], completion: @escaping (Result<[ticker],Error>) -> Void) {
 
     let codeList = codes.joined(separator: ",")
     var priceListData: [ticker] = []

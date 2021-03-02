@@ -81,14 +81,33 @@ class VirtualMoneyListViewController: UIViewController {
   }
 
   private func initDataConfigure() {
-    self.coinList = APIService().lookupVirtualList()
+    APIService().lookupCoinList() { result in
+      switch result {
+      case .success(let coinList):
+        self.coinList = coinList
+        self.loadTickerData()
+      case .failure(let error):
+        switch error {
+        case APIError.urlError:
+          self.alert(title: "잘못된 URL입니다.", message: nil, completion: nil)
+        case APIError.networkError:
+          self.alert(title: "네트워크가 불안정합니다.", message: nil, completion: nil)
+        case APIError.parseError:
+          self.alert(title: "데이터 파싱에 실패하였습니다.", message: nil, completion: nil)
+        default:
+          break
+        }
+      }
+    }
+  }
 
+  private func loadTickerData() {
     var codeList: [String] = []
     self.coinList.forEach {
       codeList.append($0.code)
     }
 
-    APIService().loadCoinsData(codes: codeList) { result in
+    APIService().loadCoinsTickerData(codes: codeList) { result in
       switch result {
       case .success(let coinPriceList) :
         self.loadingIndicator.startAnimating()
@@ -110,6 +129,7 @@ class VirtualMoneyListViewController: UIViewController {
         }
       }
     }
+
   }
 
 

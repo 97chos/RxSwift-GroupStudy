@@ -14,8 +14,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "didReceive(event:client:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
             landmarkName = "didReceive(event:client:)"
             landmarkType = "7">
             <Locations>
@@ -78,8 +78,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
             landmarkName = "didReceive(event:client:)"
             landmarkType = "7">
             <Locations>
@@ -126,8 +126,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "didReceive(event:client:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +142,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "172"
-            endingLineNumber = "172"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
             landmarkName = "didReceive(event:client:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -158,8 +158,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
             landmarkName = "didReceive(event:client:)"
             landmarkType = "7">
             <Locations>
@@ -206,9 +206,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "loadCoinsData(codes:completion:)"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "loadCoinsTickerData(codes:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -222,9 +222,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "loadCoinsData(codes:completion:)"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "loadCoinsTickerData(codes:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -238,9 +238,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "loadCoinsData(codes:completion:)"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "loadCoinsTickerData(codes:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -254,9 +254,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "loadCoinsData(codes:completion:)"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "loadCoinsTickerData(codes:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -270,9 +270,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "loadCoinsData(codes:completion:)"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "loadCoinsTickerData(codes:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -288,8 +288,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "17"
             endingLineNumber = "17"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "lookupCoinList(completion:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -302,9 +302,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "lookupVirtualList()"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "lookupCoinList(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -318,9 +318,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "lookupVirtualList()"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "lookupCoinList(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -334,9 +334,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "28"
-            endingLineNumber = "28"
-            landmarkName = "lookupVirtualList()"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "lookupCoinList(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -350,9 +350,9 @@
             filePath = "Virtual Investment/APIService/APIService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "lookupVirtualList()"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "lookupCoinList(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
