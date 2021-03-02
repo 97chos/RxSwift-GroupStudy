@@ -76,8 +76,8 @@ class APIService {
           guard let lowPrice = $0["low_price"] as? Double else { return }
           let coinData = ticker(currentPrice: currentPrice, code: code, highPrice: highPrice, lowPrice: lowPrice)
           priceListData.append(coinData)
-          completion(.success(priceListData))
         }
+        completion(.success(priceListData))
       } catch {
         completion(.failure(APIError.networkError))
       }

@@ -9,12 +9,15 @@ import Foundation
 import UIKit
 import SnapKit
 import Starscream
+import RxSwift
+import RxCocoa
 
 class VirtualMoneyListViewController: UIViewController {
 
   // MARK: Properties
 
-  private var coinList: [Coin] = []
+  private var coinList: BehaviorRelay = BehaviorRelay<[Coin]>(value: [])
+  private var bag = DisposeBag()
   var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
 
@@ -81,12 +84,11 @@ class VirtualMoneyListViewController: UIViewController {
   }
 
   private func initDataConfigure() {
-    APIService().lookupCoinList() { result in
-      switch result {
-      case .success(let coinList):
-        self.coinList = coinList
+    APIService().lookupCoinListRx()
+      .subscribe(onNext: { coinList in
+        self.coinList.accept(coinList)
         self.loadTickerData()
-      case .failure(let error):
+      }, onError: { error in
         switch error {
         case APIError.urlError:
           self.alert(title: "잘못된 URL입니다.", message: nil, completion: nil)
@@ -97,38 +99,39 @@ class VirtualMoneyListViewController: UIViewController {
         default:
           break
         }
-      }
-    }
+      })
+      .disposed(by: bag)
   }
 
   private func loadTickerData() {
     var codeList: [String] = []
-    self.coinList.forEach {
+    self.coinList.value.forEach {
       codeList.append($0.code)
     }
 
-    APIService().loadCoinsTickerData(codes: codeList) { result in
-      switch result {
-      case .success(let coinPriceList) :
+    APIService().loadCoinsTickerDataRx(codes: codeList)
+      .subscribe(onNext: { tickerList in
         self.loadingIndicator.startAnimating()
-        coinPriceList.enumerated().forEach { index, prices in
-          self.coinList[index].prices = prices
+        var copyCoinList = self.coinList.value
+        tickerList.enumerated().forEach { index, prices in
+          copyCoinList[index].prices = prices
         }
+        self.coinList.accept(copyCoinList)
         self.tableView.reloadData()
         self.loadingIndicator.stopAnimating()
-      case .failure(let error) :
-        switch error {
-        case APIError.urlError :
+      }, onError: { error in
+        switch error as? APIError {
+        case .urlError :
           self.alert(title: "호출 URL이 잘못되었습니다.", message: nil, completion: nil)
-        case APIError.networkError :
+        case .networkError :
           self.alert(title: "네트워크가 불안정합니다.", message: "잠시 후 다시 시도해주세요.", completion: nil)
-        case APIError.parseError :
+        case .parseError :
           self.alert(title: "초기 데이터 파싱에 실패하였습니다.", message: nil, completion: nil)
         default :
           break
         }
-      }
-    }
+      })
+      .disposed(by: bag)
   }
 
 
@@ -168,7 +171,7 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
       let ticket = TicketField(ticket: "test")
       let format = FormatField(format: "SIMPLE")
-      let type = TypeField(type: "ticker", codes: self.coinList.map{ $0.code }, isOnlySnapshot: false, isOnlyRealtime: true)
+      let type = TypeField(type: "ticker", codes: self.coinList.value.map{ $0.code }, isOnlySnapshot: false, isOnlyRealtime: true)
 
       let encoder = JSONEncoder()
 
@@ -198,15 +201,17 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
       do {
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
-        let codeDic = Dictionary(grouping: self.coinList, by: { $0.code })
+        let codeDic = Dictionary(grouping: self.coinList.value, by: { $0.code })
 
         guard var coin = codeDic[tickerData.code]?.first else { return }
-        guard let index = self.coinList.firstIndex(where: { $0.code == coin.code }) else { return }
-        
+        guard let index = self.coinList.value.firstIndex(where: { $0.code == coin.code }) else { return }
         coin.prices = tickerData
-        self.coinList[index] = coin
-        let indexInteger = coinList.index(0, offsetBy: index)
 
+        var copyCoinList = self.coinList.value
+        copyCoinList[index] = coin
+        let indexInteger = coinList.value.index(0, offsetBy: index)
+
+        self.coinList.accept(copyCoinList)
         DispatchQueue.main.async {
           self.tableView.reloadRows(at: [IndexPath(row: indexInteger, section: 0)], with: .none)
         }
@@ -229,14 +234,14 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
 extension VirtualMoneyListViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.coinList.count
+    return self.coinList.value.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
       return UITableViewCell()
     }
-    cell.set(coinData: self.coinList[indexPath.row])
+    cell.set(coinData: self.coinList.value[indexPath.row])
 
     return cell
   }
@@ -247,7 +252,7 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
 
 extension VirtualMoneyListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let vc = CoinInformationViewController(coin: self.coinList[indexPath.row])
+    let vc = CoinInformationViewController(coin: self.coinList.value[indexPath.row])
     self.navigationController?.pushViewController(vc, animated: true)
     tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
   }
