@@ -141,7 +141,7 @@ class InvestedViewController: UIViewController {
     if !AmountData.shared.boughtCoins.isEmpty {
       let investedCoinsCodeList = AmountData.shared.boughtCoins.map{ $0.code }
 
-      APIService().loadCoinsData(codes: investedCoinsCodeList) { result in
+      APIService().loadCoinsTickerData(codes: investedCoinsCodeList) { result in
         switch result {
         case .success(let coinPriceList):
           coinPriceList.enumerated().forEach { index, prices in

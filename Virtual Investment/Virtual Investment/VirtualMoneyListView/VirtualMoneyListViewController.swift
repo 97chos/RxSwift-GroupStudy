@@ -129,7 +129,6 @@ class VirtualMoneyListViewController: UIViewController {
         }
       }
     }
-
   }
 
 

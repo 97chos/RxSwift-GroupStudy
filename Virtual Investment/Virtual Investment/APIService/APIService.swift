@@ -7,7 +7,7 @@
 
 import Foundation
 import Alamofire
-
+import RxSwift
 
 
 class APIService {
@@ -31,6 +31,21 @@ class APIService {
     } catch {
       completion(.failure(APIError.networkError))
     }
+  }
+
+  func lookupCoinListRx() -> Observable<[Coin]> {
+    return Observable.create({ observer in
+      self.lookupCoinList { result in
+        switch result {
+        case .success(let coinList):
+          observer.onNext(coinList)
+          observer.onCompleted()
+        case .failure(let error):
+          observer.onError(error)
+        }
+      }
+      return Disposables.create()
+    })
   }
 
 
@@ -67,5 +82,20 @@ class APIService {
         completion(.failure(APIError.networkError))
       }
     }
+  }
+
+  func loadCoinsTickerDataRx(codes: [String]) -> Observable<[ticker]> {
+    return Observable.create({ observer in
+      self.loadCoinsTickerData(codes: codes) { result in
+        switch result {
+        case .success(let tickerList):
+          observer.onNext(tickerList)
+          observer.onCompleted()
+        case .failure(let error):
+          observer.onError(error)
+        }
+      }
+      return Disposables.create()
+    })
   }
 }
