@@ -48,6 +48,7 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -78,7 +79,6 @@ class VirtualMoneyListViewController: UIViewController {
 
     self.tableView.delegate = self
     self.tableView.dataSource = self
-
     self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.coinListCell)
     self.tableView.rowHeight = 60
   }
@@ -166,9 +166,7 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
 
   func didReceive(event: WebSocketEvent, client: WebSocket) {
     switch(event) {
-    case .connected(let headers):
-      print(".connected - \(headers)")
-
+    case .connected(_):
       let ticket = TicketField(ticket: "test")
       let format = FormatField(format: "SIMPLE")
       let type = TypeField(type: "ticker", codes: self.coinList.value.map{ $0.code }, isOnlySnapshot: false, isOnlyRealtime: true)
