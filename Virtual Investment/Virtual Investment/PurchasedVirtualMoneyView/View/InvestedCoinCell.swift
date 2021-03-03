@@ -8,8 +8,13 @@
 import Foundation
 import UIKit
 import SnapKit
+import RxSwift
 
 class InvestedCoinCell: UITableViewCell {
+
+  // MARK: Properties
+
+  let bag = DisposeBag()
 
   // MARK: UI
 
@@ -23,7 +28,7 @@ class InvestedCoinCell: UITableViewCell {
     label.font = .systemFont(ofSize: 13)
     return label
   }()
-  private let currentPriceLabel: UILabel = {
+  private let totalBoughtPriceLabel: UILabel = {
     let label = UILabel()
     label.font = .boldSystemFont(ofSize: 15)
     return label
@@ -49,20 +54,65 @@ class InvestedCoinCell: UITableViewCell {
 
   // MARK: Set
 
-  func set(coinData: Coin) {
-    var coin = coinData
-    let evalutatedPrice = (coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount)
-    self.nameLabel.text = "\(coin.koreanName)(\(coin.code))"
-    self.holdingCountLabel.text = "보유 수량 : \(coin.holdingCount)"
-    self.currentPriceLabel.text = "\(coin.totalBoughtPrice)"
-    self.evaluatedPriceLabel.text = "\(evalutatedPrice)"
+  func set(coinIndex: Int) {
+    AmountData.shared.boughtCoins
+      .filter{ !$0.isEmpty }
+      .map{ $0[coinIndex] }
+      .map{ "\($0.koreanName) (\($0.englishName))" }
+      .bind(to: self.nameLabel.rx.text)
+      .disposed(by: bag)
 
-    if coin.totalBoughtPrice > evalutatedPrice {
-      self.evaluatedPriceLabel.textColor = .systemBlue
-    } else if coin.totalBoughtPrice < evalutatedPrice {
-      self.evaluatedPriceLabel.textColor = .systemRed
+    AmountData.shared.boughtCoins
+      .filter{ !$0.isEmpty }
+      .map{ $0[coinIndex] }
+      .map{ var coin = $0
+        return "보유 수량 : \(coin.holdingCount)"
+      }
+      .bind(to: self.holdingCountLabel.rx.text)
+      .disposed(by: bag)
+
+    AmountData.shared.boughtCoins
+      .filter{ !$0.isEmpty }
+      .map{ $0[coinIndex]}
+      .map{ "\($0.totalBoughtPrice)" }
+      .bind(to: self.totalBoughtPriceLabel.rx.text)
+      .disposed(by: bag)
+
+    AmountData.shared.boughtCoins
+      .filter{ !$0.isEmpty }
+      .map{ $0[coinIndex] }
+      .map{ var coin = $0
+        return "\((coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount))"
+      }
+      .bind(to: self.evaluatedPriceLabel.rx.text)
+      .disposed(by: bag)
+
+    AmountData.shared.boughtCoins
+      .filter{ !$0.isEmpty }
+      .map{
+        self.isCheckProfit($0[coinIndex])
+      }
+      .subscribe(onNext: {
+        switch $0 {
+        case .equal:
+          self.evaluatedPriceLabel.textColor = .black
+        case .profit:
+          self.evaluatedPriceLabel.textColor = .systemRed
+        case .loss:
+          self.evaluatedPriceLabel.textColor = .systemBlue
+        }
+      })
+      .disposed(by: bag)
+  }
+
+  private func isCheckProfit(_ coinData: Coin) -> checkProfit {
+    var coin = coinData
+    if coin.totalBoughtPrice > Double(coin.holdingCount) * (coin.prices?.currentPrice ?? 0) {
+      return .loss
+    } else if coin.totalBoughtPrice < Double(coin.holdingCount) * (coin.prices?.currentPrice ?? 0){
+      return .profit
     } else {
-      self.evaluatedPriceLabel.textColor = .black
+      return .equal
     }
   }
 
@@ -73,7 +123,7 @@ class InvestedCoinCell: UITableViewCell {
 
     self.contentView.addSubview(self.nameLabel)
     self.contentView.addSubview(self.holdingCountLabel)
-    self.contentView.addSubview(self.currentPriceLabel)
+    self.contentView.addSubview(self.totalBoughtPriceLabel)
     self.contentView.addSubview(self.evaluatedPriceLabel)
 
     self.nameLabel.snp.makeConstraints {
@@ -84,7 +134,7 @@ class InvestedCoinCell: UITableViewCell {
       $0.centerY.equalToSuperview().offset(15)
       $0.leading.equalToSuperview().inset(10)
     }
-    self.currentPriceLabel.snp.makeConstraints {
+    self.totalBoughtPriceLabel.snp.makeConstraints {
       $0.centerY.equalToSuperview().offset(-15)
       $0.trailing.equalToSuperview().inset(10)
     }

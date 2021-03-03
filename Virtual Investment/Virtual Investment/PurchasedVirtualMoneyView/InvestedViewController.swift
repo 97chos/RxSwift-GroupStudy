@@ -290,7 +290,7 @@ extension InvestedViewController: UITableViewDataSource {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.investedCoinListCell , for: indexPath) as? InvestedCoinCell else {
       return UITableViewCell()
     }
-    cell.set(coinData: AmountData.shared.boughtCoins.value[indexPath.row])
+    cell.set(coinIndex: indexPath.row)
 
     return cell
   }
