@@ -133,10 +133,10 @@ class InvestedViewController: UIViewController {
   }
 
   private func RxConfigure() {
-    self.setPrices()
+    self.bindPrices()
   }
 
-  private func setPrices() {
+  private func bindPrices() {
     AmountData.shared.deposit.asObserver()
       .map{ $0.currenyKRW() }
       .bind(to: self.depositLabel.rx.text)

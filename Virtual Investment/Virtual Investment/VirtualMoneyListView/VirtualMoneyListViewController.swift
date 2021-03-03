@@ -193,9 +193,8 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
         return
       }
       client.write(string: String(data:jParams, encoding: .utf8) ?? "", completion: nil)
-      break
+
     case .binary(let data):
-      
       do {
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
@@ -217,10 +216,9 @@ extension VirtualMoneyListViewController: WebSocketDelegate {
         self.alert(title: "JSON Decoding에 실패하였습니다.", message: nil, completion: nil)
       }
 
-      break
     case .error(let error):
       self.alert(title: "WebSocket 연결에 실패하였습니다.", message: "\(error?.localizedDescription ?? "")", completion: nil)
-      break
+
     default:
       break
     }

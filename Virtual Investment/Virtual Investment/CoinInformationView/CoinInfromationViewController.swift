@@ -210,8 +210,8 @@ class CoinInformationViewController: UIViewController {
   }
 
   private func changeAmountDataBySellAction(count: Int, index: Array<Coin>.Index) {
-    var currentCoin = self.amountData.boughtCoins.value[index]
-    let remainingCount = currentCoin.holdingCount - count
+    var boughtList = self.amountData.boughtCoins.value
+    let remainingCount = boughtList[index].holdingCount - count
     let totalRemainingPrice = (self.coin.prices?.currentPrice ?? 0) * Double(remainingCount)
     let totalCellPrice =  (self.coin.prices?.currentPrice ?? 0) * Double(count)
 
@@ -240,6 +240,11 @@ class CoinInformationViewController: UIViewController {
 
     var indexCoin = self.amountData.boughtCoins.value[index]
     self.holdingCount = indexCoin.holdingCount
+
+    if holdingCount == 0 {
+      boughtList.remove(at: index)
+      self.amountData.boughtCoins.accept(boughtList)
+    }
   }
 
   @objc private func sellButtonAction() {

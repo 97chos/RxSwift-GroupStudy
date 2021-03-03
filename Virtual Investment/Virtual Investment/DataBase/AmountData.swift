@@ -27,15 +27,6 @@ class AmountData {
       return price
     }
 
-//  func getEvaluatedPrice() -> Double {
-//    var price: Double = 0
-//    boughtCoins.forEach {
-//      var coin = $0
-//      price += Double(coin.holdingCount) * (coin.prices?.currentPrice ?? 0)
-//    }
-//    return price
-//  }
-
   private init() {
   }
 }
