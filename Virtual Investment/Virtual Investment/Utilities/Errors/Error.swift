@@ -17,3 +17,8 @@ enum APIError: Error {
 enum valueError: Error {
   case invalidValueError
 }
+
+enum WebSocketError: Error {
+  case decodingError
+  case connectError
+}

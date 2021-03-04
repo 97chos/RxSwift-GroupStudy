@@ -16,10 +16,20 @@ class VirtualMoneyListViewController: UIViewController {
 
   // MARK: Properties
 
-  private var coinList: BehaviorRelay = BehaviorRelay<[Coin]>(value: [])
-  private var bag = DisposeBag()
-  var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
-  lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
+  let viewModel: VirtualMoneyViewModel
+  let bag = DisposeBag()
+
+
+  // MARK: Initializing
+
+  init(viewModel: VirtualMoneyViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
 
   // MARK: UI
@@ -48,16 +58,15 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
-
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    self.connect()
-    self.didReceive(event: .connected(["coinList":"list"]), client: webSocket)
+    viewModel.connect()
+    viewModel.didReceive(event: .connected(["coinList":"list"]), client: viewModel.webSocket)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
-    self.disconnect()
+    viewModel.disconnect()
   }
 
   override func viewDidLayoutSubviews() {
@@ -76,6 +85,7 @@ class VirtualMoneyListViewController: UIViewController {
   private func viewConfigure() {
     self.view.backgroundColor = .white
     self.title = "거래소"
+    self.viewModel.delegate = self
 
     self.tableView.delegate = self
     self.tableView.dataSource = self
@@ -86,7 +96,7 @@ class VirtualMoneyListViewController: UIViewController {
   private func initDataConfigure() {
     APIService().lookupCoinListRx()
       .subscribe(onNext: { coinList in
-        self.coinList.accept(coinList)
+        self.viewModel.coinList.accept(coinList)
         self.loadTickerData()
       }, onError: { error in
         switch error {
@@ -105,20 +115,20 @@ class VirtualMoneyListViewController: UIViewController {
 
   private func loadTickerData() {
     var codeList: [String] = []
-    self.coinList.value.forEach {
+    viewModel.coinList.value.forEach {
       codeList.append($0.code)
     }
 
     APIService().loadCoinsTickerDataRx(codes: codeList)
-      .subscribe(onNext: { tickerList in
-        self.loadingIndicator.startAnimating()
-        var copyCoinList = self.coinList.value
+      .subscribe(onNext: { [weak self] tickerList in
+        self?.loadingIndicator.startAnimating()
+        var copyCoinList = self?.viewModel.coinList.value
         tickerList.enumerated().forEach { index, prices in
-          copyCoinList[index].prices = prices
+          copyCoinList?[index].prices = prices
         }
-        self.coinList.accept(copyCoinList)
-        self.tableView.reloadData()
-        self.loadingIndicator.stopAnimating()
+        self?.viewModel.coinList.accept(copyCoinList ?? [])
+        self?.tableView.reloadData()
+        self?.loadingIndicator.stopAnimating()
       }, onError: { error in
         switch error as? APIError {
         case .urlError :
@@ -150,94 +160,18 @@ class VirtualMoneyListViewController: UIViewController {
 }
 
 
-// MARK: WebScoket Delegation
-
-extension VirtualMoneyListViewController: WebSocketDelegate {
-
-  func connect() {
-    request.timeoutInterval = 100
-    webSocket.delegate = self
-    webSocket.connect()
-  }
-
-  func disconnect() {
-    webSocket.disconnect()
-  }
-
-  func didReceive(event: WebSocketEvent, client: WebSocket) {
-    switch(event) {
-    case .connected(_):
-      let ticket = TicketField(ticket: "test")
-      let format = FormatField(format: "SIMPLE")
-      let type = TypeField(type: "ticker", codes: self.coinList.value.map{ $0.code }, isOnlySnapshot: false, isOnlyRealtime: true)
-
-      let encoder = JSONEncoder()
-
-      let parameterStrings = [
-        try? encoder.encode(ticket),
-        try? encoder.encode(format),
-        try? encoder.encode(type)
-      ]
-      .compactMap{$0}
-      .compactMap { String(data: $0, encoding: .utf8) }
-
-      let params = "[" + parameterStrings.joined(separator: ",") + "]"
-
-      guard let data = params.data(using: .utf8) else {
-        return
-      }
-      guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String:AnyObject]] else {
-        return
-      }
-      guard let jParams = try? JSONSerialization.data(withJSONObject: json, options: []) else {
-        return
-      }
-      client.write(string: String(data:jParams, encoding: .utf8) ?? "", completion: nil)
-
-    case .binary(let data):
-      do {
-        let decoder = JSONDecoder()
-        let tickerData = try decoder.decode(ticker.self, from: data)
-        let codeDic = Dictionary(grouping: self.coinList.value, by: { $0.code })
-
-        guard var coin = codeDic[tickerData.code]?.first else { return }
-        guard let index = self.coinList.value.firstIndex(where: { $0.code == coin.code }) else { return }
-        coin.prices = tickerData
-
-        var copyCoinList = self.coinList.value
-        copyCoinList[index] = coin
-        let indexInteger = coinList.value.index(0, offsetBy: index)
-
-        self.coinList.accept(copyCoinList)
-        DispatchQueue.main.async {
-          self.tableView.reloadRows(at: [IndexPath(row: indexInteger, section: 0)], with: .none)
-        }
-      } catch {
-        self.alert(title: "JSON Decoding에 실패하였습니다.", message: nil, completion: nil)
-      }
-
-    case .error(let error):
-      self.alert(title: "WebSocket 연결에 실패하였습니다.", message: "\(error?.localizedDescription ?? "")", completion: nil)
-
-    default:
-      break
-    }
-  }
-}
-
-
 // MARK: TableView DataSource
 
 extension VirtualMoneyListViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.coinList.value.count
+    return viewModel.coinList.value.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
       return UITableViewCell()
     }
-    cell.set(coinData: self.coinList.value[indexPath.row])
+    cell.set(coinData: viewModel.coinList.value[indexPath.row])
 
     return cell
   }
@@ -248,8 +182,23 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
 
 extension VirtualMoneyListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let vc = CoinInformationViewController(coin: self.coinList.value[indexPath.row])
+    let vc = CoinInformationViewController(coin: viewModel.coinList.value[indexPath.row])
     self.navigationController?.pushViewController(vc, animated: true)
     tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+  }
+}
+
+extension VirtualMoneyListViewController: WebSocektErrorDelegation {
+  func sendSuccessResult(_ index: Int) {
+    self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+  }
+
+  func sendFailureResult(_ errorType: WebSocketError) {
+    switch errorType {
+    case .connectError:
+      self.alert(title: "WebSocket 연결에 실패하였습니다.", message: nil, completion: nil)
+    case .decodingError:
+      self.alert(title: "JSON Decoding에 실패하였습니다.", message: nil, completion: nil)
+    }
   }
 }
