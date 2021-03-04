@@ -24,6 +24,7 @@ class AmountData {
         var coin = $0
         price += Double(coin.holdingCount) * (coin.prices?.currentPrice ?? 0)
       }
+      // TODO : reduce
       return price
     }
 

@@ -9,12 +9,12 @@ import Foundation
 
 extension Double {
   func cutDecimal() -> String {
-    if self > 100 {
-      let formatter = NumberFormatter()
-      formatter.numberStyle = .decimal
-      return formatter.string(from: NSNumber(value: self)) ?? ""
+    if self.truncatingRemainder(dividingBy: 1.0) == 0 {
+      let numberFormatter = NumberFormatter()
+      numberFormatter.numberStyle = .decimal
+      return numberFormatter.string(from: NSNumber(value: self)) ?? ""
     } else {
-      return "\(self)"
+      return String(format: "%.8f", self)
     }
   }
   
