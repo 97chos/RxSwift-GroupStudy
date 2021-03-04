@@ -58,6 +58,7 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -172,7 +173,6 @@ extension VirtualMoneyListViewController: UITableViewDataSource {
       return UITableViewCell()
     }
     cell.set(coinData: viewModel.coinList.value[indexPath.row])
-
     return cell
   }
 }

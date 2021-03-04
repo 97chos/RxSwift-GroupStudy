@@ -25,9 +25,6 @@ class VirtualMoneyViewModel {
   var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
   weak var delegate: WebSocektErrorDelegation?
-
-  
-
 }
 
 // MARK: WebScoket Delegation

@@ -7,198 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FE179A0D-6BE6-45DE-9D6F-66D7666D7834"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "36C25DB8-2AA4-4FBD-8EE8-71FC1984CB0A"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "36C25DB8-2AA4-4FBD-8EE8-71FC1984CB0A - 37d17d4aa3510e50"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "148"
-                  endingLineNumber = "148"
-                  offsetFromSymbolStart = "1984">
-               </Location>
-               <Location
-                  uuid = "36C25DB8-2AA4-4FBD-8EE8-71FC1984CB0A - ae39bc1e5ec8897"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (Swift.Optional&lt;Foundation.Data&gt;) -&gt; Swift.Optional&lt;Foundation.Data&gt; in Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "148"
-                  endingLineNumber = "148"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "155905DA-1ED9-45F1-BE83-9F507FFCDE4B"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "155905DA-1ED9-45F1-BE83-9F507FFCDE4B - 37d17d4aa3510eb3"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "149"
-                  endingLineNumber = "149"
-                  offsetFromSymbolStart = "2160">
-               </Location>
-               <Location
-                  uuid = "155905DA-1ED9-45F1-BE83-9F507FFCDE4B - d240197cdc117070"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #3 (Foundation.Data) -&gt; Swift.Optional&lt;Swift.String&gt; in Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "149"
-                  endingLineNumber = "149"
-                  offsetFromSymbolStart = "96">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4F1B6E9A-1610-479B-833A-B920EA45E224"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "BA676582-54B0-460A-AFE7-10D9DE6594A9"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4E56BEEF-DED9-46DC-A583-F5C3B51C9803"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "4E56BEEF-DED9-46DC-A583-F5C3B51C9803 - 37d17d4aa3510a7e"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "178"
-                  endingLineNumber = "178"
-                  offsetFromSymbolStart = "7564">
-               </Location>
-               <Location
-                  uuid = "4E56BEEF-DED9-46DC-A583-F5C3B51C9803 - 3c802aeee7404be5"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #6 () -&gt; () in Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "179"
-                  endingLineNumber = "179"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "622F36A9-98E1-4DB9-A840-06F3BD8F9238"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -391,182 +199,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "00E01CF4-270D-48F7-84FD-7ECCFE32EB39"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/PurchasedVirtualMoneyView/InvestedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9B343853-1282-4851-8E8B-063CF587B5FF"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/PurchasedVirtualMoneyView/InvestedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "291"
-            endingLineNumber = "291"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3C77CF3E-5BC6-446C-AAA9-826A188A6016"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/PurchasedVirtualMoneyView/View/InvestedCoinCell.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "set(coinData:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F351F744-73C4-4906-8215-F49D39EC7021"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/PurchasedVirtualMoneyView/InvestedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
-            landmarkName = "tableView(_:cellForRowAt:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "470E1D7D-6726-4AC9-BEC2-2D316B9BD75D"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "470E1D7D-6726-4AC9-BEC2-2D316B9BD75D - 37d17d4aa3513598"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "204"
-                  endingLineNumber = "204"
-                  offsetFromSymbolStart = "4620">
-               </Location>
-               <Location
-                  uuid = "470E1D7D-6726-4AC9-BEC2-2D316B9BD75D - 95a0ff6d75208533"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #4 (Virtual_Investment.Coin) -&gt; Swift.String in Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "204"
-                  endingLineNumber = "204"
-                  offsetFromSymbolStart = "20">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D8DAD339-387D-44AE-97F2-0817D2EAF294"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D1B6E6A3-3BA4-48C5-8B50-48CEE6D07405"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "didReceive(event:client:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "D1B6E6A3-3BA4-48C5-8B50-48CEE6D07405 - 37d17d4aa351363d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "207"
-                  endingLineNumber = "207"
-                  offsetFromSymbolStart = "5600">
-               </Location>
-               <Location
-                  uuid = "D1B6E6A3-3BA4-48C5-8B50-48CEE6D07405 - 58ce6d9664e7c6f1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #5 (Virtual_Investment.Coin) -&gt; Swift.Bool in Virtual_Investment.VirtualMoneyListViewController.didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) -&gt; ()"
-                  moduleName = "Virtual Investment"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sanghocho/Desktop/RxSwift-GroupStudy/Virtual%20Investment/Virtual%20Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "207"
-                  endingLineNumber = "207"
-                  offsetFromSymbolStart = "28">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "FA183306-C094-4952-8061-70FC2B48133A"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -574,8 +206,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
             landmarkName = "loadTickerData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -590,8 +222,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "loadTickerData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -606,8 +238,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "loadTickerData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -622,41 +254,9 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "loadTickerData()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0CF5CE3E-A3EE-4B8E-BBF3-2EC76D8DF894"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/PurchasedVirtualMoneyView/InvestedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "bindPrices()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0DBED20B-A209-44F9-B7B7-C49E1C4B6BA0"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/PurchasedVirtualMoneyView/InvestedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -670,8 +270,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "loadTickerData()"
             landmarkType = "7">
             <Locations>
@@ -718,8 +318,8 @@
             filePath = "Virtual Investment/VirtualMoneyListView/VirtualMoneyListViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
             landmarkName = "loadTickerData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -770,22 +370,6 @@
                   offsetFromSymbolStart = "120">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9CF3778B-6267-49A6-BA3C-01695BF02323"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Virtual Investment/PurchasedVirtualMoneyView/InvestedViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "bindPrices()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
