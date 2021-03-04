@@ -7,18 +7,48 @@
 
 import Foundation
 
-enum APIError: Error {
+enum APIError: Error, CustomStringConvertible {
   case urlError
   case networkError
   case parseError
   case requestAPIError
+
+  var description: String {
+    switch self {
+    case .networkError: return "네트워크가 불안정합니다."
+    case .parseError: return "초기 데이터 파싱에 실패하였습니다."
+    case .requestAPIError: return "잘못된 요청값입니다."
+    case .urlError: return "잘못된 URL입니다."
+    }
+  }
+
+  var message: String? {
+    switch self {
+    case .networkError: return "잠시 후 다시 시도해주세요."
+    default: return nil
+    }
+  }
+
 }
 
-enum valueError: Error {
+enum valueError: Error, CustomStringConvertible {
   case invalidValueError
+
+  var description: String {
+    switch self {
+    case .invalidValueError: return "유효하지 않은 값입니다."
+    }
+  }
 }
 
-enum WebSocketError: Error {
+enum WebSocketError: Error, CustomStringConvertible {
   case decodingError
   case connectError
+
+  var description: String {
+    switch self {
+    case .decodingError: return "데이터 디코딩에 실패하였습니다."
+    case .connectError: return "WebSocket 연결에 실패하였습니다."
+    }
+  }
 }

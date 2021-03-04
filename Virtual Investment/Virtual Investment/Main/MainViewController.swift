@@ -91,12 +91,8 @@ class MainViewController: UIViewController {
         AmountData.shared.deposit.onNext($0)
         self?.present(self?.viewModel.returnTabBarController() ?? UITabBarController(), animated: true)
       }, onError: { [weak self] error in
-        switch error {
-        case valueError.invalidValueError:
-          self?.alert(title: "숫자만 입력 가능합니다.", message: nil, completion: nil)
-        default:
-          break
-        }
+        let errorType = error as? valueError
+        self?.alert(title: errorType?.description, message: nil, completion: nil)
       })
       .disposed(by: disposeBag)
   }

@@ -100,16 +100,8 @@ class VirtualMoneyListViewController: UIViewController {
         self.viewModel.coinList.accept(coinList)
         self.loadTickerData()
       }, onError: { error in
-        switch error {
-        case APIError.urlError:
-          self.alert(title: "잘못된 URL입니다.", message: nil, completion: nil)
-        case APIError.networkError:
-          self.alert(title: "네트워크가 불안정합니다.", message: nil, completion: nil)
-        case APIError.parseError:
-          self.alert(title: "데이터 파싱에 실패하였습니다.", message: nil, completion: nil)
-        default:
-          break
-        }
+        let errorType = error as? APIError
+        self.alert(title: errorType?.description, message: nil, completion: nil)
       })
       .disposed(by: bag)
   }
@@ -131,16 +123,8 @@ class VirtualMoneyListViewController: UIViewController {
         self?.tableView.reloadData()
         self?.loadingIndicator.stopAnimating()
       }, onError: { error in
-        switch error as? APIError {
-        case .urlError :
-          self.alert(title: "호출 URL이 잘못되었습니다.", message: nil, completion: nil)
-        case .networkError :
-          self.alert(title: "네트워크가 불안정합니다.", message: "잠시 후 다시 시도해주세요.", completion: nil)
-        case .parseError :
-          self.alert(title: "초기 데이터 파싱에 실패하였습니다.", message: nil, completion: nil)
-        default :
-          break
-        }
+        let errorType = error as? APIError
+        self.alert(title: errorType?.description, message: errorType?.message, completion: nil)
       })
       .disposed(by: bag)
   }
@@ -194,11 +178,6 @@ extension VirtualMoneyListViewController: WebSocektErrorDelegation {
   }
 
   func sendFailureResult(_ errorType: WebSocketError) {
-    switch errorType {
-    case .connectError:
-      self.alert(title: "WebSocket 연결에 실패하였습니다.", message: nil, completion: nil)
-    case .decodingError:
-      self.alert(title: "JSON Decoding에 실패하였습니다.", message: nil, completion: nil)
-    }
+    self.alert(title: errorType.description, message: nil, completion: nil)
   }
 }
