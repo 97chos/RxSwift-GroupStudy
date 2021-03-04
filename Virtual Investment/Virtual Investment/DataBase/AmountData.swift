@@ -19,13 +19,10 @@ class AmountData {
 
   lazy var evaluatedPrice: Observable<Double> = boughtCoins
     .map{
-      var price: Double = 0
-      $0.forEach{
-        var coin = $0
-        price += Double(coin.holdingCount) * (coin.prices?.currentPrice ?? 0)
+      $0.reduce(0){
+        var coin = $1
+        return $0 + (coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount)
       }
-      // TODO : reduce
-      return price
     }
 
   private init() {
