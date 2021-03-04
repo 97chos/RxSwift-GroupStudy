@@ -168,7 +168,7 @@ class InvestedViewController: UIViewController {
     Observable.combineLatest(
       AmountData.shared.evaluatedPrice,
       AmountData.shared.investedPrice,
-      resultSelector: { self.checkProfit($0, $1) }
+      resultSelector: { self.viewModel.checkProfit($0, $1) }
     )
     .subscribe(onNext: { result in
       switch result {
@@ -187,36 +187,17 @@ class InvestedViewController: UIViewController {
   // MARK: Functions
 
   private func getCurrentPrice() {
-    let codeList = AmountData.shared.boughtCoins.value.map{ $0.code }
-    if !codeList.isEmpty {
-      APIService().loadCoinsTickerData(codes: codeList) { result in
-        switch result {
-        case .success(let coinPriceList):
-          var copyCoinList = AmountData.shared.boughtCoins.value
-          coinPriceList.enumerated().forEach { index, prices in
-            copyCoinList[index].prices?.currentPrice = prices.currentPrice
-          }
-          AmountData.shared.boughtCoins.accept(copyCoinList)
-
-        case .failure(let error):
-          let errorType = error as? APIError
-          self.alert(title: errorType?.description, message: errorType?.message, completion: nil)
-        }
+    viewModel.getCurrentPrice{ result in
+      switch result {
+      case .success():
+        break
+      case .failure(let error):
+        let errorType = error as? APIError
+        self.alert(title: errorType?.description, message: errorType?.message, completion: nil)
       }
-    } else {
-      return
     }
   }
 
-  func checkProfit(_ investedPrice: Double, _ evaluatedPrice: Double) -> checkProfit {
-    if investedPrice > evaluatedPrice {
-      return .profit
-    } else if investedPrice < evaluatedPrice {
-      return .loss
-    } else {
-      return .equal
-    }
-  }
 
 
   // MARK: Layout
