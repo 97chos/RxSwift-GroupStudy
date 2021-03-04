@@ -21,6 +21,7 @@ class InvestedViewController: UIViewController {
 
   // MARK: Properties
 
+  private var viewModel: PurchasedViewModel
   private let bag = DisposeBag()
 
   // MARK: UI
@@ -96,6 +97,18 @@ class InvestedViewController: UIViewController {
     return tableView
   }()
 
+
+  // MARK: Initializing
+
+  init(viewModel: PurchasedViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
 
   // MARK: View LifeCycle
 
@@ -289,6 +302,7 @@ extension InvestedViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.investedCoinListCell , for: indexPath) as? InvestedCoinCell else {
       return UITableViewCell()
+
     }
     cell.set(coinIndex: indexPath.row)
 
