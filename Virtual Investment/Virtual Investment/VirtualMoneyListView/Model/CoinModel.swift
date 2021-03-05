@@ -32,7 +32,13 @@ struct Coin: Codable {
   }
 }
 
-struct ticker: Codable {
+extension Coin: Equatable, Hashable {
+  static func == (lhs: Coin, rhs: Coin) -> Bool {
+    lhs.code == rhs.code
+  }
+}
+
+struct ticker: Codable, Hashable {
 
   // MARK: Json Keys
 
