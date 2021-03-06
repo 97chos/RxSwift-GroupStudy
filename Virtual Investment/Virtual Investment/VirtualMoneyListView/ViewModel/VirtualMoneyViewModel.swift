@@ -27,6 +27,40 @@ class VirtualMoneyViewModel {
 
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
   weak var delegate: WebSocektErrorDelegation?
+
+
+  // MARK: Functions
+
+  func lookUpCoinList(completion: @escaping (Result<(),Error>) -> Void) {
+    APIService().lookupCoinListRx()
+      .subscribe(onNext: { coinList in
+        self.coinList.accept(coinList)
+        completion(.success(()))
+      }, onError: { error in
+        completion(.failure(error))
+      })
+      .disposed(by: bag)
+  }
+
+  func loadTickerData(completion: @escaping (Result<(),Error>) -> Void) {
+    var codeList: [String] = []
+    self.coinList.value.forEach {
+      codeList.append($0.code)
+    }
+    APIService().loadCoinsTickerDataRx(codes: codeList)
+      .subscribe(onNext: { [weak self] tickerList in
+        var copyCoinList = self?.coinList.value
+        tickerList.enumerated().forEach { index, prices in
+          copyCoinList?[index].prices = prices
+        }
+        self?.coinList.accept(copyCoinList ?? [])
+        completion(.success(()))
+      }, onError: { error in
+        completion(.failure(error))
+      })
+      .disposed(by: bag)
+  }
+
 }
 
 // MARK: WebScoket Delegation

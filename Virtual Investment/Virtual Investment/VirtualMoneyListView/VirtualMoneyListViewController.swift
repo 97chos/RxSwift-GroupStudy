@@ -126,38 +126,23 @@ class VirtualMoneyListViewController: UIViewController {
   }
 
   private func initDataConfigure() {
-    APIService().lookupCoinListRx()
-      .subscribe(onNext: { coinList in
-        self.viewModel.coinList.accept(coinList)
-        self.loadTickerData()
-      }, onError: { error in
-        let errorType = error as? APIError
-        self.alert(title: errorType?.description, message: nil, completion: nil)
-      })
-      .disposed(by: bag)
-  }
-
-  private func loadTickerData() {
-    var codeList: [String] = []
-    viewModel.coinList.value.forEach {
-      codeList.append($0.code)
-    }
-
-    APIService().loadCoinsTickerDataRx(codes: codeList)
-      .subscribe(onNext: { [weak self] tickerList in
-        self?.loadingIndicator.startAnimating()
-        var copyCoinList = self?.viewModel.coinList.value
-        tickerList.enumerated().forEach { index, prices in
-          copyCoinList?[index].prices = prices
+    self.viewModel.lookUpCoinList { [weak self] result in
+      switch result {
+      case .success():
+        self?.viewModel.loadTickerData { result in
+          switch result {
+          case .success():
+            self?.tableView.reloadData()
+          case .failure(let error):
+            let errorType = error as? APIError
+            self?.alert(title: errorType?.description, message: nil, completion: nil)
+          }
         }
-        self?.viewModel.coinList.accept(copyCoinList ?? [])
-        self?.tableView.reloadData()
-        self?.loadingIndicator.stopAnimating()
-      }, onError: { error in
+      case .failure(let error):
         let errorType = error as? APIError
-        self.alert(title: errorType?.description, message: errorType?.message, completion: nil)
-      })
-      .disposed(by: bag)
+        self?.alert(title: errorType?.description, message: nil, completion: nil)
+      }
+    }
   }
 
 
