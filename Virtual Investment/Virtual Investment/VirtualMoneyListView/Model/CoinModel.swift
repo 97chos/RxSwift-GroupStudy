@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxDataSources
 
 struct Coin: Codable {
 
@@ -34,8 +35,16 @@ struct Coin: Codable {
 
 extension Coin: Equatable, Hashable {
   static func == (lhs: Coin, rhs: Coin) -> Bool {
-    lhs.code == rhs.code
+    return lhs.code == rhs.code && lhs.koreanName == rhs.koreanName && lhs.englishName == rhs.englishName && lhs.prices == rhs.prices
   }
+}
+
+extension Coin: IdentifiableType {
+  var identity: String {
+    return self.code
+  }
+
+  typealias Identity = String
 }
 
 struct ticker: Codable, Hashable {

@@ -11,6 +11,7 @@ import SnapKit
 import Starscream
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 class VirtualMoneyListViewController: UIViewController {
 
@@ -18,6 +19,38 @@ class VirtualMoneyListViewController: UIViewController {
 
   let viewModel: VirtualMoneyViewModel
   let bag = DisposeBag()
+
+  let dataSource = RxTableViewSectionedReloadDataSource<CoinListSection>(configureCell: { datasource, tableView, indexPath, item in
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
+      return UITableViewCell()
+    }
+
+    cell.set(coinData: item)
+
+    return cell
+  })
+
+  var subject = BehaviorRelay<[CoinListSection]>(value: [])
+
+
+  // MARK: Bind
+
+  func bindTableView() {
+    self.tableView.rx.setDelegate(self)
+      .disposed(by: bag)
+
+    self.viewModel.coinList
+      .debug("A")
+      .map{ CoinListSection(items: $0) }
+      .debug("B")
+      .map{ [$0] }
+      .bind(to: self.subject)
+      .disposed(by: bag)
+
+    self.subject
+      .bind(to: tableView.rx.items(dataSource: dataSource))
+      .disposed(by: bag)
+  }
 
 
   // MARK: Initializing
@@ -58,6 +91,7 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+    self.bindTableView()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -87,8 +121,6 @@ class VirtualMoneyListViewController: UIViewController {
     self.title = "거래소"
     self.viewModel.delegate = self
 
-    self.tableView.delegate = self
-    self.tableView.dataSource = self
     self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.coinListCell)
     self.tableView.rowHeight = 60
   }
@@ -144,23 +176,6 @@ class VirtualMoneyListViewController: UIViewController {
 }
 
 
-// MARK: TableView DataSource
-
-extension VirtualMoneyListViewController: UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel.coinList.value.count
-  }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
-      return UITableViewCell()
-    }
-    cell.set(coinData: viewModel.coinList.value[indexPath.row])
-    return cell
-  }
-}
-
-
 // MARK: TableView Delegation
 
 extension VirtualMoneyListViewController: UITableViewDelegate {
@@ -168,6 +183,10 @@ extension VirtualMoneyListViewController: UITableViewDelegate {
     let vc = CoinInformationViewController(coin: viewModel.coinList.value[indexPath.row])
     self.navigationController?.pushViewController(vc, animated: true)
     tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+  }
+
+  func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+    return 50
   }
 }
 

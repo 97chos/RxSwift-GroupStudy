@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import RxDataSources
 import Starscream
 
 
@@ -23,6 +24,7 @@ class VirtualMoneyViewModel {
   var coinList: BehaviorRelay = BehaviorRelay<[Coin]>(value: [])
   var bag = DisposeBag()
   var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
+
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
   weak var delegate: WebSocektErrorDelegation?
 }
