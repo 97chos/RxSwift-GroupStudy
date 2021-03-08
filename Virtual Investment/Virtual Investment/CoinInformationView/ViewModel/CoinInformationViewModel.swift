@@ -9,19 +9,19 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-typealias ContainResultType = (Bool,Coin?)
 
 struct ContainCoinResult {
-  var containCoinResult: ContainResultType
+  var isResult: Bool
+  var coin: Coin?
   init (_ boolean: Bool, _ coin: Coin?) {
-    self.containCoinResult.0 = boolean
-    self.containCoinResult.1 = coin
+    self.isResult = boolean
+    self.coin = coin
   }
 }
 
 extension ContainCoinResult: Equatable {
   static func == (lhs: ContainCoinResult, rhs: ContainCoinResult) -> Bool {
-    return lhs.containCoinResult.0 == rhs.containCoinResult.0
+    return lhs.isResult == rhs.isResult
   }
 }
 
@@ -79,7 +79,7 @@ class CoinInformationViewModel {
     completion(.success(count))
   }
 
-  func containCheck() {
+  func isContainCoinInBoughtList() {
     Observable.combineLatest(amountData.boughtCoins, self.coin, resultSelector: {list, coin -> ContainCoinResult in
       if list.contains(coin) {
         guard let index = list.firstIndex(of: coin) else {
@@ -93,61 +93,15 @@ class CoinInformationViewModel {
     })
     .distinctUntilChanged()
     .subscribe(onNext: { result in
-      if result.containCoinResult.0 {
-        guard let listIndexCoin = result.containCoinResult.1 else {
+      if result.isResult {
+        guard var listIndexCoin = result.coin else {
           return
         }
-        self.coin.accept(Coin(koreanName: <#T##String#>, englishName: <#T##String#>, code: <#T##String#>, prices: <#T##ticker?#>, holdingCount: <#T##Int?#>, totalBoughtPrice: <#T##Double#>))
+        let coin = self.coin.value
+        self.coin.accept(Coin(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, prices: coin.prices, holdingCount: listIndexCoin.holdingCount, totalBoughtPrice: listIndexCoin.totalBoughtPrice))
       }
     })
     .disposed(by: bag)
-  }
-
-  func isContainCoinInBoughtList() {
-    Observable.combineLatest(self.amountData.boughtCoins, self.coin){list, coin in
-      list.contains(where: {$0.code == coin.code})}
-      .take(1)
-      .bind(to: self.isContaining)
-      .disposed(by: bag)
-
-    self.isContaining
-      .distinctUntilChanged()
-      .subscribe(onNext: { boolean in
-        if boolean {
-          var list = self.amountData.boughtCoins.value
-          let coin = self.coin.value
-          guard let index = list.firstIndex(of: coin) else {
-            return
-          }
-          self.boughtCoinsIndex = index
-          self.coin.accept(Coin(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, prices: coin.prices, holdingCount: list[index].holdingCount, totalBoughtPrice: list[index].totalBoughtPrice))
-          list[index] = coin
-          self.amountData.boughtCoins.accept(list)
-        } else {
-          self.boughtCoinsIndex = nil
-          let coin = self.coin.value
-          self.coin.accept(Coin(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, prices: coin.prices, holdingCount: 0, totalBoughtPrice: 0))
-        }
-      })
-      .disposed(by: bag)
-
-    self.coin
-      .map{ var coin = $0
-        return coin.holdingCount
-      }
-      .map{ $0 == 0 }
-      .subscribe(onNext: { bool in
-        self.isContaining.onNext(!bool)
-        if bool == true {
-          var list = self.amountData.boughtCoins.value
-          guard let index = list.firstIndex(of: self.coin.value) else {
-            return
-          }
-          list.remove(at: index)
-          self.amountData.boughtCoins.accept(list)
-        }
-      })
-      .disposed(by: bag)
   }
 
   func buyAction(count: Int, completion: () -> Void) {
