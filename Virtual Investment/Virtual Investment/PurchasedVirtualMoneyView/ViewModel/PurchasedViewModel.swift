@@ -10,7 +10,6 @@ import RxSwift
 
 class PurchasedViewModel {
 
-
   // MARK: Functions
 
   func getCurrentPrice(completion: @escaping (Result<(),Error>) -> Void) {

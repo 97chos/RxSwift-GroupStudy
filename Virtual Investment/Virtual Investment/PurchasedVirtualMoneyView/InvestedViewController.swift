@@ -115,7 +115,6 @@ class InvestedViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
-    self.viewModel.boughtCoins()
   }
 
   override func viewWillAppear(_ animated: Bool) {
