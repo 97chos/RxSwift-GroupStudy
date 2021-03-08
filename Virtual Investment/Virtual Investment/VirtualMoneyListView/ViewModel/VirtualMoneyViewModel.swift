@@ -60,7 +60,6 @@ class VirtualMoneyViewModel {
       })
       .disposed(by: bag)
   }
-
 }
 
 // MARK: WebScoket Delegation
