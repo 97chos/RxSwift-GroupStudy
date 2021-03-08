@@ -178,40 +178,33 @@ class CoinInformationViewModel {
   }
 
 
-  func changeAmountDataBySellAction(count: Int, index: Array<Coin>.Index, completion: () -> Void) {
+  func sellAction(count: Int, completion: () -> Void) {
     var boughtList = self.amountData.boughtCoins.value
+    guard let index = self.boughtCoinsIndex else {
+      return
+    }
     var indexCoin = boughtList[index]
     let remainingCount = indexCoin.holdingCount - count
     var totalRemainingPrice: Double = 0
     var totalCellPrice: Double = 0
 
-    _ = self.coin
+    self.coin
       .take(1)
       .map{ $0.prices?.currentPrice ?? 0 }
       .subscribe(onNext: { price in
         totalRemainingPrice = price * Double(remainingCount)
       })
+      .disposed(by: bag)
 
-    _ = self.coin
+    self.coin
       .take(1)
       .map{ $0.prices?.currentPrice ?? 0 }
       .subscribe(onNext: { price in
         totalCellPrice = price * Double(count)
       })
+      .disposed(by: bag)
 
-    _ = self.amountData.boughtCoins
-      .take(1)
-      .map{
-        var coinList = $0
-        coinList[index].totalBoughtPrice -= max(coinList[index].totalBoughtPrice - totalRemainingPrice, 0)
-        coinList[index].holdingCount -= count
-        return coinList
-      }
-      .subscribe(onNext: {
-        self.amountData.boughtCoins.accept($0)
-      })
-
-    _ = self.amountData.deposit
+    self.amountData.deposit
       .map{
         var deposit = $0
         deposit += totalCellPrice
@@ -221,14 +214,30 @@ class CoinInformationViewModel {
       .subscribe(onNext: {
         self.amountData.deposit.onNext($0)
       })
+      .disposed(by: bag)
 
-    indexCoin.holdingCount = remainingCount
-    self.holdingCount = remainingCount
+    self.amountData.boughtCoins
+      .take(1)
+      .map{
+        var coinList = $0
+        coinList[index].totalBoughtPrice -= max(coinList[index].totalBoughtPrice - totalRemainingPrice, 0)
+        coinList[index].holdingCount -= count
+        return coinList
+      }
+      .do{
+        var coinList = $0
+        if coinList[index].holdingCount == 0 {
+          coinList.remove(at: index)
+        }
+      }
+      .do{
+        self.coin.accept($0[index])
+      }
+      .subscribe(onNext: {
+        self.amountData.boughtCoins.accept($0)
+      })
+      .disposed(by: bag)
 
-    if holdingCount == 0 {
-      boughtList.remove(at: index)
-      self.amountData.boughtCoins.accept(boughtList)
-    }
     completion()
   }
   
