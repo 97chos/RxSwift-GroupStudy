@@ -52,3 +52,23 @@ enum WebSocketError: Error, CustomStringConvertible {
     }
   }
 }
+
+enum inputCountError: Error, CustomStringConvertible {
+
+  case isEmptyField
+  case isNotNumber
+  case inputtedZero
+  case deficientDeposit
+  case deficientHoldingCount
+
+  var description: String {
+    switch self {
+    case .isEmptyField: return "매매할 수량을 입력해주세요."
+    case .isNotNumber: return "숫자 외 다른 문자는 입력이 불가능합니다."
+    case .inputtedZero: return "1 이상의 숫자만 입력 가능합니다."
+    case .deficientDeposit: return "보유 중인 예수금이 부족합니다."
+    case .deficientHoldingCount: return "보유 중인 수량이 부족합니다."
+    }
+  }
+
+}
