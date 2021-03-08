@@ -35,7 +35,7 @@ struct Coin: Codable {
 
 extension Coin: Equatable, Hashable {
   static func == (lhs: Coin, rhs: Coin) -> Bool {
-    return lhs.code == rhs.code && lhs.koreanName == rhs.koreanName && lhs.englishName == rhs.englishName && lhs.prices == rhs.prices
+    return lhs.code == rhs.code && lhs.koreanName == rhs.koreanName && lhs.englishName == rhs.englishName
   }
 }
 
