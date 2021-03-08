@@ -40,9 +40,7 @@ class VirtualMoneyListViewController: UIViewController {
       .disposed(by: bag)
 
     self.viewModel.coinList
-      .debug("A")
       .map{ CoinListSection(items: $0) }
-      .debug("B")
       .map{ [$0] }
       .bind(to: self.subject)
       .disposed(by: bag)
@@ -165,7 +163,7 @@ class VirtualMoneyListViewController: UIViewController {
 
 extension VirtualMoneyListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let vc = CoinInformationViewController(coin: viewModel.coinList.value[indexPath.row])
+    let vc = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: viewModel.coinList.value[indexPath.row]))
     self.navigationController?.pushViewController(vc, animated: true)
     tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
   }
