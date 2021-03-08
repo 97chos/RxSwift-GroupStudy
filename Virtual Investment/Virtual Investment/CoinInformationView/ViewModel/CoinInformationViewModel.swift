@@ -10,28 +10,12 @@ import RxSwift
 import RxCocoa
 
 
-struct ContainCoinResult {
-  var isResult: Bool
-  var coin: Coin?
-  init (_ boolean: Bool, _ coin: Coin?) {
-    self.isResult = boolean
-    self.coin = coin
-  }
-}
-
-extension ContainCoinResult: Equatable {
-  static func == (lhs: ContainCoinResult, rhs: ContainCoinResult) -> Bool {
-    return lhs.isResult == rhs.isResult
-  }
-}
-
 class CoinInformationViewModel {
 
   // MARK: Properties
 
   var boughtCoinsIndex: Array<Coin>.Index?
   var coin: BehaviorRelay<Coin> = BehaviorRelay<Coin>(value: Coin(koreanName: "코인 이름", englishName: "Coin Name", code: "Coin-code"))
-  var isContaining: BehaviorSubject<Bool> = BehaviorSubject<Bool>(value: false)
   let amountData = AmountData.shared
   var holdingCount: Int?
   let bag = DisposeBag()
@@ -39,7 +23,6 @@ class CoinInformationViewModel {
   init(coin: Coin) {
     self.coin.accept(coin)
   }
-
 
   func bindHoldingCount() {
     self.coin
@@ -49,6 +32,7 @@ class CoinInformationViewModel {
       .subscribe(onNext: { self.holdingCount = $0 })
       .disposed(by: bag)
   }
+  
 
   // MARK: Logic
 
@@ -88,6 +72,7 @@ class CoinInformationViewModel {
         self.boughtCoinsIndex = index
         return ContainCoinResult(true,list[index])
       } else {
+        self.boughtCoinsIndex = nil
         return ContainCoinResult(false,nil)
       }
     })
@@ -104,24 +89,25 @@ class CoinInformationViewModel {
     .disposed(by: bag)
   }
 
-  func buyAction(count: Int, completion: () -> Void) {
+  func buyAction(count: Int, completion: @escaping () -> Void) {
     if self.boughtCoinsIndex == nil {
       var totalPrice: Double = 0
 
-      _ = self.coin
+      self.coin
         .take(1)
         .map{ $0.prices?.currentPrice ?? 0 }
         .subscribe(onNext: { price in
           totalPrice = price * Double(count)
         })
+        .disposed(by: bag)
 
       self.amountData.deposit
+        .take(1)
         .map{ price -> Double in
           var currenTotalPrice = price
           currenTotalPrice -= totalPrice
           return currenTotalPrice
         }
-        .take(1)
         .subscribe(onNext: {
           self.amountData.deposit.onNext($0)
         })
@@ -129,6 +115,7 @@ class CoinInformationViewModel {
 
       self.coin
         .take(1)
+        .observe(on: MainScheduler.asyncInstance)
         .subscribe(onNext: { currentCoin in
           self.coin.accept(Coin(koreanName: currentCoin.koreanName, englishName: currentCoin.englishName, code: currentCoin.code, prices: currentCoin.prices, holdingCount: count, totalBoughtPrice: totalPrice))
           self.amountData.boughtCoins.accept(self.amountData.boughtCoins.value + [self.coin.value])
@@ -149,28 +136,31 @@ class CoinInformationViewModel {
         })
         .disposed(by: bag)
 
-      _ = self.amountData.deposit
+      self.amountData.deposit
+        .take(1)
         .map{
           var currentTotalPrice = $0
           currentTotalPrice -= totalPrice
           return currentTotalPrice
         }
-        .take(1)
+        .observe(on: MainScheduler.asyncInstance)
         .subscribe(onNext: {
           self.amountData.deposit.onNext($0)
         })
+        .disposed(by: bag)
 
-      _ = self.amountData.boughtCoins
+      self.amountData.boughtCoins
+        .take(1)
         .map{
           var coinList = $0
           coinList[index].holdingCount += count
           coinList[index].totalBoughtPrice += totalPrice
           return coinList
         }
-        .take(1)
         .subscribe(onNext: {
           self.amountData.boughtCoins.accept($0)
         })
+        .disposed(by: bag)
 
       self.coin.accept(self.amountData.boughtCoins.value[index])
     }
@@ -179,7 +169,7 @@ class CoinInformationViewModel {
 
 
   func sellAction(count: Int, completion: () -> Void) {
-    var boughtList = self.amountData.boughtCoins.value
+    let boughtList = self.amountData.boughtCoins.value
     guard let index = self.boughtCoinsIndex else {
       return
     }
@@ -211,6 +201,7 @@ class CoinInformationViewModel {
         return deposit
       }
       .take(1)
+      .observe(on: MainScheduler.asyncInstance)
       .subscribe(onNext: {
         self.amountData.deposit.onNext($0)
       })
@@ -218,20 +209,22 @@ class CoinInformationViewModel {
 
     self.amountData.boughtCoins
       .take(1)
-      .map{
-        var coinList = $0
+      .map{ list -> [Coin] in
+        var coinList = list
         coinList[index].totalBoughtPrice -= max(coinList[index].totalBoughtPrice - totalRemainingPrice, 0)
         coinList[index].holdingCount -= count
         return coinList
       }
+      .observe(on: MainScheduler.asyncInstance)
       .do{
+        self.coin.accept($0[index])
+      }
+      .map{
         var coinList = $0
         if coinList[index].holdingCount == 0 {
           coinList.remove(at: index)
         }
-      }
-      .do{
-        self.coin.accept($0[index])
+        return coinList
       }
       .subscribe(onNext: {
         self.amountData.boughtCoins.accept($0)
@@ -240,5 +233,4 @@ class CoinInformationViewModel {
 
     completion()
   }
-  
 }

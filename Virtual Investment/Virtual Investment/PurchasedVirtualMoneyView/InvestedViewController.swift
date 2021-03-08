@@ -115,6 +115,7 @@ class InvestedViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+    self.viewModel.boughtCoins()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -199,7 +200,6 @@ class InvestedViewController: UIViewController {
   }
 
 
-
   // MARK: Layout
 
   private func layout() {
@@ -275,7 +275,6 @@ extension InvestedViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.investedCoinListCell , for: indexPath) as? InvestedCoinCell else {
       return UITableViewCell()
-
     }
     cell.set(coinIndex: indexPath.row)
 
@@ -296,7 +295,7 @@ extension InvestedViewController: UITableViewDataSource {
 
 extension InvestedViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let informationVC = CoinInformationViewController(coin: AmountData.shared.boughtCoins.value[indexPath.row])
+    let informationVC = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: AmountData.shared.boughtCoins.value[indexPath.row]))
     self.navigationController?.pushViewController(informationVC, animated: true)
     tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
   }
