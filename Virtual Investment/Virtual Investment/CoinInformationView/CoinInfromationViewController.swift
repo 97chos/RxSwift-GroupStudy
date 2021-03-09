@@ -129,6 +129,7 @@ class CoinInformationViewController: UIViewController {
 
   override func viewWillAppear(_ animated: Bool) {
     self.viewModel.isContainCoinInBoughtList()
+    self.bindLabel()
   }
 
 
@@ -171,9 +172,9 @@ class CoinInformationViewController: UIViewController {
   // MARK: Configuration
 
   private func configure() {
-    self.bindUI()
     self.viewConfigure()
     self.layout()
+    self.bindButton()
   }
 
   private func viewConfigure() {
@@ -181,7 +182,7 @@ class CoinInformationViewController: UIViewController {
     self.viewModel.bindHoldingCount()
   }
 
-  private func bindUI() {
+  private func bindLabel() {
     viewModel.coin
       .map{ $0.koreanName }
       .do(onNext: {self.title = $0})
@@ -214,7 +215,9 @@ class CoinInformationViewController: UIViewController {
       }
       .bind(to: self.holdingCountLabel.rx.text)
       .disposed(by: bag)
+  }
 
+  private func bindButton() {
     self.buyButton.rx.tap
       .subscribe(onNext: {
         self.buyButtonAction()
