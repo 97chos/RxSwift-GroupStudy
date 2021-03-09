@@ -36,31 +36,35 @@ class CoinInformationViewModel {
 
   // MARK: Logic
 
-  func checkInputtedCount(_ senderTag: Int, text: String?, completion: @escaping ((Result<(Int),Error>) -> Void)) {
-    guard let inputtedText = text, !inputtedText.isEmpty else {
-      completion(.failure(inputCountError.isEmptyField))
-      return
-    }
-    guard let count: Int = Int(inputtedText) else {
-      completion(.failure(inputCountError.isNotNumber))
-      return
-    }
-    guard count > 0 else {
-      completion(.failure(inputCountError.inputtedZero))
-      return
-    }
-    if senderTag == 0 {
-      guard self.holdingCount ?? 0 >= count else {
-        completion(.failure(inputCountError.deficientHoldingCount))
-        return
+  func checkInputtedCount(_ senderTag: Int, text: String?) -> Observable<Int> {
+    return Observable.create({ observer in
+      guard let inputtedText = text, !inputtedText.isEmpty else {
+        observer.onError(inputCountError.isEmptyField)
+        return Disposables.create()
       }
-    } else if senderTag == 1 {
-      guard let deposit = try? self.amountData.deposit.value(), deposit >= Double(count) * (coin.value.prices?.currentPrice ?? 0) else {
-        completion(.failure(inputCountError.deficientDeposit))
-        return
+      guard let count: Int = Int(inputtedText) else {
+        observer.onError(inputCountError.isNotNumber)
+        return Disposables.create()
       }
-    }
-    completion(.success(count))
+      guard count > 0 else {
+        observer.onError(inputCountError.inputtedZero)
+        return Disposables.create()
+      }
+      if senderTag == 0 {
+        guard self.holdingCount ?? 0 >= count else {
+          observer.onError(inputCountError.deficientHoldingCount)
+          return Disposables.create()
+        }
+      } else if senderTag == 1 {
+        guard let deposit = try? self.amountData.deposit.value(), deposit >= Double(count) * (self.coin.value.prices?.currentPrice ?? 0) else {
+          observer.onError(inputCountError.deficientDeposit)
+          return Disposables.create()
+        }
+      }
+      observer.onNext(count)
+      observer.onCompleted()
+      return Disposables.create()
+    })
   }
 
   func isContainCoinInBoughtList() {
