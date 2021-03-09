@@ -13,6 +13,7 @@ class PurchasedViewModel {
   // MARK: Properties
 
   private let APIService: APIServiceProtocol
+  private let bag = DisposeBag()
 
 
   // MARK: Initializing
@@ -26,20 +27,19 @@ class PurchasedViewModel {
   func getCurrentPrice(completion: @escaping (Result<(),Error>) -> Void) {
     let codeList = AmountData.shared.boughtCoins.value.map{ $0.code }
     if !codeList.isEmpty {
-      self.APIService.loadCoinsTickerData(codes: codeList) { result in
-        switch result {
-        case .success(let coinPriceList):
-          var copyCoinList = AmountData.shared.boughtCoins.value
-          coinPriceList.enumerated().forEach { index, prices in
-            copyCoinList[index].prices?.currentPrice = prices.currentPrice
+      Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(codes: codeList), AmountData.shared.boughtCoins)
+        .take(1)
+        .subscribe(onNext: { tickerData, immutableList in
+          var coinList = immutableList
+          tickerData.enumerated().forEach{ index, prices in
+            coinList[index].prices?.currentPrice = prices.currentPrice
           }
-          AmountData.shared.boughtCoins.accept(copyCoinList)
+          AmountData.shared.boughtCoins.accept(coinList)
           completion(.success(()))
-
-        case .failure(let error):
-          completion(.failure(error))
-        }
-      }
+        }, onError: {
+          completion(.failure($0))
+        })
+        .disposed(by: bag)
     } else {
       return
     }
