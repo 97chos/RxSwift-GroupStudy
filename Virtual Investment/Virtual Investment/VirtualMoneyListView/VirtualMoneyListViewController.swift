@@ -24,9 +24,7 @@ class VirtualMoneyListViewController: UIViewController {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
       return UITableViewCell()
     }
-
     cell.set(coinData: item)
-
     return cell
   })
 

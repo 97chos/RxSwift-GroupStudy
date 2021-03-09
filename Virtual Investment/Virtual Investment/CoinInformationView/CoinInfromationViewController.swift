@@ -155,7 +155,7 @@ class CoinInformationViewController: UIViewController {
   private func sellButtonAction() {
     viewModel.checkInputtedCount(self.sellButton.tag, text: self.inputCount.text)
       .subscribe(onNext: { count in
-        self.viewModel.buyAction(count: count) {
+        self.viewModel.sellAction(count: count) {
           self.alert(title: "매도 체결이 완료되었습니다.", message: nil, completion: nil)
         }
       },onError: { error in
