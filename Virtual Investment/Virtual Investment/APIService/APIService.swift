@@ -9,8 +9,12 @@ import Foundation
 import Alamofire
 import RxSwift
 
+protocol APIServiceProtocol {
+  func lookupCoinListRx() -> Observable<[Coin]>
+  func loadCoinsTickerDataRx(codes: [String]) -> Observable<[ticker]>
+}
 
-class APIService {
+class APIService: APIServiceProtocol {
 
   // MARK: Lookup Virtual List
 

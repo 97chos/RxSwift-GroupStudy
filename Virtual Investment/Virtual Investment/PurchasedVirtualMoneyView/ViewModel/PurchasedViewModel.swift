@@ -10,12 +10,23 @@ import RxSwift
 
 class PurchasedViewModel {
 
+  // MARK: Properties
+
+  private let APIService: APIServiceProtocol
+
+
+  // MARK: Initializing
+
+  init(APIProtocol: APIServiceProtocol) {
+    self.APIService = APIProtocol
+  }
+
   // MARK: Functions
 
   func getCurrentPrice(completion: @escaping (Result<(),Error>) -> Void) {
     let codeList = AmountData.shared.boughtCoins.value.map{ $0.code }
     if !codeList.isEmpty {
-      APIService().loadCoinsTickerData(codes: codeList) { result in
+      self.APIService.loadCoinsTickerData(codes: codeList) { result in
         switch result {
         case .success(let coinPriceList):
           var copyCoinList = AmountData.shared.boughtCoins.value
