@@ -187,17 +187,18 @@ class InvestedViewController: UIViewController {
   // MARK: Functions
 
   private func getCurrentPrice() {
-    viewModel.getCurrentPrice{ result in
-      switch result {
-      case .success():
-        break
-      case .failure(let error):
-        let errorType = error as? APIError
-        self.alert(title: errorType?.description, message: errorType?.message, completion: nil)
+    viewModel.getCurrentPrice()
+      .subscribe { completable in
+        switch completable {
+        case .completed:
+          break
+        case .error(let error):
+          let errorType = error as? APIError
+          self.alert(title: errorType?.description, message: errorType?.message, completion: nil)
+        }
       }
-    }
+      .disposed(by: bag)
   }
-
 
   // MARK: Layout
 

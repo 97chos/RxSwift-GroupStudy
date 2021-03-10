@@ -24,24 +24,25 @@ class PurchasedViewModel {
 
   // MARK: Functions
 
-  func getCurrentPrice(completion: @escaping (Result<(),Error>) -> Void) {
-    let codeList = AmountData.shared.boughtCoins.value.map{ $0.code }
-    if !codeList.isEmpty {
-      Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(codes: codeList), AmountData.shared.boughtCoins)
-        .take(1)
-        .subscribe(onNext: { tickerData, immutableList in
-          var coinList = immutableList
-          tickerData.enumerated().forEach{ index, prices in
-            coinList[index].prices?.currentPrice = prices.currentPrice
-          }
-          AmountData.shared.boughtCoins.accept(coinList)
-          completion(.success(()))
-        }, onError: {
-          completion(.failure($0))
-        })
-        .disposed(by: bag)
-    } else {
-      return
+  func getCurrentPrice() -> Completable {
+    return Completable.create { observer in
+      let codeList = AmountData.shared.boughtCoins.value.map{ $0.code }
+      if !codeList.isEmpty {
+        Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(codes: codeList), AmountData.shared.boughtCoins)
+          .take(1)
+          .subscribe(onNext: { tickerData, immutableList in
+            var coinList = immutableList
+            tickerData.enumerated().forEach{ index, prices in
+              coinList[index].prices?.currentPrice = prices.currentPrice
+            }
+            AmountData.shared.boughtCoins.accept(coinList)
+            observer(.completed)
+          }, onError: {
+            observer(.error($0))
+          })
+          .disposed(by: self.bag)
+      }
+      return Disposables.create()
     }
   }
 
