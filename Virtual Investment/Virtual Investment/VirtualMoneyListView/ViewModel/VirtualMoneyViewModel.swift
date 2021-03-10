@@ -22,6 +22,7 @@ class VirtualMoneyViewModel {
   // MARK: Properties
 
   var coinList: BehaviorRelay = BehaviorRelay<[Coin]>(value: [])
+  var codeList: [String] = []
   private let bag = DisposeBag()
   private var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   private var APIService: APIServiceProtocol
@@ -39,8 +40,19 @@ class VirtualMoneyViewModel {
 
   // MARK: Functions
 
+  private func extractCodeList() {
+    self.coinList
+      .take(1)
+      .map{ $0.map{ $0.code }}
+      .subscribe(onNext: {
+        self.codeList = $0
+      })
+      .disposed(by: bag)
+  }
+
   func lookUpCoinList(completion: @escaping (Result<(),Error>) -> Void) {
     self.APIService.lookupCoinListRx()
+      .observe(on: MainScheduler.asyncInstance)
       .subscribe(onNext: { coinList in
         self.coinList.accept(coinList)
         completion(.success(()))
@@ -51,17 +63,23 @@ class VirtualMoneyViewModel {
   }
 
   func loadTickerData(completion: @escaping (Result<(),Error>) -> Void) {
-    var codeList: [String] = []
-    self.coinList.value.forEach {
-      codeList.append($0.code)
-    }
-    self.APIService.loadCoinsTickerDataRx(codes: codeList)
+    self.extractCodeList()
+    self.APIService.loadCoinsTickerDataRx(codes: self.codeList)
+      .observe(on: MainScheduler.asyncInstance)
       .subscribe(onNext: { [weak self] tickerList in
-        var copyCoinList = self?.coinList.value
-        tickerList.enumerated().forEach { index, prices in
-          copyCoinList?[index].prices = prices
-        }
-        self?.coinList.accept(copyCoinList ?? [])
+        self?.coinList
+          .distinctUntilChanged()
+          .map{ arr -> [Coin] in
+            var list = arr
+            tickerList.enumerated().forEach{ index, prices in
+              list[index].prices = prices
+            }
+            return list
+          }
+          .subscribe(onNext: {
+            self?.coinList.accept($0)
+          })
+          .disposed(by: self?.bag ?? DisposeBag())
         completion(.success(()))
       }, onError: { error in
         completion(.failure(error))
@@ -115,19 +133,19 @@ extension VirtualMoneyViewModel: WebSocketDelegate {
 
     case .binary(let data):
       do {
+        var listValue = self.coinList.value
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
-        let codeDic = Dictionary(grouping: self.coinList.value, by: { $0.code })
+        let codeDic = Dictionary(grouping: listValue, by: { $0.code })
 
         guard var coin = codeDic[tickerData.code]?.first else { return }
-        guard let index = self.coinList.value.firstIndex(where: { $0.code == coin.code }) else { return }
+        guard let index = listValue.firstIndex(where: { $0.code == coin.code }) else { return }
         coin.prices = tickerData
 
-        var copyCoinList = self.coinList.value
-        copyCoinList[index] = coin
-        let indexInteger = coinList.value.index(0, offsetBy: index)
+        listValue[index] = coin
+        let indexInteger = listValue.index(0, offsetBy: index)
 
-        self.coinList.accept(copyCoinList)
+        self.coinList.accept(listValue)
         DispatchQueue.main.async {
           self.delegate?.sendSuccessResult(indexInteger)
         }

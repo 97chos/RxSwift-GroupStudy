@@ -25,8 +25,16 @@ class PurchasedViewModel {
   // MARK: Functions
 
   func getCurrentPrice() -> Completable {
-    return Completable.create { observer in
-      let codeList = AmountData.shared.boughtCoins.value.map{ $0.code }
+    return Completable.create { [weak self] observer in
+      guard let self = self else { return Disposables.create() }
+      var codeList: [String] = []
+      AmountData.shared.boughtCoins
+        .map{ $0.map{ $0.code } }
+        .subscribe(onNext: {
+          codeList = $0
+        })
+        .disposed(by: self.bag)
+
       if !codeList.isEmpty {
         Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(codes: codeList), AmountData.shared.boughtCoins)
           .take(1)

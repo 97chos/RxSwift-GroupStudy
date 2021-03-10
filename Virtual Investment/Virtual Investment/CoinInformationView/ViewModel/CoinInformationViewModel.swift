@@ -71,13 +71,13 @@ class CoinInformationViewModel {
     Observable.combineLatest(amountData.boughtCoins, self.coin, resultSelector: {list, coin -> ContainCoinResult in
       if list.contains(coin) {
         guard let index = list.firstIndex(of: coin) else {
-          return ContainCoinResult(false, nil)
+          return ContainCoinResult(false, nil, coin)
         }
         self.boughtCoinsIndex = index
-        return ContainCoinResult(true,list[index])
+        return ContainCoinResult(true,list[index],coin)
       } else {
         self.boughtCoinsIndex = nil
-        return ContainCoinResult(false,nil)
+        return ContainCoinResult(false,nil,coin)
       }
     })
     .distinctUntilChanged()
@@ -86,7 +86,7 @@ class CoinInformationViewModel {
         guard var listIndexCoin = result.coin else {
           return
         }
-        let coin = self.coin.value
+        let coin = result.currentCoin
         self.coin.accept(Coin(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, prices: coin.prices, holdingCount: listIndexCoin.holdingCount, totalBoughtPrice: listIndexCoin.totalBoughtPrice))
       }
     })
@@ -137,6 +137,7 @@ class CoinInformationViewModel {
         .disposed(by: bag)
     } else {
       var totalPrice: Double = 0
+      var boughtCoinList: [Coin] = []
       guard let index = self.boughtCoinsIndex else {
         return
       }
@@ -170,26 +171,37 @@ class CoinInformationViewModel {
           coinList[index].totalBoughtPrice += totalPrice
           return coinList
         }
+        .do(onNext:{ boughtCoinList = $0 })
         .subscribe(onNext: {
           self.amountData.boughtCoins.accept($0)
         })
         .disposed(by: bag)
 
-      self.coin.accept(self.amountData.boughtCoins.value[index])
+      self.coin.accept(boughtCoinList[index])
     }
     completion()
   }
 
 
   func sellAction(count: Int, completion: () -> Void) {
-    let boughtList = self.amountData.boughtCoins.value
-    guard let index = self.boughtCoinsIndex else {
-      return
-    }
-    var indexCoin = boughtList[index]
-    let remainingCount = indexCoin.holdingCount - count
+    var boughtList: [Coin] = []
+    var indexCoin: Coin?
+    var coinIndex: Int?
+    var remainingCount: Int = 0
     var totalRemainingPrice: Double = 0
     var totalCellPrice: Double = 0
+
+    AmountData.shared.boughtCoins
+      .subscribe(onNext: {
+        boughtList = $0
+        guard let index = self.boughtCoinsIndex else {
+          return
+        }
+        coinIndex = index
+        indexCoin = boughtList[index]
+        remainingCount = (indexCoin?.holdingCount ?? 0) - count
+      })
+      .disposed(by: bag)
 
     self.coin
       .take(1)
@@ -224,16 +236,19 @@ class CoinInformationViewModel {
       .take(1)
       .map{ list -> [Coin] in
         var coinList = list
+        guard let index = coinIndex else { return [] }
         coinList[index].totalBoughtPrice -= max(coinList[index].totalBoughtPrice - totalRemainingPrice, 0)
         coinList[index].holdingCount -= count
         return coinList
       }
       .observe(on: MainScheduler.asyncInstance)
       .do{
+        guard let index = coinIndex else { return }
         self.coin.accept($0[index])
       }
       .map{
         var coinList = $0
+        guard let index = coinIndex else { return [] }
         if coinList[index].holdingCount == 0 {
           coinList.remove(at: index)
         }
