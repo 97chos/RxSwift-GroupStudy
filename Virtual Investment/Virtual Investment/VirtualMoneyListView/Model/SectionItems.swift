@@ -9,22 +9,38 @@ import Foundation
 import RxDataSources
 
 struct CoinListSection {
+  var header: String
   var items: [Item]
+}
 
-  init(original: CoinListSection, items: [Coin]) {
-    self.items = items
+extension CoinListSection: AnimatableSectionModelType {
+  typealias Item = Coin
+
+  var identity: String {
+    return header
   }
-  init(items: [Coin]) {
-    self.items = items
+
+  init(original: CoinListSection, items: [Item]) {
+      self = original
+      self.items = items
   }
 }
 
-extension CoinListSection: SectionModelType {
 
-  var identity: Identity {
-    return Int.random(in: 0...100000)
-  }
+struct MySection {
+    var header: String
+    var items: [Item]
+}
 
-  typealias Item = Coin
-  typealias Identity = Int
+extension MySection : AnimatableSectionModelType {
+    typealias Item = Int
+
+    var identity: String {
+        return header
+    }
+
+    init(original: MySection, items: [Item]) {
+        self = original
+        self.items = items
+    }
 }

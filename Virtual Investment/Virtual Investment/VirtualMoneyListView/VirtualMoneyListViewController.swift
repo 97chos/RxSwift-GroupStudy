@@ -20,7 +20,7 @@ class VirtualMoneyListViewController: UIViewController {
   let viewModel: VirtualMoneyViewModel
   let bag = DisposeBag()
 
-  let dataSource = RxTableViewSectionedReloadDataSource<CoinListSection>(configureCell: { datasource, tableView, indexPath, item in
+  let dataSource = RxTableViewSectionedAnimatedDataSource<CoinListSection>(configureCell: { datasource, tableView, indexPath, item in
     guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
       return UITableViewCell()
     }
@@ -28,7 +28,7 @@ class VirtualMoneyListViewController: UIViewController {
     return cell
   })
 
-  var subject = BehaviorRelay<[CoinListSection]>(value: [])
+  let subject: BehaviorRelay = BehaviorRelay<[CoinListSection]>(value: [])
 
 
   // MARK: Bind
@@ -37,15 +37,18 @@ class VirtualMoneyListViewController: UIViewController {
     self.tableView.rx.setDelegate(self)
       .disposed(by: bag)
 
-    self.viewModel.coinList
-      .map{ CoinListSection(items: $0) }
-      .map{ [$0] }
-      .bind(to: self.subject)
+    self.subject
+      .bind(to: self.tableView.rx.items(dataSource: dataSource))
       .disposed(by: bag)
 
-    self.subject
-      .bind(to: tableView.rx.items(dataSource: dataSource))
+    self.viewModel.coinList
+      .map{ CoinListSection(header: "list", items: $0) }
+      .map{ [$0] }
+      .subscribe(onNext: {
+        self.subject.accept($0)
+      })
       .disposed(by: bag)
+
   }
 
 

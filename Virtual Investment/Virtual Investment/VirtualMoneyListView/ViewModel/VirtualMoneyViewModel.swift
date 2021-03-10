@@ -143,12 +143,8 @@ extension VirtualMoneyViewModel: WebSocketDelegate {
         coin.prices = tickerData
 
         listValue[index] = coin
-        let indexInteger = listValue.index(0, offsetBy: index)
 
         self.coinList.accept(listValue)
-        DispatchQueue.main.async {
-          self.delegate?.sendSuccessResult(indexInteger)
-        }
       } catch {
         self.delegate?.sendFailureResult(WebSocketError.decodingError)
       }
