@@ -117,13 +117,22 @@ class CoinInformationViewModel {
         })
         .disposed(by: bag)
 
-      self.coin
+      Observable.combineLatest(AmountData.shared.boughtCoins, self.coin)
         .take(1)
+        .map{ boughtList, currentCoin -> ([Coin], Coin) in
+          var list = boughtList
+          var coin = currentCoin
+
+          coin.holdingCount = count
+          coin.totalBoughtPrice = totalPrice
+          list.append(coin)
+          return (list, coin)
+        }
         .observe(on: MainScheduler.asyncInstance)
-        .subscribe(onNext: { currentCoin in
-          self.coin.accept(Coin(koreanName: currentCoin.koreanName, englishName: currentCoin.englishName, code: currentCoin.code, prices: currentCoin.prices, holdingCount: count, totalBoughtPrice: totalPrice))
-          self.amountData.boughtCoins.accept(self.amountData.boughtCoins.value + [self.coin.value])
-          self.boughtCoinsIndex = self.amountData.boughtCoins.value.firstIndex(of: currentCoin)
+        .subscribe(onNext: {
+          self.coin.accept($1)
+          AmountData.shared.boughtCoins.accept($0)
+          self.boughtCoinsIndex = $0.firstIndex(of: $1)
         })
         .disposed(by: bag)
     } else {
