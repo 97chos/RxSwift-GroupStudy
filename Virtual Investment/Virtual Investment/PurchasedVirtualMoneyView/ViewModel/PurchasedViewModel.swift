@@ -27,16 +27,15 @@ class PurchasedViewModel {
   func getCurrentPrice() -> Completable {
     return Completable.create { [weak self] observer in
       guard let self = self else { return Disposables.create() }
-      var codeList: [String] = []
+      var coinList: [Coin] = []
       AmountData.shared.boughtCoins
-        .map{ $0.map{ $0.code } }
         .subscribe(onNext: {
-          codeList = $0
+          coinList = $0
         })
         .disposed(by: self.bag)
 
-      if !codeList.isEmpty {
-        Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(codes: codeList), AmountData.shared.boughtCoins)
+      if !coinList.isEmpty {
+        Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(coins: coinList), AmountData.shared.boughtCoins)
           .take(1)
           .subscribe(onNext: { tickerData, immutableList in
             var coinList = immutableList

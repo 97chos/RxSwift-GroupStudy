@@ -11,7 +11,7 @@ import RxSwift
 
 protocol APIServiceProtocol {
   func lookupCoinListRx() -> Observable<[Coin]>
-  func loadCoinsTickerDataRx(codes: [String]) -> Observable<[ticker]>
+  func loadCoinsTickerDataRx(coins: [Coin]) -> Observable<[ticker]>
 }
 
 class APIService: APIServiceProtocol {
@@ -55,8 +55,8 @@ class APIService: APIServiceProtocol {
 
   // MARK: Load Initializing Data
 
-  func loadCoinsTickerData(codes: [String], completion: @escaping (Result<[ticker],Error>) -> Void) {
-
+  func loadCoinsTickerData(coins: [Coin], completion: @escaping (Result<[ticker],Error>) -> Void) {
+    let codes = coins.map{ $0.code }
     let codeList = codes.joined(separator: ",")
     var priceListData: [ticker] = []
 
@@ -88,9 +88,9 @@ class APIService: APIServiceProtocol {
     }
   }
 
-  func loadCoinsTickerDataRx(codes: [String]) -> Observable<[ticker]> {
+  func loadCoinsTickerDataRx(coins: [Coin]) -> Observable<[ticker]> {
     return Observable.create({ observer in
-      self.loadCoinsTickerData(codes: codes) { result in
+      self.loadCoinsTickerData(coins: coins) { result in
         switch result {
         case .success(let tickerList):
           observer.onNext(tickerList)
