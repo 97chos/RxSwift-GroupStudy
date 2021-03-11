@@ -28,7 +28,7 @@ class VirtualMoneyListViewController: UIViewController {
     return cell
   })
 
-  let subject: BehaviorRelay = BehaviorRelay<[CoinListSection]>(value: [])
+  let subject: BehaviorSubject = BehaviorSubject<[CoinListSection]>(value: [])
 
 
   // MARK: Bind
@@ -45,7 +45,7 @@ class VirtualMoneyListViewController: UIViewController {
       .map{ CoinListSection(header: "list", items: $0) }
       .map{ [$0] }
       .subscribe(onNext: {
-        self.subject.accept($0)
+        self.subject.onNext($0)
       })
       .disposed(by: bag)
 
@@ -125,23 +125,12 @@ class VirtualMoneyListViewController: UIViewController {
   }
 
   private func initDataConfigure() {
-    self.viewModel.lookUpCoinList { [weak self] result in
-      switch result {
-      case .success():
-        self?.viewModel.loadTickerData { result in
-          switch result {
-          case .success():
-            self?.tableView.reloadData()
-          case .failure(let error):
-            let errorType = error as? APIError
-            self?.alert(title: errorType?.description, message: nil, completion: nil)
-          }
-        }
-      case .failure(let error):
+    self.viewModel.lookUpCoinList()
+      .subscribe(onError: { error in
         let errorType = error as? APIError
-        self?.alert(title: errorType?.description, message: nil, completion: nil)
-      }
-    }
+        self.alert(title: errorType?.description, message: nil, completion: nil)
+      })
+      .disposed(by: bag)
   }
 
 

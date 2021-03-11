@@ -50,43 +50,44 @@ class VirtualMoneyViewModel {
       .disposed(by: bag)
   }
 
-  func lookUpCoinList(completion: @escaping (Result<(),Error>) -> Void) {
-    self.APIService.lookupCoinListRx()
-      .observe(on: MainScheduler.asyncInstance)
-      .subscribe(onNext: { coinList in
-        self.coinList.accept(coinList)
-        completion(.success(()))
-      }, onError: { error in
-        completion(.failure(error))
-      })
-      .disposed(by: bag)
-  }
-
-  func loadTickerData(completion: @escaping (Result<(),Error>) -> Void) {
-    self.extractCodeList()
-    self.APIService.loadCoinsTickerDataRx(codes: self.codeList)
-      .observe(on: MainScheduler.asyncInstance)
-      .subscribe(onNext: { [weak self] tickerList in
-        self?.coinList
-          .distinctUntilChanged()
-          .map{ arr -> [Coin] in
-            var list = arr
-            tickerList.enumerated().forEach{ index, prices in
-              list[index].prices = prices
+  func lookUpCoinList() -> Completable {
+    return Completable.create(subscribe: { observer in
+      self.APIService.lookupCoinListRx()
+        .subscribe(onNext: { [weak self] list in
+          var missingPriceCoins = list
+          guard let self = self else { return }
+          self.APIService.loadCoinsTickerDataRx(coins: missingPriceCoins)
+            .map{ tickerList -> [Coin] in
+              let groupingList = Dictionary(grouping: tickerList, by: {$0.code})
+              groupingList.enumerated().forEach{ index, dic in
+                let ticker = groupingList[missingPriceCoins[index].code]?.first
+                missingPriceCoins[index].prices = ticker
+              }
+              return missingPriceCoins
             }
-            return list
-          }
-          .subscribe(onNext: {
-            self?.coinList.accept($0)
-          })
-          .disposed(by: self?.bag ?? DisposeBag())
-        completion(.success(()))
-      }, onError: { error in
-        completion(.failure(error))
-      })
-      .disposed(by: bag)
+            .subscribe(onNext: { completeCoins in
+              self.coinList
+                .distinctUntilChanged()
+                .subscribe(onNext: { _ in
+                  self.coinList.accept(completeCoins)
+                  observer(.completed)
+                },onError: { _ in
+                  observer(.error(APIError.parseError))
+                })
+                .disposed(by: self.bag)
+            }, onError: { _ in
+              observer(.error(APIError.loadCoinTickerError))
+            })
+            .disposed(by: self.bag)
+        }, onError: { _ in
+          observer(.error(APIError.loadCoinNameError))
+        })
+        .disposed(by: self.bag)
+      return Disposables.create()
+    })
   }
 }
+
 
 // MARK: WebScoket Delegation
 
