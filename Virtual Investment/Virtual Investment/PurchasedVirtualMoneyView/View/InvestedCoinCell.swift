@@ -74,7 +74,7 @@ class InvestedCoinCell: UITableViewCell {
     AmountData.shared.boughtCoins
       .filter{ !$0.isEmpty }
       .map{ $0[coinIndex]}
-      .map{ "\($0.totalBoughtPrice)" }
+      .map{ $0.totalBoughtPrice.cutDecimal() }
       .bind(to: self.totalBoughtPriceLabel.rx.text)
       .disposed(by: bag)
 
@@ -82,7 +82,7 @@ class InvestedCoinCell: UITableViewCell {
       .filter{ !$0.isEmpty }
       .map{ $0[coinIndex] }
       .map{ var coin = $0
-        return "\((coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount))"
+        return ((coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount)).cutDecimal()
       }
       .bind(to: self.evaluatedPriceLabel.rx.text)
       .disposed(by: bag)
