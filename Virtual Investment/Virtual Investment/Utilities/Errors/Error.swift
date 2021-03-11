@@ -12,6 +12,8 @@ enum APIError: Error, CustomStringConvertible {
   case networkError
   case parseError
   case requestAPIError
+  case loadCoinNameError
+  case loadCoinTickerError
 
   var description: String {
     switch self {
@@ -19,6 +21,8 @@ enum APIError: Error, CustomStringConvertible {
     case .parseError: return "초기 데이터 파싱에 실패하였습니다."
     case .requestAPIError: return "잘못된 요청값입니다."
     case .urlError: return "잘못된 URL입니다."
+    case .loadCoinNameError: return "코인 이름 로딩에 실패하였습니다."
+    case .loadCoinTickerError: return "코인 가격 로딩에 실패하였습니다."
     }
   }
 
