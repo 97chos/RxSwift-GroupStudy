@@ -25,7 +25,7 @@ extension Double {
       formatter.locale = Locale(identifier: "ko_KR")
       return formatter.string(from: NSNumber(value: self)) ?? ""
     } else {
-      return "₩\(self)"
+      return "₩\(self.cutDecimal())"
     }
   }
 }
