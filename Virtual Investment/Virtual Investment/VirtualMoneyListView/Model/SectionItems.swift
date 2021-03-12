@@ -25,22 +25,3 @@ extension CoinListSection: AnimatableSectionModelType {
       self.items = items
   }
 }
-
-
-struct MySection {
-    var header: String
-    var items: [Item]
-}
-
-extension MySection : AnimatableSectionModelType {
-    typealias Item = Int
-
-    var identity: String {
-        return header
-    }
-
-    init(original: MySection, items: [Item]) {
-        self = original
-        self.items = items
-    }
-}
