@@ -63,3 +63,17 @@ struct ticker: Codable, Hashable {
     case lowPrice = "lp"
   }
 }
+
+struct APITicker: Codable, Hashable {
+  let code: String
+  let currentPrice: Double
+  let highPrice: Double
+  let lowPrice: Double
+
+  enum CodingKeys: String, CodingKey {
+    case code = "market"
+    case currentPrice = "tradePrice"
+    case highPrice = "high_Price"
+    case lowPrice = "low_Price"
+  }
+}
