@@ -35,7 +35,6 @@ struct SampleSectionItem {
             type = SectionType.none
             break
         }
-
         return type
     }
 }
@@ -111,7 +110,7 @@ extension SampleSectionTableViewController: UITableViewDelegate  {
             return
         }
 
-      print("didSelectRowAt :")
+        print("didSelectRowAt : + \\")
 
 
     }
