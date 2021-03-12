@@ -42,13 +42,11 @@ class VirtualMoneyListViewController: UIViewController {
       .disposed(by: bag)
 
     self.viewModel.coinList
-      .map{ CoinListSection(header: "list", items: $0) }
-      .map{ [$0] }
-      .subscribe(onNext: {
-        self.subject.onNext($0)
+      .map{ [CoinListSection(header: "list", items: $0)] }
+      .subscribe(onNext: { [weak self] in
+        self?.subject.onNext($0)
       })
       .disposed(by: bag)
-
   }
 
 
