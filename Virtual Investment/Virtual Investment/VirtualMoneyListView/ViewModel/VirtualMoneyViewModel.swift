@@ -51,41 +51,62 @@ class VirtualMoneyViewModel {
   }
 
   func lookUpCoinList() -> Completable {
-    return Completable.create(subscribe: { observer in
+    var completedCoins: [Coin] = []
+    let missingPriceCoins = self.APIService.lookupCoinListRx()
+      .flatMap{ Observable.from($0) }
+
+    let tickerData = Observable<ticker>.create({ [weak self] oberver in
+      guard let self = self else { return Disposables.create() }
       self.APIService.lookupCoinListRx()
-        .subscribe(onNext: { [weak self] list in
-          var missingPriceCoins = list
-          guard let self = self else { return }
-          self.APIService.loadCoinsTickerDataRx(coins: missingPriceCoins)
-            .map{ tickerList -> [Coin] in
-              let groupingList = Dictionary(grouping: tickerList, by: {$0.code})
-              groupingList.enumerated().forEach{ index, dic in
-                let ticker = groupingList[missingPriceCoins[index].code]?.first
-                missingPriceCoins[index].prices = ticker
-              }
-              return missingPriceCoins
-            }
-            .subscribe(onNext: { completeCoins in
-              self.coinList
-                .distinctUntilChanged()
-                .subscribe(onNext: { _ in
-                  self.coinList.accept(completeCoins)
-                  observer(.completed)
-                },onError: { _ in
-                  observer(.error(APIError.parseError))
-                })
-                .disposed(by: self.bag)
-            }, onError: { _ in
-              observer(.error(APIError.loadCoinTickerError))
+        .subscribe(onNext: {
+          self.APIService.loadCoinsTickerDataRx(coins: $0)
+            .flatMap({ Observable.from($0) })
+            .subscribe(onNext: {
+              oberver.onNext($0)
             })
             .disposed(by: self.bag)
-        }, onError: { _ in
-          observer(.error(APIError.loadCoinNameError))
         })
         .disposed(by: self.bag)
       return Disposables.create()
     })
+
+    return Completable.create(subscribe: { [weak self] observer in
+      guard let self = self else { return Disposables.create() }
+      Observable.zip(missingPriceCoins,tickerData) { immutableCoin, ticker -> Coin in
+        var coin = immutableCoin
+        coin.prices = ticker
+        return coin
+      }
+      .subscribe(onNext: {
+        completedCoins.append($0)
+        self.coinList.accept(completedCoins)
+      },onError: { error in
+        observer(.error(error))
+      })
+      .disposed(by: self.bag)
+
+      return Disposables.create()
+    })
   }
+
+  //  func autoScrollLoadCoins() -> Completable {
+  //    return Completable.create(subscribe: { [weak self] observe in
+  //      guard let self = self else { return Disposables.create() }
+  //      self.APIService.lookupCoinListRx()
+  //        .flatMap{ Observable.from($0) }
+  //        .take(10)
+  //        .subscribe(onNext: { missingPriceCoin in
+  //          var list: [Coin] = []
+  //          self.APIService.loadCoinTickerDataRx(coin: missingPriceCoin)
+  //            .subscribe(onNext: {compltableCoin in
+  //              list.append(compltableCoin)
+  //            },onCompleted: { self.coinList.accept(self.coinList.value + list)})
+  //            .disposed(by: self.bag)
+  //        })
+  //        .disposed(by: self.bag)
+  //      return Disposables.create()
+  //    })
+  //  }
 }
 
 
@@ -134,6 +155,30 @@ extension VirtualMoneyViewModel: WebSocketDelegate {
 
     case .binary(let data):
       do {
+        //
+        //        let decoder = JSONDecoder()
+        //        let tickerData = try decoder.decode(ticker.self, from: data)
+        //
+        //        self.coinList
+        //          .take(1)
+        //          .map{ list in
+        //            return (list, Dictionary(grouping: list, by: { $0.code }))
+        //          }
+        //          .map{ list, dic -> ([Coin], Coin?, Int?) in
+        //            var coin = dic[tickerData.code]?.first
+        //            coin?.prices = tickerData
+        //            let index = list.firstIndex(where: {$0.code == coin?.code})
+        //            return (list, coin, index)
+        //          }
+        //          .filter{ list, coin, index in coin != nil && index != nil }
+        //          .observe(on: MainScheduler.asyncInstance)
+        //          .subscribe(onNext: { immutableList, coin, index in
+        //            var list = immutableList
+        //            list[index!] = coin!
+        //            self.coinList.accept(list)
+        //          },onDisposed: { print("diisposed")})
+        //          .disposed(by: bag)
+
         var listValue = self.coinList.value
         let decoder = JSONDecoder()
         let tickerData = try decoder.decode(ticker.self, from: data)
