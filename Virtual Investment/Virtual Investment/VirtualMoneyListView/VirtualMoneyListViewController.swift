@@ -65,7 +65,9 @@ class VirtualMoneyListViewController: UIViewController {
     let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 56))
     searchBar.placeholder = "검색하기"
     searchBar.searchTextField.backgroundColor = .white
-    searchBar.keyboardType = .asciiCapable
+    searchBar.keyboardType = .webSearch
+    searchBar.enablesReturnKeyAutomatically = false
+    searchBar.delegate = self
     return searchBar
   }()
   private let tableView: UITableView = {
@@ -171,7 +173,23 @@ extension VirtualMoneyListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
     return 50
   }
+
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    self.view.endEditing(true)
+  }
 }
+
+
+// MARK: SearchBar Delegation
+
+extension VirtualMoneyListViewController: UISearchBarDelegate {
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    self.view.endEditing(true)
+  }
+}
+
+
+// MARK: WebSocket Delegation
 
 extension VirtualMoneyListViewController: WebSocektErrorDelegation {
   func sendSuccessResult(_ index: Int) {
