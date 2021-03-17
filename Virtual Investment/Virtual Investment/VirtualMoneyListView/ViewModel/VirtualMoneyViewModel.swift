@@ -22,6 +22,9 @@ class VirtualMoneyViewModel {
   // MARK: Properties
 
   var coinList: BehaviorRelay = BehaviorRelay<[Coin]>(value: [])
+  var sections: BehaviorRelay<[CoinListSection]> = BehaviorRelay<[CoinListSection]>(value: [])
+  let searchingText: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
+
   var codeList: [String] = []
   private let bag = DisposeBag()
   private var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
@@ -35,10 +38,24 @@ class VirtualMoneyViewModel {
 
   init(APIProtocol: APIServiceProtocol) {
     self.APIService = APIProtocol
+    self.bindSections()
   }
 
 
   // MARK: Functions
+
+  private func bindSections() {
+    Observable.combineLatest(self.coinList, self.searchingText) { coinList, searchingText -> [Coin] in
+      if let searchingText = searchingText {
+        return coinList.filter{ $0.code.hasPrefix(searchingText) || $0.englishName.hasPrefix(searchingText) || $0.koreanName.hasPrefix(searchingText)}
+      } else {
+        return coinList
+      }
+    }
+    .map{ [CoinListSection(header: "list", items: $0)] }
+    .bind(to: self.sections)
+    .disposed(by: bag)
+  }
 
   private func extractCodeList() {
     self.coinList
@@ -189,6 +206,10 @@ extension VirtualMoneyViewModel: WebSocketDelegate {
         coin.prices = tickerData
 
         listValue[index] = coin
+
+        Observable.just(listValue)
+          .bind(to: self.coinList)
+          .disposed(by: bag)
 
         self.coinList.accept(listValue)
       } catch {

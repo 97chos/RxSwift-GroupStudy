@@ -28,24 +28,21 @@ class VirtualMoneyListViewController: UIViewController {
     return cell
   })
 
-  let subject: BehaviorSubject = BehaviorSubject<[CoinListSection]>(value: [])
-
 
   // MARK: Bind
 
-  func bindTableView() {
+  private func bindSections() {
+    self.viewModel.sections
+      .bind(to: self.tableView.rx.items(dataSource: self.dataSource))
+      .disposed(by: bag)
+
     self.tableView.rx.setDelegate(self)
       .disposed(by: bag)
+  }
 
-    self.subject
-      .bind(to: self.tableView.rx.items(dataSource: dataSource))
-      .disposed(by: bag)
-
-    self.viewModel.coinList
-      .map{ [CoinListSection(header: "list", items: $0)] }
-      .subscribe(onNext: { [weak self] in
-        self?.subject.onNext($0)
-      })
+  private func bindSeraching() {
+    self.searchBar.rx.text
+      .bind(to: self.viewModel.searchingText)
       .disposed(by: bag)
   }
 
@@ -88,7 +85,8 @@ class VirtualMoneyListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
-    self.bindTableView()
+    self.bindSections()
+    self.bindSeraching()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -151,8 +149,11 @@ class VirtualMoneyListViewController: UIViewController {
 
 extension VirtualMoneyListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let vc = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: viewModel.coinList.value[indexPath.row]))
+    guard let coin = viewModel.sections.value.first?.items[indexPath.row] else { return }
+
+    let vc = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: coin))
     self.navigationController?.pushViewController(vc, animated: true)
+    self.view.endEditing(true)
     tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
   }
 
