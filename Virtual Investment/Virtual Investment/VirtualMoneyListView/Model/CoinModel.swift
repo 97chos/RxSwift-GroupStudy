@@ -15,21 +15,11 @@ struct Coin: Codable {
   let koreanName: String
   let englishName: String
   let code: String
-  var prices: ticker?
-  lazy var holdingCount: Int = 0 {
-    didSet {
-      if holdingCount == 0 {
-        self.totalBoughtPrice = 0
-      }
-    }
-  }
-  var totalBoughtPrice: Double = 0
 
   enum CodingKeys: String, CodingKey {
     case koreanName = "korean_name"
     case englishName = "english_name"
     case code = "market"
-    case prices
   }
 }
 
@@ -47,7 +37,7 @@ extension Coin: IdentifiableType {
   typealias Identity = String
 }
 
-struct ticker: Codable, Hashable {
+struct Ticker: Codable, Hashable {
 
   // MARK: Json Keys
 

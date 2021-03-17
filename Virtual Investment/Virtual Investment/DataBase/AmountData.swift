@@ -12,7 +12,7 @@ import RxCocoa
 class AmountData {
   static var shared = AmountData()
   var deposit: BehaviorSubject = BehaviorSubject<Double>(value: 0)
-  var boughtCoins: BehaviorRelay<[Coin]> = BehaviorRelay<[Coin]>(value: [])
+  var boughtCoins: BehaviorRelay<[CoinInfo]> = BehaviorRelay<[CoinInfo]>(value: [])
 
   lazy var investedPrice: Observable<Double> = boughtCoins
     .map{ $0.reduce(0){$0 + $1.totalBoughtPrice}}

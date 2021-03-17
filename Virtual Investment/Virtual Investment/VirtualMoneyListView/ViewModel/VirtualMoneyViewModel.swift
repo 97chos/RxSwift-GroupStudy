@@ -21,7 +21,7 @@ class VirtualMoneyViewModel {
 
   // MARK: Properties
 
-  var coinList: BehaviorRelay = BehaviorRelay<[Coin]>(value: [])
+  var coinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
   var sections: BehaviorRelay<[CoinListSection]> = BehaviorRelay<[CoinListSection]>(value: [])
   let searchingText: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
 
@@ -45,7 +45,7 @@ class VirtualMoneyViewModel {
   // MARK: Functions
 
   private func bindSections() {
-    Observable.combineLatest(self.coinList, self.searchingText) { coinList, searchingText -> [Coin] in
+    Observable.combineLatest(self.coinList, self.searchingText) { coinList, searchingText -> [CoinInfo] in
       if let searchingText = searchingText {
         return coinList.filter{ $0.code.hasPrefix(searchingText) || $0.englishName.hasPrefix(searchingText) || $0.koreanName.hasPrefix(searchingText)}
       } else {
@@ -68,11 +68,11 @@ class VirtualMoneyViewModel {
   }
 
   func lookUpCoinList() -> Completable {
-    var completedCoins: [Coin] = []
+    var completedCoins: [CoinInfo] = []
     let missingPriceCoins = self.APIService.lookupCoinListRx()
       .flatMap{ Observable.from($0) }
 
-    let tickerData = Observable<ticker>.create({ [weak self] oberver in
+    let tickerData = Observable<Ticker>.create({ [weak self] oberver in
       guard let self = self else { return Disposables.create() }
       self.APIService.lookupCoinListRx()
         .subscribe(onNext: {
@@ -89,10 +89,9 @@ class VirtualMoneyViewModel {
 
     return Completable.create(subscribe: { [weak self] observer in
       guard let self = self else { return Disposables.create() }
-      Observable.zip(missingPriceCoins,tickerData) { immutableCoin, ticker -> Coin in
-        var coin = immutableCoin
-        coin.prices = ticker
-        return coin
+      Observable.zip(missingPriceCoins,tickerData) { coin, ticker -> CoinInfo in
+        let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, prices: ticker, holdingCount: 0, totalBoughtPrice: 0)
+        return coinInfo
       }
       .subscribe(onNext: {
         completedCoins.append($0)
@@ -196,10 +195,9 @@ extension VirtualMoneyViewModel: WebSocketDelegate {
 
     case .binary(let data):
       do {
-
         var listValue = self.coinList.value
         let decoder = JSONDecoder()
-        let tickerData = try decoder.decode(ticker.self, from: data)
+        let tickerData = try decoder.decode(Ticker.self, from: data)
         let codeDic = Dictionary(grouping: listValue, by: { $0.code })
 
         guard var coin = codeDic[tickerData.code]?.first else { return }

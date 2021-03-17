@@ -44,7 +44,7 @@ class CoinCell: UITableViewCell {
 
   // MARK: Set
 
-  func set(coinData: Coin) {
+  func set(coinData: CoinInfo) {
     self.koreanName.text = coinData.koreanName
     self.englishName.text = coinData.englishName
     if let price = coinData.prices {

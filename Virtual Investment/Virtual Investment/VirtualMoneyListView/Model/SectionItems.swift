@@ -14,7 +14,7 @@ struct CoinListSection {
 }
 
 extension CoinListSection: AnimatableSectionModelType {
-  typealias Item = Coin
+  typealias Item = CoinInfo
 
   var identity: String {
     return header

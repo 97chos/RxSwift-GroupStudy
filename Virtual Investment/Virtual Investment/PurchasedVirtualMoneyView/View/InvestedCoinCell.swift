@@ -56,14 +56,14 @@ class InvestedCoinCell: UITableViewCell {
 
   func set(coinIndex: Int) {
     AmountData.shared.boughtCoins
-      .filter{ !$0.isEmpty }
+      .filter{ $0.count > coinIndex }
       .map{ $0[coinIndex] }
       .map{ "\($0.koreanName) (\($0.englishName))" }
       .bind(to: self.nameLabel.rx.text)
       .disposed(by: bag)
 
     AmountData.shared.boughtCoins
-      .filter{ !$0.isEmpty }
+      .filter{ $0.count > coinIndex }
       .map{ $0[coinIndex] }
       .map{ var coin = $0
         return "보유 수량 : \(coin.holdingCount)"
@@ -72,14 +72,14 @@ class InvestedCoinCell: UITableViewCell {
       .disposed(by: bag)
 
     AmountData.shared.boughtCoins
-      .filter{ !$0.isEmpty }
+      .filter{ $0.count > coinIndex }
       .map{ $0[coinIndex]}
       .map{ $0.totalBoughtPrice.cutDecimal() }
       .bind(to: self.totalBoughtPriceLabel.rx.text)
       .disposed(by: bag)
 
     AmountData.shared.boughtCoins
-      .filter{ !$0.isEmpty }
+      .filter{ $0.count > coinIndex }
       .map{ $0[coinIndex] }
       .map{ var coin = $0
         return ((coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount)).cutDecimal()
@@ -88,7 +88,7 @@ class InvestedCoinCell: UITableViewCell {
       .disposed(by: bag)
 
     AmountData.shared.boughtCoins
-      .filter{ !$0.isEmpty }
+      .filter{ $0.count > coinIndex }
       .map{
         self.isCheckProfit($0[coinIndex])
       }
@@ -105,7 +105,7 @@ class InvestedCoinCell: UITableViewCell {
       .disposed(by: bag)
   }
 
-  private func isCheckProfit(_ coinData: Coin) -> checkProfit {
+  private func isCheckProfit(_ coinData: CoinInfo) -> checkProfit {
     var coin = coinData
     if coin.totalBoughtPrice > Double(coin.holdingCount) * (coin.prices?.currentPrice ?? 0) {
       return .loss

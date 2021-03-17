@@ -29,6 +29,7 @@ class PurchasedViewModel {
       guard let self = self else { return Disposables.create() }
       var coinList: [Coin] = []
       AmountData.shared.boughtCoins
+        .map{ $0.map{ Coin(koreanName: $0.koreanName, englishName: $0.englishName, code: $0.code) } }
         .subscribe(onNext: {
           coinList = $0
         })
