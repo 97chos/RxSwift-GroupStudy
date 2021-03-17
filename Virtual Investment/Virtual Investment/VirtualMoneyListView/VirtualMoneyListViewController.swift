@@ -78,6 +78,10 @@ class VirtualMoneyListViewController: UIViewController {
     indicator.hidesWhenStopped = true
     return indicator
   }()
+  private lazy var barButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(title: "초기화", style: .plain, target: self, action: #selector(self.barButtonClicked))
+    return button
+  }()
 
 
   // MARK: View LifeCycle
@@ -115,6 +119,7 @@ class VirtualMoneyListViewController: UIViewController {
     self.view.backgroundColor = .white
     self.title = "거래소"
     self.viewModel.delegate = self
+    self.navigationItem.rightBarButtonItem = self.barButton
 
     self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.coinListCell)
     self.tableView.rowHeight = 60
@@ -127,6 +132,12 @@ class VirtualMoneyListViewController: UIViewController {
         self.alert(title: errorType?.description, message: nil, completion: nil)
       })
       .disposed(by: bag)
+  }
+
+  @objc private func barButtonClicked() {
+    self.dismiss(animated: true) {
+      self.viewModel.resetData()
+    }
   }
 
 
