@@ -30,7 +30,6 @@ class CoinInformationViewModel {
 
   // MARK: Functions
 
-
   func bindHoldingCount() {
     self.coin
       .map{ var coin = $0

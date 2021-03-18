@@ -9,11 +9,11 @@ import Foundation
 
 struct ContainCoinResult {
   var isResult: Bool
-  var coin: CoinInfo?
+  var indexCoin: CoinInfo?
   var currentCoin: CoinInfo
   init (_ boolean: Bool, _ coin: CoinInfo?, _ currentCoin: CoinInfo) {
     self.isResult = boolean
-    self.coin = coin
+    self.indexCoin = coin
     self.currentCoin = currentCoin
   }
 }

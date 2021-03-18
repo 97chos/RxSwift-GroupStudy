@@ -128,7 +128,6 @@ class CoinInformationViewController: UIViewController {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    self.viewModel.isContainCoinInBoughtList()
     self.bindLabel()
   }
 
@@ -177,6 +176,7 @@ class CoinInformationViewController: UIViewController {
   private func viewConfigure() {
     self.view.backgroundColor = .systemBackground
     self.viewModel.bindHoldingCount()
+    self.viewModel.isContainCoinInBoughtList()
   }
 
   private func bindLabel() {

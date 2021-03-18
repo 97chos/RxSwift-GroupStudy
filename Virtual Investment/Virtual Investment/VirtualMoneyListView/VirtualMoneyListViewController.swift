@@ -105,6 +105,7 @@ class VirtualMoneyListViewController: UIViewController {
   }
 
   override func viewDidLayoutSubviews() {
+    self.layout()
     self.searchBar.frame.origin = CGPoint(x: 0, y: self.view.safeAreaInsets.top)
   }
 
@@ -113,7 +114,6 @@ class VirtualMoneyListViewController: UIViewController {
 
   private func configure() {
     self.viewConfigure()
-    self.layout()
     self.initDataConfigure()
   }
 
