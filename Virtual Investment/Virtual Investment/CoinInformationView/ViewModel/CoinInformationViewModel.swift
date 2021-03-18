@@ -20,9 +20,16 @@ class CoinInformationViewModel {
   var holdingCount: Int?
   let bag = DisposeBag()
 
+
+  // MARK: Initializing
+
   init(coin: CoinInfo) {
     self.coin.accept(coin)
   }
+
+
+  // MARK: Functions
+
 
   func bindHoldingCount() {
     self.coin
@@ -81,16 +88,23 @@ class CoinInformationViewModel {
       }
     })
     .distinctUntilChanged()
+    .observe(on: MainScheduler.asyncInstance)
     .subscribe(onNext: { result in
       if result.isResult {
-        guard var indexCoin = result.coin else {
+        guard var indexCoin = result.indexCoin else {
           return
         }
         var coin = result.currentCoin
         coin.holdingCount = indexCoin.holdingCount
         coin.totalBoughtPrice = indexCoin.totalBoughtPrice
         self.coin.accept(coin)
+      } else {
+        var coin = result.currentCoin
+        coin.holdingCount = 0
+        coin.totalBoughtPrice = 0
+        self.coin.accept(coin)
       }
+      print(result.isResult)
     })
     .disposed(by: bag)
   }
@@ -139,7 +153,6 @@ class CoinInformationViewModel {
         .disposed(by: bag)
     } else {                                                                  // 코인을 현재 보유하고 있는 경우 (재구매)
       var totalPrice: Double = 0
-      var boughtCoinList: [CoinInfo] = []
       guard let index = self.boughtCoinsIndex else {
         return
       }
@@ -159,10 +172,7 @@ class CoinInformationViewModel {
           currentTotalPrice -= totalPrice
           return currentTotalPrice
         }
-        .observe(on: MainScheduler.asyncInstance)     // todo : bind
-        .subscribe(onNext: {
-          self.amountData.deposit.onNext($0)
-        })
+        .bind(to: self.amountData.deposit)
         .disposed(by: bag)
 
       self.amountData.boughtCoins
@@ -173,13 +183,9 @@ class CoinInformationViewModel {
           coinList[index].totalBoughtPrice += totalPrice
           return coinList
         }
-        .do(onNext:{ boughtCoinList = $0 })
-        .subscribe(onNext: {
-          self.amountData.boughtCoins.accept($0)    // todo : bind
-        })
+        .do(onNext: { self.coin.accept($0[index]) })
+        .bind(to: self.amountData.boughtCoins)
         .disposed(by: bag)
-
-      self.coin.accept(boughtCoinList[index])       // todo : boughtCoinList 삭제
     }
     completion()
   }
@@ -194,6 +200,7 @@ class CoinInformationViewModel {
     var totalCellPrice: Double = 0
 
     AmountData.shared.boughtCoins
+      .take(1)
       .subscribe(onNext: {
         boughtList = $0
         guard let index = self.boughtCoinsIndex else {
@@ -208,30 +215,20 @@ class CoinInformationViewModel {
     self.coin
       .take(1)
       .map{ $0.prices?.currentPrice ?? 0 }
+      .do(onNext: { totalCellPrice = $0 * Double(count) })
       .subscribe(onNext: { price in
         totalRemainingPrice = price * Double(remainingCount)
       })
       .disposed(by: bag)
 
-    self.coin
-      .take(1)
-      .map{ $0.prices?.currentPrice ?? 0 }
-      .subscribe(onNext: { price in
-        totalCellPrice = price * Double(count)                // todo : 위에 것과 통합
-      })
-      .disposed(by: bag)
-
     self.amountData.deposit
       .take(1)
-      .map{
-        var deposit = $0
+      .map{ deposit -> Double in
+        var deposit = deposit
         deposit += totalCellPrice
         return deposit
       }
-      .observe(on: MainScheduler.asyncInstance)
-      .subscribe(onNext: {
-        self.amountData.deposit.onNext($0)
-      })
+      .bind(to: self.amountData.deposit)
       .disposed(by: bag)
 
     self.amountData.boughtCoins
