@@ -37,33 +37,3 @@ extension Coin: IdentifiableType {
   typealias Identity = String
 }
 
-struct Ticker: Codable, Hashable {
-
-  // MARK: Json Keys
-
-  var currentPrice: Double
-  let code: String
-  let highPrice: Double
-  let lowPrice: Double
-
-  enum CodingKeys: String, CodingKey {
-    case currentPrice = "tp"
-    case code = "cd"
-    case highPrice = "hp"
-    case lowPrice = "lp"
-  }
-}
-
-struct APITicker: Codable, Hashable {
-  let code: String
-  let currentPrice: Double
-  let highPrice: Double
-  let lowPrice: Double
-
-  enum CodingKeys: String, CodingKey {
-    case code = "market"
-    case currentPrice = "tradePrice"
-    case highPrice = "high_Price"
-    case lowPrice = "low_Price"
-  }
-}
