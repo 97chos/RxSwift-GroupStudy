@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 
+
 class PurchasedViewModel {
 
   // MARK: Properties
@@ -15,6 +16,8 @@ class PurchasedViewModel {
   private let APIService: APIServiceProtocol
   private let bag = DisposeBag()
 
+
+  
 
   // MARK: Initializing
 
@@ -28,7 +31,7 @@ class PurchasedViewModel {
     return Completable.create { [weak self] observer in
       guard let self = self else { return Disposables.create() }
       var coinList: [Coin] = []
-      AmountData.shared.boughtCoins
+      AD.boughtCoins
         .map{ $0.map{ Coin(koreanName: $0.koreanName, englishName: $0.englishName, code: $0.code) } }
         .subscribe(onNext: {
           coinList = $0
@@ -36,14 +39,14 @@ class PurchasedViewModel {
         .disposed(by: self.bag)
 
       if !coinList.isEmpty {
-        Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(coins: coinList), AmountData.shared.boughtCoins)
+        Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(coins: coinList), AD.boughtCoins)
           .take(1)
           .subscribe(onNext: { tickerData, immutableList in
             var coinList = immutableList
             tickerData.enumerated().forEach{ index, prices in
               coinList[index].prices?.currentPrice = prices.currentPrice
             }
-            AmountData.shared.boughtCoins.accept(coinList)
+            AD.boughtCoins.accept(coinList)
             observer(.completed)
           }, onError: {
             observer(.error($0))

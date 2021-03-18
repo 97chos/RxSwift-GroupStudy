@@ -36,6 +36,7 @@ class VirtualMoneyListViewController: UIViewController {
       .bind(to: self.tableView.rx.items(dataSource: self.dataSource))
       .disposed(by: bag)
 
+
     self.tableView.rx.setDelegate(self)
       .disposed(by: bag)
   }

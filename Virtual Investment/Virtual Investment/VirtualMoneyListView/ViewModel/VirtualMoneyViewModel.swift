@@ -145,7 +145,7 @@ class VirtualMoneyViewModel {
 //  }
 
   func resetData() {
-    AmountData.shared.boughtCoins.accept([])
+    AD.boughtCoins.accept([])
   }
 }
 

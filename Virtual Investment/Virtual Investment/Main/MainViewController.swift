@@ -88,7 +88,7 @@ class MainViewController: UIViewController {
   @objc private func selectNextButton() {
     self.viewModel.checkInputtedValue(self.inputDeposit.text)
       .subscribe(onNext: { [weak self] in
-        AmountData.shared.deposit.onNext($0)
+        AD.deposit.onNext($0)
         self?.present(self?.viewModel.returnTabBarController() ?? UITabBarController(), animated: true)
       }, onError: { [weak self] error in
         let errorType = error as? valueError

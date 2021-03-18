@@ -16,7 +16,6 @@ class CoinInformationViewModel {
 
   var boughtCoinsIndex: Array<Coin>.Index?
   var coin: BehaviorRelay<CoinInfo> = BehaviorRelay<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: "", prices: nil, holdingCount: nil, totalBoughtPrice: 0))
-  let amountData = AmountData.shared
   var holdingCount: Int?
   let bag = DisposeBag()
 
@@ -62,7 +61,7 @@ class CoinInformationViewModel {
           return Disposables.create()
         }
       } else if senderTag == 1 {
-        guard let deposit = try? self.amountData.deposit.value(), deposit >= Double(count) * (self.coin.value.prices?.currentPrice ?? 0) else {
+        guard let deposit = try? AD.deposit.value(), deposit >= Double(count) * (self.coin.value.prices?.currentPrice ?? 0) else {
           observer.onError(inputCountError.deficientDeposit)
           return Disposables.create()
         }
@@ -74,7 +73,7 @@ class CoinInformationViewModel {
   }
 
   func isContainCoinInBoughtList() {
-    Observable.combineLatest(amountData.boughtCoins, self.coin, resultSelector: {list, coin -> ContainCoinResult in
+    Observable.combineLatest(AD.boughtCoins, self.coin, resultSelector: {list, coin -> ContainCoinResult in
       if list.contains(coin) {
         guard let index = list.firstIndex(of: coin) else {
           return ContainCoinResult(false, nil, coin)
@@ -103,7 +102,6 @@ class CoinInformationViewModel {
         coin.totalBoughtPrice = 0
         self.coin.accept(coin)
       }
-      print(result.isResult)
     })
     .disposed(by: bag)
   }
@@ -113,14 +111,13 @@ class CoinInformationViewModel {
       var totalPrice: Double = 0
 
       self.coin
-        .take(1)
         .map{ $0.prices?.currentPrice ?? 0 }
         .subscribe(onNext: { price in
           totalPrice = price * Double(count)
         })
         .disposed(by: bag)
 
-      self.amountData.deposit
+      AD.deposit
         .take(1)
         .map{ price -> Double in
           var currenTotalPrice = price
@@ -128,11 +125,11 @@ class CoinInformationViewModel {
           return currenTotalPrice
         }
         .subscribe(onNext: {
-          self.amountData.deposit.onNext($0)
+          AD.deposit.onNext($0)
         })
         .disposed(by: bag)
 
-      Observable.combineLatest(AmountData.shared.boughtCoins, self.coin)
+      Observable.combineLatest(AD.boughtCoins, self.coin)
         .take(1)
         .map{ boughtList, currentCoin -> ([CoinInfo], CoinInfo) in
           var list = boughtList
@@ -146,7 +143,7 @@ class CoinInformationViewModel {
         .observe(on: MainScheduler.asyncInstance)
         .subscribe(onNext: {
           self.coin.accept($1)
-          AmountData.shared.boughtCoins.accept($0)
+          AD.boughtCoins.accept($0)
           self.boughtCoinsIndex = $0.firstIndex(of: $1)
         })
         .disposed(by: bag)
@@ -164,17 +161,16 @@ class CoinInformationViewModel {
         })
         .disposed(by: bag)
 
-      self.amountData.deposit
-        .take(1)
+      AD.deposit
         .map{
           var currentTotalPrice = $0
           currentTotalPrice -= totalPrice
           return currentTotalPrice
         }
-        .bind(to: self.amountData.deposit)
-        .disposed(by: bag)
+        .bind(to: AD.deposit)
+        .disposed(by: DisposeBag())
 
-      self.amountData.boughtCoins
+      AD.boughtCoins
         .take(1)
         .map{
           var coinList = $0
@@ -183,7 +179,7 @@ class CoinInformationViewModel {
           return coinList
         }
         .do(onNext: { self.coin.accept($0[index]) })
-        .bind(to: self.amountData.boughtCoins)
+        .bind(to: AD.boughtCoins)
         .disposed(by: bag)
     }
     completion()
@@ -198,8 +194,8 @@ class CoinInformationViewModel {
     var totalRemainingPrice: Double = 0
     var totalCellPrice: Double = 0
 
-    AmountData.shared.boughtCoins
-      .take(1)
+    AD.boughtCoins
+//      .take(1)
       .subscribe(onNext: {
         boughtList = $0
         guard let index = self.boughtCoinsIndex else {
@@ -220,17 +216,17 @@ class CoinInformationViewModel {
       })
       .disposed(by: bag)
 
-    self.amountData.deposit
-      .take(1)
+    AD.deposit
       .map{ deposit -> Double in
         var deposit = deposit
         deposit += totalCellPrice
         return deposit
       }
-      .bind(to: self.amountData.deposit)
+      .take(1)
+      .bind(to: AD.deposit)
       .disposed(by: bag)
 
-    self.amountData.boughtCoins
+    AD.boughtCoins
       .take(1)
       .map{ list -> [CoinInfo] in
         var coinList = list
@@ -253,7 +249,7 @@ class CoinInformationViewModel {
         return coinList
       }
       .subscribe(onNext: {
-        self.amountData.boughtCoins.accept($0)
+        AD.boughtCoins.accept($0)
       })
       .disposed(by: bag)
 

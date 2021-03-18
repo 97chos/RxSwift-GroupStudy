@@ -9,6 +9,8 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+let AD = AmountData.shared
+
 class AmountData {
   static var shared = AmountData()
   var deposit: BehaviorSubject = BehaviorSubject<Double>(value: 0)
@@ -28,3 +30,5 @@ class AmountData {
   private init() {
   }
 }
+
+

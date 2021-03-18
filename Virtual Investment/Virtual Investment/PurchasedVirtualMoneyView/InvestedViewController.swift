@@ -150,24 +150,24 @@ class InvestedViewController: UIViewController {
   }
 
   private func bindPrices() {
-    AmountData.shared.deposit.asObserver()
+    AD.deposit.asObserver()
       .map{ $0.currenyKRW() }
       .bind(to: self.depositLabel.rx.text)
       .disposed(by: bag)
 
-    AmountData.shared.evaluatedPrice
+    AD.evaluatedPrice
       .map{ $0.currenyKRW() }
       .bind(to: self.evaluatedLabel.rx.text)
       .disposed(by: bag)
 
-    AmountData.shared.investedPrice
+    AD.investedPrice
       .map{ $0.currenyKRW() }
       .bind(to: self.investmentLabel.rx.text)
       .disposed(by: bag)
 
     Observable.combineLatest(
-      AmountData.shared.evaluatedPrice,
-      AmountData.shared.investedPrice,
+      AD.evaluatedPrice,
+      AD.investedPrice,
       resultSelector: { self.viewModel.checkProfit($0, $1) }
     )
     .subscribe(onNext: { result in
@@ -269,7 +269,7 @@ class InvestedViewController: UIViewController {
 
 extension InvestedViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return AmountData.shared.boughtCoins.value.count
+    return AD.boughtCoins.value.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -295,7 +295,7 @@ extension InvestedViewController: UITableViewDataSource {
 
 extension InvestedViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let informationVC = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: AmountData.shared.boughtCoins.value[indexPath.row]))
+    let informationVC = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: AD.boughtCoins.value[indexPath.row]))
     self.navigationController?.pushViewController(informationVC, animated: true)
     tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
   }
