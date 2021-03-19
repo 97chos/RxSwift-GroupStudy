@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Ticker: Decodable, Hashable {
+struct Ticker: Codable, Hashable {
 
   // MARK: Json Keys
 
