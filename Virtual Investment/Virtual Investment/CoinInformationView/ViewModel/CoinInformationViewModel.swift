@@ -106,6 +106,46 @@ class CoinInformationViewModel {
     .disposed(by: bag)
   }
 
+  func buy(count: Int, completion: @escaping () -> Void) {
+    do {
+      var currentDeposit = try AD.deposit.value()
+      var list = AD.boughtCoins.value
+      var currentCoin = self.coin.value
+
+      if self.boughtCoinsIndex == nil {                                         // 코인을 현재 보유하고 있지 않은 경우 (첫구매)
+        let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
+
+        currentDeposit -= totalPrice
+        AD.deposit.onNext(currentDeposit)
+
+        currentCoin.holdingCount = count
+        currentCoin.totalBoughtPrice = totalPrice
+
+        list.append(currentCoin)
+        self.boughtCoinsIndex = list.firstIndex(of: currentCoin)
+
+        AD.boughtCoins.accept(list)
+        self.coin.accept(currentCoin)
+      } else {                                                                   // 코인을 현재 보유하고 있는 경우 (재구매)
+
+        let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
+
+        guard let index = self.boughtCoinsIndex else { return }
+
+        currentDeposit -= totalPrice
+        AD.deposit.onNext(currentDeposit)
+
+        list[index].holdingCount += count
+        list[index].totalBoughtPrice += totalPrice
+
+        self.coin.accept(list[index])
+        AD.boughtCoins.accept(list)
+      }
+      completion()
+    } catch {
+    }
+  }
+
   func buyAction(count: Int, completion: @escaping () -> Void) {
     if self.boughtCoinsIndex == nil {                                         // 코인을 현재 보유하고 있지 않은 경우 (첫구매)
       var totalPrice: Double = 0
@@ -183,6 +223,33 @@ class CoinInformationViewModel {
         .disposed(by: bag)
     }
     completion()
+  }
+
+  func sell(count: Int, completion: () -> Void) {
+    do {
+      var deposit = try AD.deposit.value()
+      let currentCoin = self.coin.value
+      var boughtList: [CoinInfo] = AD.boughtCoins.value
+      guard let coinIndex = self.boughtCoinsIndex else { return }
+      let totalSellPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
+
+      deposit += totalSellPrice
+      AD.deposit.onNext(deposit)
+
+      boughtList[coinIndex].totalBoughtPrice -= max(boughtList[coinIndex].totalBoughtPrice - totalSellPrice, 0)
+      boughtList[coinIndex].holdingCount -= count
+
+      self.coin.accept(boughtList[coinIndex])
+
+      if boughtList[coinIndex].holdingCount == 0 {
+        boughtList.remove(at: coinIndex)
+      }
+
+      AD.boughtCoins.accept(boughtList)
+
+      completion()
+    } catch {
+    }
   }
 
 
