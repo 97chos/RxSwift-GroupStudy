@@ -150,7 +150,7 @@ class InvestedViewController: UIViewController {
   }
 
   private func bindPrices() {
-    AD.deposit.asObserver()
+    AD.deposit.asObservable()
       .map{ $0.currenyKRW() }
       .bind(to: self.depositLabel.rx.text)
       .disposed(by: bag)

@@ -61,7 +61,8 @@ class CoinInformationViewModel {
           return Disposables.create()
         }
       } else if senderTag == 1 {
-        guard let deposit = try? AD.deposit.value(), deposit >= Double(count) * (self.coin.value.prices?.currentPrice ?? 0) else {
+        let deposit = AD.deposit.value
+        guard deposit >= Double(count) * (self.coin.value.prices?.currentPrice ?? 0) else {
           observer.onError(inputCountError.deficientDeposit)
           return Disposables.create()
         }
@@ -107,8 +108,7 @@ class CoinInformationViewModel {
   }
 
   func buy(count: Int, completion: @escaping () -> Void) {
-    do {
-      var currentDeposit = try AD.deposit.value()
+      var currentDeposit = AD.deposit.value
       var list = AD.boughtCoins.value
       var currentCoin = self.coin.value
 
@@ -116,7 +116,7 @@ class CoinInformationViewModel {
         let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
 
         currentDeposit -= totalPrice
-        AD.deposit.onNext(currentDeposit)
+        AD.deposit.accept(currentDeposit)
 
         currentCoin.holdingCount = count
         currentCoin.totalBoughtPrice = totalPrice
@@ -127,13 +127,12 @@ class CoinInformationViewModel {
         AD.boughtCoins.accept(list)
         self.coin.accept(currentCoin)
       } else {                                                                   // 코인을 현재 보유하고 있는 경우 (재구매)
-
         let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
 
         guard let index = self.boughtCoinsIndex else { return }
 
         currentDeposit -= totalPrice
-        AD.deposit.onNext(currentDeposit)
+        AD.deposit.accept(currentDeposit)
 
         list[index].holdingCount += count
         list[index].totalBoughtPrice += totalPrice
@@ -142,8 +141,6 @@ class CoinInformationViewModel {
         AD.boughtCoins.accept(list)
       }
       completion()
-    } catch {
-    }
   }
 
   func buyAction(count: Int, completion: @escaping () -> Void) {
@@ -165,7 +162,7 @@ class CoinInformationViewModel {
           return currenTotalPrice
         }
         .subscribe(onNext: {
-          AD.deposit.onNext($0)
+          AD.deposit.accept($0)
         })
         .disposed(by: bag)
 
@@ -226,30 +223,27 @@ class CoinInformationViewModel {
   }
 
   func sell(count: Int, completion: () -> Void) {
-    do {
-      var deposit = try AD.deposit.value()
-      let currentCoin = self.coin.value
-      var boughtList: [CoinInfo] = AD.boughtCoins.value
-      guard let coinIndex = self.boughtCoinsIndex else { return }
-      let totalSellPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
+    var deposit = AD.deposit.value
+    let currentCoin = self.coin.value
+    var boughtList: [CoinInfo] = AD.boughtCoins.value
+    guard let coinIndex = self.boughtCoinsIndex else { return }
+    let totalSellPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
 
-      deposit += totalSellPrice
-      AD.deposit.onNext(deposit)
+    deposit += totalSellPrice
+    AD.deposit.accept(deposit)
 
-      boughtList[coinIndex].totalBoughtPrice -= max(boughtList[coinIndex].totalBoughtPrice - totalSellPrice, 0)
-      boughtList[coinIndex].holdingCount -= count
+    boughtList[coinIndex].totalBoughtPrice -= max(boughtList[coinIndex].totalBoughtPrice - totalSellPrice, 0)
+    boughtList[coinIndex].holdingCount -= count
 
-      self.coin.accept(boughtList[coinIndex])
+    self.coin.accept(boughtList[coinIndex])
 
-      if boughtList[coinIndex].holdingCount == 0 {
-        boughtList.remove(at: coinIndex)
-      }
-
-      AD.boughtCoins.accept(boughtList)
-
-      completion()
-    } catch {
+    if boughtList[coinIndex].holdingCount == 0 {
+      boughtList.remove(at: coinIndex)
     }
+
+    AD.boughtCoins.accept(boughtList)
+
+    completion()
   }
 
 

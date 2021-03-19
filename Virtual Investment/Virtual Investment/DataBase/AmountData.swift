@@ -13,7 +13,7 @@ let AD = AmountData.shared
 
 class AmountData {
   static var shared = AmountData()
-  var deposit: BehaviorSubject = BehaviorSubject<Double>(value: 0)
+  var deposit: BehaviorRelay = BehaviorRelay<Double>(value: 0)
   var boughtCoins: BehaviorRelay<[CoinInfo]> = BehaviorRelay<[CoinInfo]>(value: [])
 
   lazy var investedPrice: Observable<Double> = boughtCoins
