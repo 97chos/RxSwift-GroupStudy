@@ -90,7 +90,7 @@ class VirtualMoneyViewModel {
     return Completable.create(subscribe: { [weak self] observer in
       guard let self = self else { return Disposables.create() }
       Observable.zip(missingPriceCoins,tickerData) { coin, ticker -> CoinInfo in
-        let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, prices: ticker, holdingCount: 0, totalBoughtPrice: 0)
+        let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
         return coinInfo
       }
       .subscribe(onNext: {
@@ -146,6 +146,28 @@ class VirtualMoneyViewModel {
 
   func resetData() {
     AD.boughtCoins.accept([])
+    AD.deposit.accept(0.0)
+  }
+
+
+  // MARK: Core Data
+  func setData() {
+    AD.deposit
+      .subscribe(onNext: {
+        plist.set($0, forKey: "deposit")
+      })
+      .disposed(by: bag)
+
+    AD.boughtCoins
+      .subscribe(onNext: {
+        print($0[0].holdingCount)
+        guard let encodedData = try? PropertyListEncoder().encode($0) else { return }
+        guard let decodeData = try? PropertyListDecoder().decode([CoinInfo].self, from: encodedData) else { return }
+        print(decodeData[0].holdingCount)
+        plist.set(encodedData, forKey: "aa")
+      })
+      .disposed(by: bag)
+
   }
 }
 
