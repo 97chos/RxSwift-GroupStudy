@@ -32,7 +32,7 @@ class MainViewModel {
 
   func checkInputtedValue(_ inputtedValue: String?) -> Observable<Double> {
     return Observable.create({ observer in
-      if let value = inputtedValue, let deposit = Double(value) {
+      if let value = inputtedValue, let deposit = Double(value), deposit > 0 {
         observer.onNext(deposit)
         observer.onCompleted()
       } else {
@@ -40,6 +40,20 @@ class MainViewModel {
       }
       return Disposables.create()
     })
+  }
+
+
+  // MARK: Check Deposit
+
+  func checkData() -> Bool {
+    let deposit = plist.double(forKey: "deposit")
+
+    guard deposit > 0 else { return false }
+    guard let list = plist.value(forKey: "aa") as? Data, let decodeData = try? PropertyListDecoder().decode([CoinInfo].self, from: list) else { return false }
+
+    AD.deposit.accept(deposit)
+    AD.boughtCoins.accept(decodeData)
+    return true
   }
 
 
