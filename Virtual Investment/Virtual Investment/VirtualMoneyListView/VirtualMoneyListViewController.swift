@@ -48,18 +48,6 @@ class VirtualMoneyListViewController: UIViewController {
   }
 
 
-  // MARK: Initializing
-
-  init(viewModel: VirtualMoneyViewModel) {
-    self.viewModel = viewModel
-    super.init(nibName: nil, bundle: nil)
-  }
-
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-
   // MARK: UI
 
   private lazy var searchBar: UISearchBar = {
@@ -85,6 +73,19 @@ class VirtualMoneyListViewController: UIViewController {
     let button = UIBarButtonItem(title: "초기화", style: .plain, target: self, action: #selector(self.barButtonClicked))
     return button
   }()
+
+
+
+  // MARK: Initializing
+
+  init(viewModel: VirtualMoneyViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
 
   // MARK: View LifeCycle
@@ -116,6 +117,7 @@ class VirtualMoneyListViewController: UIViewController {
   private func configure() {
     self.viewConfigure()
     self.initDataConfigure()
+    self.viewModel.setData()
   }
 
   private func viewConfigure() {
@@ -138,8 +140,9 @@ class VirtualMoneyListViewController: UIViewController {
   }
 
   @objc private func barButtonClicked() {
-    self.dismiss(animated: true) {
+    self.alert(title: "구매한 코인 기록도 초기화됩니다. 초기화하시겠어요?", message: nil) {
       self.viewModel.resetData()
+      self.dismiss(animated: true)
     }
   }
 
