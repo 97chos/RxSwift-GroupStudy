@@ -15,7 +15,7 @@ class CoinInformationViewModel {
   // MARK: Properties
 
   var boughtCoinsIndex: Array<Coin>.Index?
-  var coin: BehaviorRelay<CoinInfo> = BehaviorRelay<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: "", prices: nil, holdingCount: nil, totalBoughtPrice: 0))
+  var coin: BehaviorRelay<CoinInfo> = BehaviorRelay<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: "", holdingCount: 0, totalBoughtPrice: 0, prices: nil))
   var holdingCount: Int?
   let bag = DisposeBag()
 
@@ -143,6 +143,30 @@ class CoinInformationViewModel {
       completion()
   }
 
+  func sell(count: Int, completion: () -> Void) {
+    var deposit = AD.deposit.value
+    let currentCoin = self.coin.value
+    var boughtList: [CoinInfo] = AD.boughtCoins.value
+    guard let coinIndex = self.boughtCoinsIndex else { return }
+    let totalSellPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
+
+    deposit += totalSellPrice
+    AD.deposit.accept(deposit)
+
+    boughtList[coinIndex].totalBoughtPrice -= max(boughtList[coinIndex].totalBoughtPrice - totalSellPrice, 0)
+    boughtList[coinIndex].holdingCount -= count
+
+    self.coin.accept(boughtList[coinIndex])
+
+    if boughtList[coinIndex].holdingCount == 0 {
+      boughtList.remove(at: coinIndex)
+    }
+
+    AD.boughtCoins.accept(boughtList)
+
+    completion()
+  }
+
   func buyAction(count: Int, completion: @escaping () -> Void) {
     if self.boughtCoinsIndex == nil {                                         // 코인을 현재 보유하고 있지 않은 경우 (첫구매)
       var totalPrice: Double = 0
@@ -222,31 +246,6 @@ class CoinInformationViewModel {
     completion()
   }
 
-  func sell(count: Int, completion: () -> Void) {
-    var deposit = AD.deposit.value
-    let currentCoin = self.coin.value
-    var boughtList: [CoinInfo] = AD.boughtCoins.value
-    guard let coinIndex = self.boughtCoinsIndex else { return }
-    let totalSellPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
-
-    deposit += totalSellPrice
-    AD.deposit.accept(deposit)
-
-    boughtList[coinIndex].totalBoughtPrice -= max(boughtList[coinIndex].totalBoughtPrice - totalSellPrice, 0)
-    boughtList[coinIndex].holdingCount -= count
-
-    self.coin.accept(boughtList[coinIndex])
-
-    if boughtList[coinIndex].holdingCount == 0 {
-      boughtList.remove(at: coinIndex)
-    }
-
-    AD.boughtCoins.accept(boughtList)
-
-    completion()
-  }
-
-
   func sellAction(count: Int, completion: () -> Void) {
     var boughtList: [CoinInfo] = []
     var indexCoin: CoinInfo?
@@ -256,7 +255,7 @@ class CoinInformationViewModel {
     var totalCellPrice: Double = 0
 
     AD.boughtCoins
-//      .take(1)
+      .take(1)
       .subscribe(onNext: {
         boughtList = $0
         guard let index = self.boughtCoinsIndex else {
