@@ -16,9 +16,6 @@ class PurchasedViewModel {
   private let APIService: APIServiceProtocol
   private let bag = DisposeBag()
 
-
-  
-
   // MARK: Initializing
 
   init(APIProtocol: APIServiceProtocol) {
@@ -41,12 +38,16 @@ class PurchasedViewModel {
       if !coinList.isEmpty {
         Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(coins: coinList), AD.boughtCoins)
           .take(1)
-          .subscribe(onNext: { tickerData, immutableList in
+          .map{ tickerData, immutableList -> [CoinInfo] in
             var coinList = immutableList
             tickerData.enumerated().forEach{ index, prices in
               coinList[index].prices?.currentPrice = prices.currentPrice
             }
-            AD.boughtCoins.accept(coinList)
+            return coinList
+          }
+          .observe(on: MainScheduler.asyncInstance)
+          .subscribe(onNext: {
+            AD.boughtCoins.accept($0)
             observer(.completed)
           }, onError: {
             observer(.error($0))
