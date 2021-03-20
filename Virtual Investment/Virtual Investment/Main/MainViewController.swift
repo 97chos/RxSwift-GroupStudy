@@ -68,12 +68,17 @@ class MainViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
     self.isNumericCheck()
+    self.checkData()
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     self.disposeBag = DisposeBag()
   }
+  
 
 
   // MARK: Events
@@ -98,13 +103,21 @@ class MainViewController: UIViewController {
   }
 
 
-  // MARK: Rx Logic
+  // MARK: Logic
 
   private func isNumericCheck() {
     self.inputDeposit.rx.text.orEmpty
       .map { !$0.isEmpty }
       .bind(to: self.nextButton.rx.isEnabled)
       .disposed(by: disposeBag)
+  }
+
+  private func checkData() {
+    if self.viewModel.checkData() {
+      self.present(self.viewModel.returnTabBarController(), animated: true)
+    } else {
+      return
+    }
   }
 
 
@@ -124,6 +137,9 @@ class MainViewController: UIViewController {
   private func imageConfigure() {
     self.mainImageView.image = UIImage(named: "upbit")
   }
+
+
+  // MARK: Layout
 
   private func layout() {
     self.view.addSubview(self.mainImageView)
