@@ -15,8 +15,7 @@ struct CoinInfo: Codable {
   let koreanName: String
   let englishName: String
   let code: String
-  var prices: Ticker?
-  lazy var holdingCount: Int = 0 {
+  var holdingCount: Int = 0 {
     didSet {
       if holdingCount == 0 {
         self.totalBoughtPrice = 0
@@ -24,6 +23,7 @@ struct CoinInfo: Codable {
     }
   }
   var totalBoughtPrice: Double = 0
+  var prices: Ticker?
 
   enum CodingKeys: String, CodingKey {
     case koreanName = "korean_name"

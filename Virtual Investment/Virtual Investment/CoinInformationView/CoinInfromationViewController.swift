@@ -125,9 +125,6 @@ class CoinInformationViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.configure()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
     self.bindLabel()
   }
 

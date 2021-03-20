@@ -12,7 +12,6 @@ import RxSwift
 protocol APIServiceProtocol {
   func lookupCoinListRx() -> Observable<[Coin]>
   func loadCoinsTickerDataRx(coins: [Coin]) -> Observable<[Ticker]>
-//  func loadCoinTickerDataRx(coin: Coin) -> Observable<Coin>
 }
 
 
@@ -104,58 +103,4 @@ class APIService: APIServiceProtocol {
       return Disposables.create()
     })
   }
-
-
-  // MARK: Load Coin Ticker Data
-//
-//  func loadCoinTickerData(coin: Coin, completion: @escaping (Result<Ticker,Error>) -> Void) {
-//    var mutableCoin = coin
-//    let code = coin.code
-//    let param: Parameters = ["markets" : code]
-//
-//    guard let url: URL = URL(string: "https://api.upbit.com/v1/ticker") else { completion(.failure(APIError.urlError))
-//      return
-//    }
-//
-//    AF.request(url, method: .get, parameters: param, encoding: URLEncoding.queryString).responseJSON { response in
-//      do {
-//        guard let resultArray = try response.result.get() as? [[String:Any]] else {
-//          completion(.failure(APIError.parseError))
-//          return
-//        }
-//
-//        let result = resultArray.first
-//
-//        guard let currentPrice = result?["trade_price"] as? Double else { return }
-//        guard let code = result?["market"] as? String else { return }
-//        guard let highPrice = result?["high_price"] as? Double else { return }
-//        guard let lowPrice = result?["low_price"] as? Double else { return }
-//
-//        let coinData = ticker(currentPrice: currentPrice, code: code, highPrice: highPrice, lowPrice: lowPrice)
-//
-//        mutableCoin.prices = coinData
-//
-//        completion(.success(mutableCoin))
-//      } catch {
-//        print(error.localizedDescription)
-//        completion(.failure(APIError.networkError))
-//      }
-//    }
-//  }
-//
-//  func loadCoinTickerDataRx(coin: Coin) -> Observable<Coin> {
-//    return Observable.create({ observer in
-//      self.loadCoinTickerData(coin: coin) { result in
-//        switch result {
-//        case .success(let coin):
-//          observer.onNext(coin)
-//          observer.onCompleted()
-//        case .failure(let error):
-//          observer.onError(error)
-//        }
-//      }
-//      return Disposables.create()
-//    })
-//  }
-
 }
