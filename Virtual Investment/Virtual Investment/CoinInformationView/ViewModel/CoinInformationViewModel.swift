@@ -167,6 +167,33 @@ class CoinInformationViewModel {
     completion()
   }
 
+
+
+  func saveCoinToCoreData(coin: CoinInfo) {
+    guard let context = self.context else { return }
+
+      guard let object = NSEntityDescription.insertNewObject(forEntityName: "coinInfo", into: context) as? CoinInfoMO else { return }
+
+      object.code = coin.code
+      object.englishName = coin.englishName
+      object.holdingCount = Int64(coin.holdingCount)
+      object.koreanName = coin.koreanName
+
+      guard let priceObject = NSEntityDescription.insertNewObject(forEntityName: "ticker", into: context) as? TickerMO else { return }
+      priceObject.code = coin.prices?.code
+      priceObject.currentPrice = coin.prices?.currentPrice ?? 0
+      priceObject.highPrice = coin.prices?.highPrice ?? 0
+      priceObject.lowPrice = coin.prices?.lowPrice ?? 0
+
+      object.price = priceObject
+
+    do {
+      try context.save()
+    } catch {
+      context.rollback()
+    }
+  }
+
   func buyAction(count: Int, completion: @escaping () -> Void) {
     if self.boughtCoinsIndex == nil {                                         // 코인을 현재 보유하고 있지 않은 경우 (첫구매)
       var totalPrice: Double = 0
