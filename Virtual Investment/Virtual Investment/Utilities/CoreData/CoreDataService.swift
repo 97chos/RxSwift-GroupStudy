@@ -10,7 +10,6 @@ import CoreData
 
 protocol CoreDataServiceProtocol: class {
   func fetch<T>(_:NSFetchRequest<T>) -> [T]
-  func delete(_ objectID: NSManagedObjectID) -> Bool
   var context: NSManagedObjectContext? { get }
 }
 
@@ -41,11 +40,13 @@ class CoreDataService: CoreDataServiceProtocol {
 
   // MARK: Functions
 
-  func fetch<T>(_: NSFetchRequest<T>) -> [T] where T : NSFetchRequestResult {
-    <#code#>
-  }
-
-  func delete(_ objectID: NSManagedObjectID) -> Bool {
-    <#code#>
+  func fetch<CoinInfoMO>(_ fetchRequest: NSFetchRequest<CoinInfoMO>) -> [CoinInfoMO] {
+    guard let context = self.context else { return [] }
+    do {
+      let result = try context.fetch(fetchRequest)
+      return result
+    } catch {
+      return []
+    }
   }
 }
