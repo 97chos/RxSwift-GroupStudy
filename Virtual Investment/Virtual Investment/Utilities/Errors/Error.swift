@@ -32,7 +32,6 @@ enum APIError: Error, CustomStringConvertible {
     default: return nil
     }
   }
-
 }
 
 enum valueError: Error, CustomStringConvertible {
@@ -40,7 +39,7 @@ enum valueError: Error, CustomStringConvertible {
 
   var description: String {
     switch self {
-    case .invalidValueError: return "유효하지 않은 값입니다."
+    case .invalidValueError: return "0 이상의 숫자만 입력해주세요."
     }
   }
 }
@@ -74,5 +73,4 @@ enum inputCountError: Error, CustomStringConvertible {
     case .deficientHoldingCount: return "보유 중인 수량이 부족합니다."
     }
   }
-
 }
