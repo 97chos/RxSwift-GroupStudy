@@ -65,9 +65,7 @@ class InvestedCoinCell: UITableViewCell {
     AD.boughtCoins
       .filter{ $0.count > coinIndex }
       .map{ $0[coinIndex] }
-      .map{ var coin = $0
-        return "보유 수량 : \(coin.holdingCount)"
-      }
+      .map{ return "보유 수량 : \($0.holdingCount)" }
       .bind(to: self.holdingCountLabel.rx.text)
       .disposed(by: bag)
 
@@ -81,9 +79,7 @@ class InvestedCoinCell: UITableViewCell {
     AD.boughtCoins
       .filter{ $0.count > coinIndex }
       .map{ $0[coinIndex] }
-      .map{ var coin = $0
-        return ((coin.prices?.currentPrice ?? 0) * Double(coin.holdingCount)).cutDecimal()
-      }
+      .map{ (($0.prices?.currentPrice ?? 0) * Double($0.holdingCount)).cutDecimal() }
       .bind(to: self.evaluatedPriceLabel.rx.text)
       .disposed(by: bag)
 
@@ -105,8 +101,7 @@ class InvestedCoinCell: UITableViewCell {
       .disposed(by: bag)
   }
 
-  private func isCheckProfit(_ coinData: CoinInfo) -> checkProfit {
-    var coin = coinData
+  private func isCheckProfit(_ coin: CoinInfo) -> checkProfit {
     if coin.totalBoughtPrice > Double(coin.holdingCount) * (coin.prices?.currentPrice ?? 0) {
       return .loss
     } else if coin.totalBoughtPrice < Double(coin.holdingCount) * (coin.prices?.currentPrice ?? 0){

@@ -204,9 +204,7 @@ class CoinInformationViewController: UIViewController {
       .disposed(by: bag)
 
     viewModel.coin
-      .map{ var coin = $0
-        return "보유 수량 : \(coin.holdingCount)"
-      }
+      .map{ return "보유 수량 : \($0.holdingCount)" }
       .bind(to: self.holdingCountLabel.rx.text)
       .disposed(by: bag)
   }

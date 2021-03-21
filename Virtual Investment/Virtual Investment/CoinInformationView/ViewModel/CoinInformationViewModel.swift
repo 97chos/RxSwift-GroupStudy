@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
-
+import CoreData
 
 class CoinInformationViewModel {
 
@@ -18,6 +18,7 @@ class CoinInformationViewModel {
   var coin: BehaviorRelay<CoinInfo> = BehaviorRelay<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: "", holdingCount: 0, totalBoughtPrice: 0, prices: nil))
   var holdingCount: Int?
   let bag = DisposeBag()
+  let context = CoreDataService.shared.context
 
 
   // MARK: Initializing
@@ -31,9 +32,7 @@ class CoinInformationViewModel {
 
   func bindHoldingCount() {
     self.coin
-      .map{ var coin = $0
-        return coin.holdingCount
-      }
+      .map{ $0.holdingCount }
       .subscribe(onNext: { self.holdingCount = $0 })
       .disposed(by: bag)
   }
@@ -90,7 +89,7 @@ class CoinInformationViewModel {
     .observe(on: MainScheduler.asyncInstance)
     .subscribe(onNext: { result in
       if result.isResult {
-        guard var indexCoin = result.indexCoin else {
+        guard let indexCoin = result.indexCoin else {
           return
         }
         var coin = result.currentCoin
