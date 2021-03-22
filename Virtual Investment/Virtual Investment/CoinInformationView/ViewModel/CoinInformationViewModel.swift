@@ -18,7 +18,7 @@ class CoinInformationViewModel {
   var coin: BehaviorRelay<CoinInfo> = BehaviorRelay<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: "", holdingCount: 0, totalBoughtPrice: 0, prices: nil))
   var holdingCount: Int?
   let bag = DisposeBag()
-  let context = CoreDataService.shared.context
+  let context = coreData.context
 
 
   // MARK: Initializing
@@ -107,39 +107,44 @@ class CoinInformationViewModel {
   }
 
   func buy(count: Int, completion: @escaping () -> Void) {
-      var currentDeposit = AD.deposit.value
-      var list = AD.boughtCoins.value
-      var currentCoin = self.coin.value
+    var currentDeposit = AD.deposit.value
+    var list = AD.boughtCoins.value
+    var currentCoin = self.coin.value
 
-      if self.boughtCoinsIndex == nil {                                         // 코인을 현재 보유하고 있지 않은 경우 (첫구매)
-        let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
+    if self.boughtCoinsIndex == nil {                                         // 코인을 현재 보유하고 있지 않은 경우 (첫구매)
+      let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
 
-        currentDeposit -= totalPrice
-        AD.deposit.accept(currentDeposit)
+      currentDeposit -= totalPrice
+      AD.deposit.accept(currentDeposit)
 
-        currentCoin.holdingCount = count
-        currentCoin.totalBoughtPrice = totalPrice
+      currentCoin.holdingCount = count
+      currentCoin.totalBoughtPrice = totalPrice
 
-        list.append(currentCoin)
-        self.boughtCoinsIndex = list.firstIndex(of: currentCoin)
+      list.append(currentCoin)
+      self.boughtCoinsIndex = list.firstIndex(of: currentCoin)
 
-        AD.boughtCoins.accept(list)
-        self.coin.accept(currentCoin)
-      } else {                                                                   // 코인을 현재 보유하고 있는 경우 (재구매)
-        let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
+      _ = coreData.insert(coin: currentCoin)
 
-        guard let index = self.boughtCoinsIndex else { return }
+      AD.boughtCoins.accept(list)
+      self.coin.accept(currentCoin)
+    } else {                                                                   // 코인을 현재 보유하고 있는 경우 (재구매)
+      let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
 
-        currentDeposit -= totalPrice
-        AD.deposit.accept(currentDeposit)
+      guard let index = self.boughtCoinsIndex else { return }
 
-        list[index].holdingCount += count
-        list[index].totalBoughtPrice += totalPrice
+      currentDeposit -= totalPrice
+      AD.deposit.accept(currentDeposit)
 
-        self.coin.accept(list[index])
-        AD.boughtCoins.accept(list)
-      }
-      completion()
+      list[index].holdingCount += count
+      list[index].totalBoughtPrice += totalPrice
+
+      self.coin.accept(list[index])
+      AD.boughtCoins.accept(list)
+      _ = coreData.edit(list[index].objectID ?? NSManagedObjectID(), count: count, boughtPrice: totalPrice)
+    }
+
+    coreData.fetch()
+    completion()
   }
 
   func sell(count: Int, completion: () -> Void) {
@@ -158,7 +163,10 @@ class CoinInformationViewModel {
     self.coin.accept(boughtList[coinIndex])
 
     if boughtList[coinIndex].holdingCount == 0 {
+      _ = coreData.delete(boughtList[coinIndex].objectID ?? NSManagedObjectID())
       boughtList.remove(at: coinIndex)
+    } else {
+      _ = coreData.edit(boughtList[coinIndex].objectID ?? NSManagedObjectID(), count: boughtList[coinIndex].holdingCount, boughtPrice: boughtList[coinIndex].totalBoughtPrice)
     }
 
     AD.boughtCoins.accept(boughtList)
@@ -166,19 +174,17 @@ class CoinInformationViewModel {
     completion()
   }
 
-
-
   func saveCoinToCoreData(coin: CoinInfo) {
     guard let context = self.context else { return }
 
-      guard let object = NSEntityDescription.insertNewObject(forEntityName: "coinInfo", into: context) as? CoinInfoMO else { return }
+    guard let object = NSEntityDescription.insertNewObject(forEntityName: CoreDataDataModel.coinInfo, into: context) as? CoinInfoMO else { return }
 
       object.code = coin.code
       object.englishName = coin.englishName
       object.holdingCount = Int64(coin.holdingCount)
       object.koreanName = coin.koreanName
 
-      guard let priceObject = NSEntityDescription.insertNewObject(forEntityName: "ticker", into: context) as? TickerMO else { return }
+    guard let priceObject = NSEntityDescription.insertNewObject(forEntityName: CoreDataDataModel.ticker, into: context) as? TickerMO else { return }
       priceObject.code = coin.prices?.code
       priceObject.currentPrice = coin.prices?.currentPrice ?? 0
       priceObject.highPrice = coin.prices?.highPrice ?? 0
