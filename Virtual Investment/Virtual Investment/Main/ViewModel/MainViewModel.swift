@@ -46,13 +46,11 @@ class MainViewModel {
   // MARK: Check Deposit
 
   func checkData() -> Bool {
-    let deposit = plist.double(forKey: "deposit")
-
-    guard deposit > 0 else { return false }
-    guard let list = plist.value(forKey: "aa") as? Data, let decodeData = try? PropertyListDecoder().decode([CoinInfo].self, from: list) else { return false }
+    guard plist.bool(forKey: UserDefaultsKey.isExistingUser) == true else { return false }
+    let deposit = plist.double(forKey: UserDefaultsKey.remainingDeposit)
+    coreData.fetch()
 
     AD.deposit.accept(deposit)
-    AD.boughtCoins.accept(decodeData)
     return true
   }
 
