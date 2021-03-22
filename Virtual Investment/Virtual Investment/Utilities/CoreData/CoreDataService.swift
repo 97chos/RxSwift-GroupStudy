@@ -9,8 +9,17 @@ import Foundation
 import CoreData
 
 protocol CoreDataServiceProtocol: class {
-  func fetch<T>(_:NSFetchRequest<T>) -> [T]
+  func fetch()
+  func delete(_ objectID: NSManagedObjectID) -> Bool
+  func edit(_ obbejctID: NSManagedObjectID, count: Int, boughtPrice: Double) -> Bool
   var context: NSManagedObjectContext? { get }
+}
+
+let coreData = CoreDataService.shared
+
+enum CoreDataDataModel {
+  static let coinInfo = "CoinInfo"
+  static let ticker = "Ticker"
 }
 
 class CoreDataService: CoreDataServiceProtocol {
@@ -40,13 +49,102 @@ class CoreDataService: CoreDataServiceProtocol {
 
   // MARK: Functions
 
-  func fetch<CoinInfoMO>(_ fetchRequest: NSFetchRequest<CoinInfoMO>) -> [CoinInfoMO] {
-    guard let context = self.context else { return [] }
+  func fetch() {
+    var coinList: [CoinInfo] = []
+    guard let context = self.context else { return }
+
     do {
-      let result = try context.fetch(fetchRequest)
-      return result
+      let request: NSFetchRequest<CoinInfoMO> = CoinInfoMO.fetchRequest()
+      let result = try context.fetch(request)
+
+      result.forEach{
+        let price = Ticker(currentPrice: $0.price?.currentPrice ?? 0, code: $0.price?.code ?? "", highPrice: $0.price?.highPrice ?? 0, lowPrice: $0.price?.lowPrice ?? 0)
+        let coinInfo = CoinInfo(koreanName: $0.koreanName ?? "",
+                                englishName: $0.englishName ?? "",
+                                code: $0.code ?? "",
+                                holdingCount: Int($0.holdingCount),
+                                totalBoughtPrice: $0.totalBoughtPrice,
+                                prices: price,
+                                objectID: $0.objectID)
+
+        coinList.append(coinInfo)
+      }
+      AD.boughtCoins.accept(coinList)
     } catch {
-      return []
+      return
+    }
+  }
+
+  func insert(coin: CoinInfo) -> Bool {
+    guard let context = self.context else { return false }
+    let object = NSEntityDescription.insertNewObject(forEntityName: CoreDataDataModel.coinInfo, into: context) as? CoinInfoMO
+    let tickerObject = NSEntityDescription.insertNewObject(forEntityName: CoreDataDataModel.ticker, into: context) as? TickerMO
+
+    tickerObject?.code = coin.prices?.code
+    tickerObject?.currentPrice = coin.prices?.currentPrice ?? 0
+    tickerObject?.highPrice = coin.prices?.highPrice ?? 0
+    tickerObject?.lowPrice = coin.prices?.lowPrice ?? 0
+
+    object?.koreanName = coin.koreanName
+    object?.englishName = coin.englishName
+    object?.code = coin.code
+    object?.holdingCount = Int64(coin.holdingCount)
+    object?.totalBoughtPrice = coin.totalBoughtPrice
+    object?.price = tickerObject
+
+    do {
+      try context.save()
+      return true
+    } catch {
+      context.rollback()
+      return false
+    }
+  }
+
+  func delete(_ objectID: NSManagedObjectID) -> Bool {
+    guard let context = self.context else { return false }
+    let object = context.object(with: objectID)
+    context.delete(object)
+
+    do {
+      try context.save()
+      return true
+    } catch {
+      context.rollback()
+      return false
+    }
+  }
+
+  func clear() {
+    guard let context = self.context else { return }
+
+    let request: NSFetchRequest<CoinInfoMO> = CoinInfoMO.fetchRequest()
+
+    do {
+      let result = try context.fetch(request)
+      result.forEach {
+        context.delete($0)
+      }
+      try context.save()
+    } catch {
+      return
+    }
+  }
+
+  func edit(_ objectID: NSManagedObjectID, count: Int, boughtPrice: Double) -> Bool {
+    guard let context = self.context else { return false }
+
+    let object = context.object(with: objectID) as? CoinInfoMO
+
+    object?.holdingCount = Int64(count)
+    object?.totalBoughtPrice = boughtPrice
+
+    do {
+      try context.save()
+      return true
+    } catch {
+      context.rollback()
+      return false
     }
   }
 }
