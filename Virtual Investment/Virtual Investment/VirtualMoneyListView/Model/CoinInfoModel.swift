@@ -7,6 +7,7 @@
 
 import Foundation
 import RxDataSources
+import CoreData
 
 struct CoinInfo: Codable {
 
@@ -24,6 +25,7 @@ struct CoinInfo: Codable {
   }
   var totalBoughtPrice: Double = 0
   var prices: Ticker?
+  var objectID: NSManagedObjectID?
 
   enum CodingKeys: String, CodingKey {
     case koreanName = "korean_name"
