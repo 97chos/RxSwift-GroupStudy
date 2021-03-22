@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CoinInfo" representedClassName="CoinInfoMO" syncable="YES" codeGenerationType="class">
-        <attribute name="code" optional="YES" attributeType="String"/>
-        <attribute name="englishName" optional="YES" attributeType="String"/>
-        <attribute name="holdingCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="koreanName" optional="YES" attributeType="String"/>
-        <attribute name="totalBoughtPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="price" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ticker"/>
+        <attribute name="code" attributeType="String"/>
+        <attribute name="englishName" attributeType="String"/>
+        <attribute name="holdingCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="koreanName" attributeType="String"/>
+        <attribute name="totalBoughtPrice" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="price" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Ticker" inverseName="coin" inverseEntity="Ticker"/>
     </entity>
     <entity name="Ticker" representedClassName="TickerMO" syncable="YES" codeGenerationType="class">
         <attribute name="code" optional="YES" attributeType="String"/>
         <attribute name="currentPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="highPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="lowPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="coin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CoinInfo" inverseName="price" inverseEntity="CoinInfo"/>
     </entity>
     <elements>
         <element name="CoinInfo" positionX="-63" positionY="-18" width="128" height="119"/>
-        <element name="Ticker" positionX="-54" positionY="-9" width="128" height="89"/>
+        <element name="Ticker" positionX="-54" positionY="-9" width="128" height="104"/>
     </elements>
 </model>
