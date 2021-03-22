@@ -46,6 +46,7 @@
 		FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */; };
 		FFC31E0225E94E56009B0170 /* Double+cutDecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */; };
 		FFD9C2FB260840B200C0C8AE /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD9C2FA260840B200C0C8AE /* UserDefaultsKeys.swift */; };
+		FFD9C2FE26084C2F00C0C8AE /* CoreDataModelEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD9C2FD26084C2F00C0C8AE /* CoreDataModelEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +86,7 @@
 		FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+cutDecimal.swift"; sourceTree = "<group>"; };
 		FFD9C2FA260840B200C0C8AE /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
+		FFD9C2FD26084C2F00C0C8AE /* CoreDataModelEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModelEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,6 +362,7 @@
 			children = (
 				FF36369625EBE2E90048C3F6 /* ReuseIdentifier.swift */,
 				FFD9C2FA260840B200C0C8AE /* UserDefaultsKeys.swift */,
+				FFD9C2FD26084C2F00C0C8AE /* CoreDataModelEntity.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				FF3636F025F0C9870048C3F6 /* PurchasedViewModel.swift in Sources */,
 				FF36369725EBE2E90048C3F6 /* ReuseIdentifier.swift in Sources */,
 				FF42AF4F25E5331500CEA875 /* SceneDelegate.swift in Sources */,
+				FFD9C2FE26084C2F00C0C8AE /* CoreDataModelEntity.swift in Sources */,
 				FF83C16E25F2747200CB1139 /* SectionItems.swift in Sources */,
 				FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */,
 				FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */,

@@ -24,6 +24,7 @@ class InvestedViewController: UIViewController {
   private var viewModel: PurchasedViewModel
   private let bag = DisposeBag()
 
+
   // MARK: UI
 
   private let depositLabelTitle: UILabel = {

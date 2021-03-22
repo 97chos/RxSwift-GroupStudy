@@ -17,11 +17,6 @@ protocol CoreDataServiceProtocol: class {
 
 let coreData = CoreDataService.shared
 
-enum CoreDataDataModel {
-  static let coinInfo = "CoinInfo"
-  static let ticker = "Ticker"
-}
-
 class CoreDataService: CoreDataServiceProtocol {
 
   // MARK: Properties
@@ -77,8 +72,8 @@ class CoreDataService: CoreDataServiceProtocol {
 
   func insert(coin: CoinInfo) -> Bool {
     guard let context = self.context else { return false }
-    let object = NSEntityDescription.insertNewObject(forEntityName: CoreDataDataModel.coinInfo, into: context) as? CoinInfoMO
-    let tickerObject = NSEntityDescription.insertNewObject(forEntityName: CoreDataDataModel.ticker, into: context) as? TickerMO
+    let object = NSEntityDescription.insertNewObject(forEntityName: CoreDataModelEntity.coinInfo, into: context) as? CoinInfoMO
+    let tickerObject = NSEntityDescription.insertNewObject(forEntityName: CoreDataModelEntity.ticker, into: context) as? TickerMO
 
     tickerObject?.code = coin.prices?.code
     tickerObject?.currentPrice = coin.prices?.currentPrice ?? 0
