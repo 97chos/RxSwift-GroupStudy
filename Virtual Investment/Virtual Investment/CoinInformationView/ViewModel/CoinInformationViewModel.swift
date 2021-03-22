@@ -106,7 +106,7 @@ class CoinInformationViewModel {
     .disposed(by: bag)
   }
 
-  func buy(count: Int, completion: @escaping () -> Void) {
+  func buy(count: Int, completion: @escaping (Result<(),CoreDataError>) -> Void) {
     var currentDeposit = AD.deposit.value
     var list = AD.boughtCoins.value
     var currentCoin = self.coin.value
@@ -123,10 +123,13 @@ class CoinInformationViewModel {
       list.append(currentCoin)
       self.boughtCoinsIndex = list.firstIndex(of: currentCoin)
 
-      _ = coreData.insert(coin: currentCoin)
-
-      AD.boughtCoins.accept(list)
-      self.coin.accept(currentCoin)
+      if coreData.insert(coin: currentCoin) {
+        AD.boughtCoins.accept(list)
+        self.coin.accept(currentCoin)
+        completion(.success(()))
+      } else {
+        completion(.failure(.fetchError))
+      }
     } else {                                                                   // 코인을 현재 보유하고 있는 경우 (재구매)
       let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
 
@@ -138,16 +141,18 @@ class CoinInformationViewModel {
       list[index].holdingCount += count
       list[index].totalBoughtPrice += totalPrice
 
-      self.coin.accept(list[index])
-      AD.boughtCoins.accept(list)
-      _ = coreData.edit(list[index].objectID ?? NSManagedObjectID(), count: count, boughtPrice: totalPrice)
+      if coreData.edit(list[index].objectID ?? NSManagedObjectID(), count: count, boughtPrice: totalPrice) {
+        self.coin.accept(list[index])
+        AD.boughtCoins.accept(list)
+        completion(.success(()))
+      } else {
+        completion(.failure(.fetchError))
+      }
     }
-
     coreData.fetch()
-    completion()
   }
 
-  func sell(count: Int, completion: () -> Void) {
+  func sell(count: Int, completion: (Result<(),CoreDataError>) -> Void) {
     var deposit = AD.deposit.value
     let currentCoin = self.coin.value
     var boughtList: [CoinInfo] = AD.boughtCoins.value
@@ -155,7 +160,6 @@ class CoinInformationViewModel {
     let totalSellPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
 
     deposit += totalSellPrice
-    AD.deposit.accept(deposit)
 
     boughtList[coinIndex].totalBoughtPrice -= max(boughtList[coinIndex].totalBoughtPrice - totalSellPrice, 0)
     boughtList[coinIndex].holdingCount -= count
@@ -163,39 +167,22 @@ class CoinInformationViewModel {
     self.coin.accept(boughtList[coinIndex])
 
     if boughtList[coinIndex].holdingCount == 0 {
-      _ = coreData.delete(boughtList[coinIndex].objectID ?? NSManagedObjectID())
-      boughtList.remove(at: coinIndex)
+      if coreData.delete(boughtList[coinIndex].objectID ?? NSManagedObjectID()) {
+        boughtList.remove(at: coinIndex)
+        AD.deposit.accept(deposit)
+        AD.boughtCoins.accept(boughtList)
+        completion(.success(()))
+      } else {
+        completion(.failure(.fetchError))
+      }
     } else {
-      _ = coreData.edit(boughtList[coinIndex].objectID ?? NSManagedObjectID(), count: boughtList[coinIndex].holdingCount, boughtPrice: boughtList[coinIndex].totalBoughtPrice)
-    }
-
-    AD.boughtCoins.accept(boughtList)
-
-    completion()
-  }
-
-  func saveCoinToCoreData(coin: CoinInfo) {
-    guard let context = self.context else { return }
-
-    guard let object = NSEntityDescription.insertNewObject(forEntityName: CoreDataDataModel.coinInfo, into: context) as? CoinInfoMO else { return }
-
-      object.code = coin.code
-      object.englishName = coin.englishName
-      object.holdingCount = Int64(coin.holdingCount)
-      object.koreanName = coin.koreanName
-
-    guard let priceObject = NSEntityDescription.insertNewObject(forEntityName: CoreDataDataModel.ticker, into: context) as? TickerMO else { return }
-      priceObject.code = coin.prices?.code
-      priceObject.currentPrice = coin.prices?.currentPrice ?? 0
-      priceObject.highPrice = coin.prices?.highPrice ?? 0
-      priceObject.lowPrice = coin.prices?.lowPrice ?? 0
-
-      object.price = priceObject
-
-    do {
-      try context.save()
-    } catch {
-      context.rollback()
+      if coreData.edit(boughtList[coinIndex].objectID ?? NSManagedObjectID(), count: boughtList[coinIndex].holdingCount, boughtPrice: boughtList[coinIndex].totalBoughtPrice) {
+        AD.boughtCoins.accept(boughtList)
+        AD.deposit.accept(deposit)
+        completion(.success(()))
+      } else {
+        completion(.failure(.fetchError))
+      }
     }
   }
 
