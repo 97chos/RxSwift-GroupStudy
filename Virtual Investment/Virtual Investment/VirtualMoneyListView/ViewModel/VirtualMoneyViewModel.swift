@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import Starscream
-
+import CoreData
 
 protocol WebSocektErrorDelegation: class {
   func sendSuccessResult(_ index: Int)
@@ -20,6 +20,8 @@ protocol WebSocektErrorDelegation: class {
 class VirtualMoneyViewModel {
 
   // MARK: Properties
+
+  let conetext = CoreDataService.shared.context
 
   var coinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
   var sections: BehaviorRelay<[CoinListSection]> = BehaviorRelay<[CoinListSection]>(value: [])
@@ -147,6 +149,8 @@ class VirtualMoneyViewModel {
   func resetData() {
     AD.boughtCoins.accept([])
     AD.deposit.accept(0.0)
+    plist.set(false, forKey: UserDefaultsKey.isExistingUser)
+    coreData.clear()
   }
 
 
@@ -154,20 +158,22 @@ class VirtualMoneyViewModel {
   func setData() {
     AD.deposit
       .subscribe(onNext: {
-        plist.set($0, forKey: "deposit")
+        plist.set($0, forKey: UserDefaultsKey.remainingDeposit)
       })
       .disposed(by: bag)
 
-    AD.boughtCoins
-      .subscribe(onNext: {
-        print($0[0].holdingCount)
-        guard let encodedData = try? PropertyListEncoder().encode($0) else { return }
-        guard let decodeData = try? PropertyListDecoder().decode([CoinInfo].self, from: encodedData) else { return }
-        print(decodeData[0].holdingCount)
-        plist.set(encodedData, forKey: "aa")
-      })
-      .disposed(by: bag)
+    plist.set(true, forKey: UserDefaultsKey.remainingDeposit)
+    
 
+//    AD.boughtCoins
+//      .subscribe(onNext: {
+//        print($0[0].holdingCount)
+//        guard let encodedData = try? PropertyListEncoder().encode($0) else { return }
+//        guard let decodeData = try? PropertyListDecoder().decode([CoinInfo].self, from: encodedData) else { return }
+//        print(decodeData[0].holdingCount)
+//        plist.set(encodedData, forKey: "aa")
+//      })
+//      .disposed(by: bag)
   }
 }
 
