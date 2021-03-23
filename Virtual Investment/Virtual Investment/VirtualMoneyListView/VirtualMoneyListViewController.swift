@@ -13,6 +13,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+
 class VirtualMoneyListViewController: UIViewController {
 
   // MARK: Properties
@@ -35,7 +36,6 @@ class VirtualMoneyListViewController: UIViewController {
     self.viewModel.sections
       .bind(to: self.tableView.rx.items(dataSource: self.dataSource))
       .disposed(by: bag)
-
 
     self.tableView.rx.setDelegate(self)
       .disposed(by: bag)
@@ -75,7 +75,6 @@ class VirtualMoneyListViewController: UIViewController {
   }()
 
 
-
   // MARK: Initializing
 
   init(viewModel: VirtualMoneyViewModel) {
@@ -108,7 +107,6 @@ class VirtualMoneyListViewController: UIViewController {
 
   override func viewDidLayoutSubviews() {
     self.layout()
-    self.searchBar.frame.origin = CGPoint(x: 0, y: self.view.safeAreaInsets.top)
   }
 
 
@@ -153,6 +151,7 @@ class VirtualMoneyListViewController: UIViewController {
     self.view.addSubview(self.tableView)
     self.view.addSubview(self.searchBar)
     self.view.addSubview(self.loadingIndicator)
+    self.searchBar.frame.origin = CGPoint(x: 0, y: self.view.safeAreaInsets.top)
 
     self.tableView.snp.makeConstraints {
       $0.leading.trailing.bottom.equalToSuperview()
@@ -196,10 +195,6 @@ extension VirtualMoneyListViewController: UISearchBarDelegate {
 // MARK: WebSocket Delegation
 
 extension VirtualMoneyListViewController: WebSocektErrorDelegation {
-  func sendSuccessResult(_ index: Int) {
-    self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
-  }
-
   func sendFailureResult(_ errorType: WebSocketError) {
     self.alert(title: errorType.description, message: nil, completion: nil)
   }

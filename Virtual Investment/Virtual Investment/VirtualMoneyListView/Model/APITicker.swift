@@ -15,8 +15,8 @@ struct APITicker: Decodable, Hashable {
 
   enum CodingKeys: String, CodingKey {
     case code = "market"
-    case currentPrice = "tradePrice"
-    case highPrice = "high_Price"
-    case lowPrice = "low_Price"
+    case currentPrice = "trade_price"
+    case highPrice = "high_price"
+    case lowPrice = "low_price"
   }
 }

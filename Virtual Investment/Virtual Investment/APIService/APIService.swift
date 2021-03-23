@@ -19,7 +19,7 @@ class APIService: APIServiceProtocol {
 
   // MARK: Lookup Virtual List
 
-  func lookupCoinList(completion: @escaping (Result<[Coin],Error>) -> Void) {
+  func lookupCoinList(completion: @escaping (Result<[Coin],APIError>) -> Void) {
     guard let url: URL = URL(string:"https://api.upbit.com/v1/market/all") else {
       completion(.failure(APIError.urlError))
       return
@@ -31,10 +31,10 @@ class APIService: APIServiceProtocol {
         let data = try decoder.decode([Coin].self, from: response)
         completion(.success(data))
       } catch {
-        completion(.failure(APIError.parseError))
+        completion(.failure(.parseError))
       }
     } catch {
-      completion(.failure(APIError.networkError))
+      completion(.failure(.networkError))
     }
   }
 
@@ -56,21 +56,22 @@ class APIService: APIServiceProtocol {
 
   // MARK: Load Coins Ticker List Data
 
-  func loadCoinsTickerData(coins: [Coin], completion: @escaping (Result<[Ticker],Error>) -> Void) {
+  func loadCoinsTickerData(coins: [Coin], completion: @escaping (Result<[Ticker],APIError>) -> Void) {
     let codes = coins.map{ $0.code }
     let codeList = codes.joined(separator: ",")
     var priceListData: [Ticker] = []
 
     let param: Parameters = ["markets" : codeList]
 
-    guard let url: URL = URL(string: "https://api.upbit.com/v1/ticker") else { completion(.failure(APIError.urlError))
+    guard let url: URL = URL(string: "https://api.upbit.com/v1/ticker") else {
+      completion(.failure(.urlError))
       return
     }
 
     AF.request(url, method: .get, parameters: param, encoding: URLEncoding.queryString).responseJSON { response in
       do {
         guard let result = try response.result.get() as? [[String:Any]] else {
-          completion(.failure(APIError.parseError))
+          completion(.failure(.parseError))
           return
         }
 
@@ -83,8 +84,9 @@ class APIService: APIServiceProtocol {
           priceListData.append(coinData)
         }
         completion(.success(priceListData))
+
       } catch {
-        completion(.failure(APIError.networkError))
+        completion(.failure(.networkError))
       }
     }
   }

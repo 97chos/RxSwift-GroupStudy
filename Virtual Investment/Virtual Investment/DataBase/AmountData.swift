@@ -14,6 +14,9 @@ let AD = AmountData.shared
 let plist = UserDefaults.standard
 
 class AmountData {
+
+  // MARK: Properties
+
   static var shared = AmountData()
   var deposit: BehaviorRelay = BehaviorRelay<Double>(value: 0)
   var boughtCoins: BehaviorRelay<[CoinInfo]> = BehaviorRelay<[CoinInfo]>(value: [])
@@ -29,6 +32,9 @@ class AmountData {
       }
     }
 
+
+  // MARK: Initializing
+  
   private init() {
   }
 }

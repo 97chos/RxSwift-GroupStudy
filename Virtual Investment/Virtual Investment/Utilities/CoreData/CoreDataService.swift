@@ -112,7 +112,6 @@ class CoreDataService: CoreDataServiceProtocol {
 
   func clear() {
     guard let context = self.context else { return }
-
     let request: NSFetchRequest<CoinInfoMO> = CoinInfoMO.fetchRequest()
 
     do {
@@ -128,7 +127,6 @@ class CoreDataService: CoreDataServiceProtocol {
 
   func edit(_ objectID: NSManagedObjectID, count: Int, boughtPrice: Double) -> Bool {
     guard let context = self.context else { return false }
-
     let object = context.object(with: objectID) as? CoinInfoMO
 
     object?.holdingCount = Int64(count)
