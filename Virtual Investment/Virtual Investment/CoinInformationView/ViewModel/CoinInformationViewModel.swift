@@ -89,9 +89,7 @@ class CoinInformationViewModel {
     .observe(on: MainScheduler.asyncInstance)
     .subscribe(onNext: { result in
       if result.isResult {
-        guard let indexCoin = result.indexCoin else {
-          return
-        }
+        guard let indexCoin = result.indexCoin else { return }
         var coin = result.currentCoin
         coin.holdingCount = indexCoin.holdingCount
         coin.totalBoughtPrice = indexCoin.totalBoughtPrice
@@ -141,7 +139,7 @@ class CoinInformationViewModel {
       list[index].holdingCount += count
       list[index].totalBoughtPrice += totalPrice
 
-      if coreData.edit(list[index].objectID ?? NSManagedObjectID(), count: count, boughtPrice: totalPrice) {
+      if coreData.edit(list[index].objectID ?? NSManagedObjectID(), count: list[index].holdingCount, boughtPrice: list[index].totalBoughtPrice) {
         self.coin.accept(list[index])
         AD.boughtCoins.accept(list)
         completion(.success(()))
@@ -158,16 +156,18 @@ class CoinInformationViewModel {
     var boughtList: [CoinInfo] = AD.boughtCoins.value
     guard let coinIndex = self.boughtCoinsIndex else { return }
     let totalSellPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
+    var coinAtIndex = boughtList[coinIndex]
 
     deposit += totalSellPrice
 
-    boughtList[coinIndex].totalBoughtPrice -= max(boughtList[coinIndex].totalBoughtPrice - totalSellPrice, 0)
-    boughtList[coinIndex].holdingCount -= count
+    coinAtIndex.totalBoughtPrice -= max(boughtList[coinIndex].totalBoughtPrice - totalSellPrice, 0)
+    coinAtIndex.holdingCount -= count
 
-    self.coin.accept(boughtList[coinIndex])
+    self.coin.accept(coinAtIndex)
 
-    if boughtList[coinIndex].holdingCount == 0 {
-      if coreData.delete(boughtList[coinIndex].objectID ?? NSManagedObjectID()) {
+    switch coinAtIndex.holdingCount == 0 {
+    case true:
+      if coreData.delete(coinAtIndex.objectID ?? NSManagedObjectID()) {
         boughtList.remove(at: coinIndex)
         AD.deposit.accept(deposit)
         AD.boughtCoins.accept(boughtList)
@@ -175,8 +175,10 @@ class CoinInformationViewModel {
       } else {
         completion(.failure(.fetchError))
       }
-    } else {
-      if coreData.edit(boughtList[coinIndex].objectID ?? NSManagedObjectID(), count: boughtList[coinIndex].holdingCount, boughtPrice: boughtList[coinIndex].totalBoughtPrice) {
+    case false:
+      if coreData.edit(coinAtIndex.objectID ?? NSManagedObjectID(), count: coinAtIndex.holdingCount, boughtPrice: coinAtIndex.totalBoughtPrice) {
+        boughtList[coinIndex].holdingCount = coinAtIndex.holdingCount
+        boughtList[coinIndex].totalBoughtPrice = coinAtIndex.totalBoughtPrice
         AD.boughtCoins.accept(boughtList)
         AD.deposit.accept(deposit)
         completion(.success(()))
