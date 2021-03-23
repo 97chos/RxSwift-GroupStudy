@@ -13,7 +13,6 @@ import Starscream
 import CoreData
 
 protocol WebSocektErrorDelegation: class {
-  func sendSuccessResult(_ index: Int)
   func sendFailureResult(_ errorType: WebSocketError)
 }
 
@@ -63,8 +62,8 @@ class VirtualMoneyViewModel {
     self.coinList
       .take(1)
       .map{ $0.map{ $0.code }}
-      .subscribe(onNext: {
-        self.codeList = $0
+      .subscribe(onNext: { [weak self] in
+        self?.codeList = $0
       })
       .disposed(by: bag)
   }
@@ -95,9 +94,9 @@ class VirtualMoneyViewModel {
         let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
         return coinInfo
       }
-      .subscribe(onNext: {
+      .subscribe(onNext: { [weak self] in
         completedCoins.append($0)
-        self.coinList.accept(completedCoins)
+        self?.coinList.accept(completedCoins)
       },onError: { error in
         observer(.error(error))
       })
