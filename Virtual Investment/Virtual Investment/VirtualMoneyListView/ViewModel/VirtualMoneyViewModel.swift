@@ -96,34 +96,27 @@ class VirtualMoneyViewModel {
     })
   }
 
-  func resetData() {
-    AD.boughtCoins.accept([])
-    AD.deposit.accept(0.0)
-    plist.set(false, forKey: UserDefaultsKey.isExistingUser)
-    coreData.clear()
-  }
-
-
-  // MARK: Core Data
   func setData() {
     AD.deposit
-      .subscribe(onNext: {
-        plist.set($0, forKey: UserDefaultsKey.remainingDeposit)
+      .subscribe(onNext: { deposit in
+        print(deposit)
+        plist.set(deposit, forKey: UserDefaultsKey.remainingDeposit)
       })
       .disposed(by: bag)
 
-    plist.set(true, forKey: UserDefaultsKey.remainingDeposit)
+    plist.set(true, forKey: UserDefaultsKey.isCheckingUser)
+    plist.synchronize()
 
+    print("viewDidLoad 이후 :", plist.bool(forKey: UserDefaultsKey.isCheckingUser))
+  }
 
-//    AD.boughtCoins
-//      .subscribe(onNext: {
-//        print($0[0].holdingCount)
-//        guard let encodedData = try? PropertyListEncoder().encode($0) else { return }
-//        guard let decodeData = try? PropertyListDecoder().decode([CoinInfo].self, from: encodedData) else { return }
-//        print(decodeData[0].holdingCount)
-//        plist.set(encodedData, forKey: "aa")
-//      })
-//      .disposed(by: bag)
+  func resetData() {
+    AD.boughtCoins.accept([])
+    AD.deposit.accept(0.0)
+    plist.set(false, forKey: UserDefaultsKey.isCheckingUser)
+    plist.synchronize()
+    print("초기화 된 값:",plist.bool(forKey: UserDefaultsKey.isCheckingUser))
+    coreData.clear()
   }
 }
 
