@@ -93,7 +93,6 @@ class MainViewController: UIViewController {
     self.viewModel.checkInputtedValue(self.inputDeposit.text)
       .subscribe(onNext: { [weak self] in
         AD.deposit.accept($0)
-        plist.set(true, forKey: UserDefaultsKey.isExistingUser)
         self?.present(self?.viewModel.returnTabBarController() ?? UITabBarController(), animated: true)
       }, onError: { [weak self] error in
         let errorType = error as? valueError
