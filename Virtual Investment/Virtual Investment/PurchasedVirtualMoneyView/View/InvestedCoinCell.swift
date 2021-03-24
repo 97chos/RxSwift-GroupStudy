@@ -88,14 +88,14 @@ class InvestedCoinCell: UITableViewCell {
       .map{
         self.isCheckProfit($0[coinIndex])
       }
-      .subscribe(onNext: {
+      .subscribe(onNext: { [weak self] in
         switch $0 {
         case .equal:
-          self.evaluatedPriceLabel.textColor = .black
+          self?.evaluatedPriceLabel.textColor = .black
         case .profit:
-          self.evaluatedPriceLabel.textColor = .systemRed
+          self?.evaluatedPriceLabel.textColor = .systemRed
         case .loss:
-          self.evaluatedPriceLabel.textColor = .systemBlue
+          self?.evaluatedPriceLabel.textColor = .systemBlue
         }
       })
       .disposed(by: bag)

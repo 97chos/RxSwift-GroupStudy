@@ -39,8 +39,8 @@ class APIService: APIServiceProtocol {
   }
 
   func lookupCoinListRx() -> Observable<[Coin]> {
-    return Observable.create({ observer in
-      self.lookupCoinList { result in
+    return Observable.create({ [weak self] observer in
+      self?.lookupCoinList { result in
         switch result {
         case .success(let coinList):
           observer.onNext(coinList)
@@ -92,8 +92,8 @@ class APIService: APIServiceProtocol {
   }
 
   func loadCoinsTickerDataRx(coins: [Coin]) -> Observable<[Ticker]> {
-    return Observable.create({ observer in
-      self.loadCoinsTickerData(coins: coins) { result in
+    return Observable.create({ [weak self] observer in
+      self?.loadCoinsTickerData(coins: coins) { result in
         switch result {
         case .success(let tickerList):
           observer.onNext(tickerList)

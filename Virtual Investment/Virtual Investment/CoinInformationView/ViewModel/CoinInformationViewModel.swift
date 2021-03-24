@@ -33,7 +33,8 @@ class CoinInformationViewModel {
   func bindHoldingCount() {
     self.coin
       .map{ $0.holdingCount }
-      .subscribe(onNext: { self.holdingCount = $0 })
+      .subscribe(onNext: { [weak self] in
+                  self?.holdingCount = $0 })
       .disposed(by: bag)
   }
   
@@ -41,7 +42,7 @@ class CoinInformationViewModel {
   // MARK: Logic
 
   func checkInputtedCount(_ senderTag: Int, text: String?) -> Observable<Int> {
-    return Observable.create({ observer in
+    return Observable.create({ [weak self] observer in
       guard let inputtedText = text, !inputtedText.isEmpty else {
         observer.onError(inputCountError.isEmptyField)
         return Disposables.create()
@@ -55,13 +56,13 @@ class CoinInformationViewModel {
         return Disposables.create()
       }
       if senderTag == 0 {
-        guard self.holdingCount ?? 0 >= count else {
+        guard self?.holdingCount ?? 0 >= count else {
           observer.onError(inputCountError.deficientHoldingCount)
           return Disposables.create()
         }
       } else if senderTag == 1 {
         let deposit = AD.deposit.value
-        guard deposit >= Double(count) * (self.coin.value.prices?.currentPrice ?? 0) else {
+        guard deposit >= Double(count) * (self?.coin.value.prices?.currentPrice ?? 0) else {
           observer.onError(inputCountError.deficientDeposit)
           return Disposables.create()
         }
@@ -73,32 +74,33 @@ class CoinInformationViewModel {
   }
 
   func isContainCoinInBoughtList() {
-    Observable.combineLatest(AD.boughtCoins, self.coin, resultSelector: {list, coin -> ContainCoinResult in
+    Observable.combineLatest(AD.boughtCoins, self.coin, resultSelector: { [weak self]
+      list, coin -> ContainCoinResult in
       if list.contains(coin) {
         guard let index = list.firstIndex(of: coin) else {
           return ContainCoinResult(false, nil, coin)
         }
-        self.boughtCoinsIndex = index
+        self?.boughtCoinsIndex = index
         return ContainCoinResult(true, list[index], coin)
       } else {
-        self.boughtCoinsIndex = nil
+        self?.boughtCoinsIndex = nil
         return ContainCoinResult(false, nil, coin)
       }
     })
     .distinctUntilChanged()
     .observe(on: MainScheduler.asyncInstance)
-    .subscribe(onNext: { result in
+    .subscribe(onNext: { [weak self] result in
       if result.isResult {
         guard let indexCoin = result.indexCoin else { return }
         var coin = result.currentCoin
         coin.holdingCount = indexCoin.holdingCount
         coin.totalBoughtPrice = indexCoin.totalBoughtPrice
-        self.coin.accept(coin)
+        self?.coin.accept(coin)
       } else {
         var coin = result.currentCoin
         coin.holdingCount = 0
         coin.totalBoughtPrice = 0
-        self.coin.accept(coin)
+        self?.coin.accept(coin)
       }
     })
     .disposed(by: bag)

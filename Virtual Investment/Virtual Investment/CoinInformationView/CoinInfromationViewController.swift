@@ -137,40 +137,40 @@ class CoinInformationViewController: UIViewController {
 
   private func buyButtonAction() {
     viewModel.checkInputtedCount(self.buyButton.tag, text: self.inputCount.text)
-      .subscribe(onNext: { count in
-        self.viewModel.buy(count: count) { result in
+      .subscribe(onNext: { [weak self] count in
+        self?.viewModel.buy(count: count) { result in
           switch result {
           case .success():
-            self.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
+            self?.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
           case .failure(let error):
-            self.alert(title: error.description, message: nil) {
-              self.navigationController?.popViewController(animated: true)
+            self?.alert(title: error.description, message: nil) {
+              self?.navigationController?.popViewController(animated: true)
             }
           }
         }
-      },onError: { error in
+      },onError: { [weak self] error in
         let errorType = error as? inputCountError
-        self.alert(title: errorType?.description , message: nil, completion: nil)
+        self?.alert(title: errorType?.description , message: nil, completion: nil)
       })
       .disposed(by: bag)
   }
 
   private func sellButtonAction() {
     viewModel.checkInputtedCount(self.sellButton.tag, text: self.inputCount.text)
-      .subscribe(onNext: { count in
-        self.viewModel.sell(count: count) { result in
+      .subscribe(onNext: { [weak self] count in
+        self?.viewModel.sell(count: count) { result in
           switch result {
           case .success():
-            self.alert(title: "매도 체결이 완료되었습니다.", message: nil, completion: nil)
+            self?.alert(title: "매도 체결이 완료되었습니다.", message: nil, completion: nil)
           case .failure(let error):
-            self.alert(title: error.description, message: nil) {
-              self.navigationController?.popViewController(animated: true)
+            self?.alert(title: error.description, message: nil) {
+              self?.navigationController?.popViewController(animated: true)
             }
           }
         }
-      },onError: { error in
+      },onError: { [weak self] error in
         let errorType = error as? inputCountError
-        self.alert(title: errorType?.description, message: nil, completion: nil)
+        self?.alert(title: errorType?.description, message: nil, completion: nil)
       })
       .disposed(by: bag)
   }
@@ -193,7 +193,7 @@ class CoinInformationViewController: UIViewController {
   private func bindLabel() {
     viewModel.coin
       .map{ $0.koreanName }
-      .do(onNext: {self.title = $0})
+      .do(onNext: { [weak self] in self?.title = $0})
       .bind(to: coinNameLabel.rx.text)
       .disposed(by: bag)
 
@@ -225,14 +225,14 @@ class CoinInformationViewController: UIViewController {
 
   private func bindButton() {
     self.buyButton.rx.tap
-      .subscribe(onNext: {
-        self.buyButtonAction()
+      .subscribe(onNext: { [weak self] in
+        self?.buyButtonAction()
       })
       .disposed(by: bag)
 
     self.sellButton.rx.tap
-      .subscribe(onNext: {
-        self.sellButtonAction()
+      .subscribe(onNext: { [weak self] in
+        self?.sellButtonAction()
       })
       .disposed(by: bag)
   }

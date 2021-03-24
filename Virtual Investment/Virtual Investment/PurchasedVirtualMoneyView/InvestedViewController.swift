@@ -169,16 +169,19 @@ class InvestedViewController: UIViewController {
     Observable.combineLatest(
       AD.evaluatedPrice,
       AD.investedPrice,
-      resultSelector: { self.viewModel.checkProfit($0, $1) }
+      resultSelector: { [weak self] in
+        self?.viewModel.checkProfit($0, $1) }
     )
-    .subscribe(onNext: { result in
+    .subscribe(onNext: { [weak self] result in
       switch result {
       case .equal:
-        self.evaluatedLabel.textColor = .black
+        self?.evaluatedLabel.textColor = .black
       case .loss:
-        self.evaluatedLabel.textColor = .systemBlue
+        self?.evaluatedLabel.textColor = .systemBlue
       case .profit:
-        self.evaluatedLabel.textColor = .systemRed
+        self?.evaluatedLabel.textColor = .systemRed
+      case .none:
+        self?.evaluatedLabel.textColor = .black
       }
     })
     .disposed(by: bag)
@@ -189,13 +192,13 @@ class InvestedViewController: UIViewController {
 
   private func getCurrentPrice() {
     viewModel.getCurrentPrice()
-      .subscribe { completable in
+      .subscribe { [weak self] completable in
         switch completable {
         case .completed:
           break
         case .error(let error):
           let errorType = error as? APIError
-          self.alert(title: errorType?.description, message: errorType?.message, completion: nil)
+          self?.alert(title: errorType?.description, message: errorType?.message, completion: nil)
         }
       }
       .disposed(by: bag)

@@ -130,9 +130,9 @@ class VirtualMoneyListViewController: UIViewController {
 
   private func initDataConfigure() {
     self.viewModel.lookUpCoinList()
-      .subscribe(onError: { error in
+      .subscribe(onError: { [weak self] error in
         let errorType = error as? APIError
-        self.alert(title: errorType?.description, message: nil, completion: nil)
+        self?.alert(title: errorType?.description, message: nil, completion: nil)
       })
       .disposed(by: bag)
   }
