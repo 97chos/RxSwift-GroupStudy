@@ -21,16 +21,13 @@ class VirtualMoneyViewModel {
   // MARK: Properties
 
   let conetext = CoreDataService.shared.context
-
   var coinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
   var sections: BehaviorRelay<[CoinListSection]> = BehaviorRelay<[CoinListSection]>(value: [])
   let searchingText: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
-
   var codeList: [String] = []
   private let bag = DisposeBag()
   private var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   private var APIService: APIServiceProtocol
-
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
   weak var delegate: WebSocektErrorDelegation?
 
@@ -181,18 +178,20 @@ class VirtualMoneyViewModel {
 
 extension VirtualMoneyViewModel: WebSocketDelegate {
   func connect() {
-    request.timeoutInterval = 100
+    request.timeoutInterval = 1000
     webSocket.delegate = self
     webSocket.connect()
   }
 
   func disconnect() {
     webSocket.disconnect()
+    print("disconnect")
   }
 
   func didReceive(event: WebSocketEvent, client: WebSocket) {
     switch(event) {
     case .connected(_):
+      print("Connected")
       let ticket = TicketField(ticket: "test")
       let format = FormatField(format: "SIMPLE")
       let type = TypeField(type: "ticker", codes: self.coinList.value.map{ $0.code }, isOnlySnapshot: false, isOnlyRealtime: true)
