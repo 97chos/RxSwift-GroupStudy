@@ -8,6 +8,6 @@
 import Foundation
 
 enum UserDefaultsKey {
-  static let isExistingUser = "isExistingUser"
+  static let isCheckingUser = "isExistingUser"
   static let remainingDeposit = "remainingDeposit"
 }

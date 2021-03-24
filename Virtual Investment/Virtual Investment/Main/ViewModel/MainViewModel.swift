@@ -12,6 +12,10 @@ import RxSwift
 
 class MainViewModel {
 
+  // MARK: Properties
+
+  private let bag = DisposeBag()
+
   // MARK: UI
 
   private lazy var firstTabBarImage: UIImage = {
@@ -46,13 +50,16 @@ class MainViewModel {
   // MARK: Check Deposit
 
   func checkData() -> Bool {
-    guard plist.bool(forKey: UserDefaultsKey.isExistingUser) == true else { return false }
+    guard plist.bool(forKey: UserDefaultsKey.isCheckingUser) == true else { return false }
     let deposit = plist.double(forKey: UserDefaultsKey.remainingDeposit)
+    print(deposit)
+    print("메인 화면에서 ",plist.bool(forKey: UserDefaultsKey.isCheckingUser))
     coreData.fetch()
 
     AD.deposit.accept(deposit)
     return true
   }
+
 
 
   // MARK: Make TabBarController

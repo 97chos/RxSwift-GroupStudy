@@ -94,6 +94,7 @@ class VirtualMoneyListViewController: UIViewController {
     self.configure()
     self.bindSections()
     self.bindSeraching()
+    self.viewModel.setData()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -114,7 +115,6 @@ class VirtualMoneyListViewController: UIViewController {
   private func configure() {
     self.viewConfigure()
     self.initDataConfigure()
-    self.viewModel.setData()
   }
 
   private func viewConfigure() {
