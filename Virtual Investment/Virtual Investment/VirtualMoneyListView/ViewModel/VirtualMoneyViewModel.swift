@@ -55,16 +55,6 @@ class VirtualMoneyViewModel {
     .disposed(by: bag)
   }
 
-  private func extractCodeList() {
-    self.coinList
-      .take(1)
-      .map{ $0.map{ $0.code }}
-      .subscribe(onNext: { [weak self] in
-        self?.codeList = $0
-      })
-      .disposed(by: bag)
-  }
-
   func lookUpCoinList() -> Completable {
     var completedCoins: [CoinInfo] = []
     let missingPriceCoins = self.APIService.lookupCoinListRx()
