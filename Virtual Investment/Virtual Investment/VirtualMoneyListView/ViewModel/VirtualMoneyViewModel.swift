@@ -21,13 +21,16 @@ class VirtualMoneyViewModel {
   // MARK: Properties
 
   let conetext = CoreDataService.shared.context
+
   var coinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
   var sections: BehaviorRelay<[CoinListSection]> = BehaviorRelay<[CoinListSection]>(value: [])
   let searchingText: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
+
   var codeList: [String] = []
   private let bag = DisposeBag()
   private var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
   private var APIService: APIServiceProtocol
+
   lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
   weak var delegate: WebSocektErrorDelegation?
 
@@ -93,45 +96,6 @@ class VirtualMoneyViewModel {
     })
   }
 
-//  func oldLookUpCoinList() -> Completable {
-//    return Completable.create(subscribe: { observer in
-//      self.APIService.lookupCoinListRx()
-//        // todo : .flatMap{ Observable.from($0) }
-//        .subscribe(onNext: { [weak self] list in
-//          var missingPriceCoins = list
-//          guard let self = self else { return }
-//          self.APIService.loadCoinsTickerDataRx(coins: missingPriceCoins)
-//            .map{ tickerList -> [Coin] in
-//              let groupingList = Dictionary(grouping: tickerList, by: {$0.code})
-//              groupingList.enumerated().forEach{ index, dic in
-//                let ticker = groupingList[missingPriceCoins[index].code]?.first
-//                missingPriceCoins[index].prices = ticker
-//              }
-//              return missingPriceCoins
-//            }
-//            // todo : flatmap
-//            .subscribe(onNext: { completeCoins in
-//              self.coinList
-//                .distinctUntilChanged()
-//                .subscribe(onNext: { _ in
-//                  self.coinList.accept(completeCoins)
-//                  observer(.completed)
-//                },onError: { _ in
-//                  observer(.error(APIError.parseError))
-//                })
-//                .disposed(by: self.bag)
-//            }, onError: { _ in
-//              observer(.error(APIError.loadCoinTickerError))
-//            })
-//            .disposed(by: self.bag)
-//        }, onError: { _ in
-//          observer(.error(APIError.loadCoinNameError))
-//        })
-//        .disposed(by: self.bag)
-//      return Disposables.create()
-//    })
-//  }
-
   func resetData() {
     AD.boughtCoins.accept([])
     AD.deposit.accept(0.0)
@@ -149,7 +113,7 @@ class VirtualMoneyViewModel {
       .disposed(by: bag)
 
     plist.set(true, forKey: UserDefaultsKey.remainingDeposit)
-    
+
 
 //    AD.boughtCoins
 //      .subscribe(onNext: {
@@ -168,20 +132,18 @@ class VirtualMoneyViewModel {
 
 extension VirtualMoneyViewModel: WebSocketDelegate {
   func connect() {
-    request.timeoutInterval = 1000
+    request.timeoutInterval = 100
     webSocket.delegate = self
     webSocket.connect()
   }
 
   func disconnect() {
     webSocket.disconnect()
-    print("disconnect")
   }
 
   func didReceive(event: WebSocketEvent, client: WebSocket) {
     switch(event) {
     case .connected(_):
-      print("Connected")
       let ticket = TicketField(ticket: "test")
       let format = FormatField(format: "SIMPLE")
       let type = TypeField(type: "ticker", codes: self.coinList.value.map{ $0.code }, isOnlySnapshot: false, isOnlyRealtime: true)

@@ -96,13 +96,13 @@ class VirtualMoneyListViewController: UIViewController {
     self.bindSeraching()
   }
 
-//  override func viewWillAppear(_ animated: Bool) {
-//    viewModel.connect()
-//  }
-//
-//  override func viewWillDisappear(_ animated: Bool) {
-//    viewModel.disconnect()
-//  }
+  override func viewWillAppear(_ animated: Bool) {
+    viewModel.connect()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    viewModel.disconnect()
+  }
 
   override func viewDidLayoutSubviews() {
     self.layout()
