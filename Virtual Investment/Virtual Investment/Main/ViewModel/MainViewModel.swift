@@ -52,8 +52,6 @@ class MainViewModel {
   func checkData() -> Bool {
     guard plist.bool(forKey: UserDefaultsKey.isCheckingUser) == true else { return false }
     let deposit = plist.double(forKey: UserDefaultsKey.remainingDeposit)
-    print(deposit)
-    print("메인 화면에서 ",plist.bool(forKey: UserDefaultsKey.isCheckingUser))
     coreData.fetch()
 
     AD.deposit.accept(deposit)
