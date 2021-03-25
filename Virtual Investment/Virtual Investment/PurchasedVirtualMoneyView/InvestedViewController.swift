@@ -97,6 +97,10 @@ class InvestedViewController: UIViewController {
     let tableView = UITableView()
     return tableView
   }()
+  private lazy var refreshButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(self.refersh))
+    return button
+  }()
 
 
   // MARK: Initializing
@@ -136,6 +140,7 @@ class InvestedViewController: UIViewController {
   private func viewConfigure() {
     self.view.backgroundColor = .systemBackground
     self.title = "투자 내역"
+    self.navigationItem.rightBarButtonItem = self.refreshButton
   }
 
   private func tableViewConfigure() {
@@ -202,6 +207,11 @@ class InvestedViewController: UIViewController {
         }
       }
       .disposed(by: bag)
+  }
+
+  @objc private func refersh() {
+    self.getCurrentPrice()
+    self.tableView.reloadData()
   }
 
   // MARK: Layout
