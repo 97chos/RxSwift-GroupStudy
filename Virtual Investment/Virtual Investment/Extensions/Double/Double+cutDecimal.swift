@@ -9,9 +9,10 @@ import Foundation
 
 extension Double {
   func cutDecimal() -> String {
-    if self.truncatingRemainder(dividingBy: 1.0) == 0 {
+    if self > 1 {
       let numberFormatter = NumberFormatter()
       numberFormatter.numberStyle = .decimal
+      numberFormatter.maximumFractionDigits = 4
       return numberFormatter.string(from: NSNumber(value: self)) ?? ""
     } else {
       return String(format: "%.8f", self)
