@@ -60,38 +60,60 @@ class VirtualMoneyViewModel {
 
   func lookUpCoinList() -> Completable {
     var completedCoins: [CoinInfo] = []
-    let missingPriceCoins = self.APIService.lookupCoinListRx()
-      .flatMap{ Observable.from($0) }
+    //    let missingPriceCoins = self.APIService.lookupCoinListRx()
+    //      .flatMap{ Observable.from($0) }
+    //
+    //    let tickerData = Observable<Ticker>.create({ [weak self] oberver in
+    //      guard let self = self else { return Disposables.create() }
+    //      self.APIService.lookupCoinListRx()
+    //        .subscribe(onNext: {
+    //          self.APIService.loadCoinsTickerDataRx(coins: $0)
+    //            .flatMap({ Observable.from($0) })
+    //            .subscribe(onNext: {
+    //              oberver.onNext($0)
+    //            })
+    //            .disposed(by: self.bag)
+    //        })
+    //        .disposed(by: self.bag)
+    //      return Disposables.create()
+    //    })
+    //    return Completable.create(subscribe: { [weak self] observer in
+    //      guard let self = self else { return Disposables.create() }
+    //      Observable.zip(missingPriceCoins,tickerData) { coin, ticker -> CoinInfo in
+    //        let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
+    //        return coinInfo
+    //      }
+    //      .subscribe(onNext: { [weak self] in
+    //        completedCoins.append($0)
+    //        self?.coinList.accept(completedCoins)
+    //      },onError: { error in
+    //        observer(.error(error))
+    //      })
+    //      .disposed(by: self.bag)
+    //
+    //      return Disposables.create()
+    //    })
 
-    let tickerData = Observable<Ticker>.create({ [weak self] oberver in
-      guard let self = self else { return Disposables.create() }
-      self.APIService.lookupCoinListRx()
-        .subscribe(onNext: {
-          self.APIService.loadCoinsTickerDataRx(coins: $0)
-            .flatMap({ Observable.from($0) })
-            .subscribe(onNext: {
-              oberver.onNext($0)
-            })
-            .disposed(by: self.bag)
-        })
-        .disposed(by: self.bag)
-      return Disposables.create()
-    })
-
-    return Completable.create(subscribe: { [weak self] observer in
-      guard let self = self else { return Disposables.create() }
-      Observable.zip(missingPriceCoins,tickerData) { coin, ticker -> CoinInfo in
-        let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
-        return coinInfo
+    var maxCount = 0
+    self.APIService.lookupCoinListRx()
+      .flatMap{ coins -> Observable<CoinInfo> in
+        maxCount = coins.count
+        return self.APIService.loadCoinsTickerDataRx(coins: coins)
+          .flatMap{ Observable.zip(Observable.from(coins), Observable.from($0)) { coin, ticker -> CoinInfo in
+            let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
+            return coinInfo
+          }}
       }
       .subscribe(onNext: { [weak self] in
         completedCoins.append($0)
-        self?.coinList.accept(completedCoins)
-      },onError: { error in
-        observer(.error(error))
+        if maxCount == completedCoins.count {
+          self?.coinList.accept(completedCoins)
+        }
       })
-      .disposed(by: self.bag)
+      .disposed(by: bag)
 
+    return Completable.create(subscribe: { observer in
+      observer(.completed)
       return Disposables.create()
     })
   }
