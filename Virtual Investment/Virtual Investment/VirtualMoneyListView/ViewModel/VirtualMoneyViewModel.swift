@@ -23,6 +23,7 @@ class VirtualMoneyViewModel {
   let conetext = CoreDataService.shared.context
 
   var coinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
+  var coinListBasic: [CoinInfo] = []
   var sections: BehaviorRelay<[CoinListSection]> = BehaviorRelay<[CoinListSection]>(value: [])
   let searchingText: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
 
@@ -56,6 +57,26 @@ class VirtualMoneyViewModel {
     .map{ [CoinListSection(header: "list", items: $0)] }
     .bind(to: self.sections)
     .disposed(by: bag)
+  }
+
+  func loadCoin(completion: @escaping (Result<(), APIError>) -> Void) {
+    var maxCount = 0
+    APIService.lookupCoinListRx()
+      .flatMap{ emptyCoins -> Observable<CoinInfo> in
+        maxCount = emptyCoins.count
+        return self.APIService.loadCoinsTickerDataRx(coins: emptyCoins)
+          .flatMap{ Observable.zip(Observable.from(emptyCoins), Observable.from($0)) { coin, ticker -> CoinInfo in
+            return CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
+          }}
+      }
+      .subscribe(onNext: { coin in
+        self.coinListBasic.append(coin)
+        if maxCount == self.coinListBasic.count {
+          completion(.success(()))
+        }
+      },onError: { error in
+        completion(.failure(APIError.requestAPIError))
+      })
   }
 
   func lookUpCoinList() -> Completable {
@@ -100,8 +121,7 @@ class VirtualMoneyViewModel {
         maxCount = coins.count
         return self.APIService.loadCoinsTickerDataRx(coins: coins)
           .flatMap{ Observable.zip(Observable.from(coins), Observable.from($0)) { coin, ticker -> CoinInfo in
-            let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
-            return coinInfo
+            return CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
           }}
       }
       .subscribe(onNext: { [weak self] in
