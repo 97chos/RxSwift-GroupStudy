@@ -21,9 +21,9 @@ class VirtualMoneyViewModel {
   // MARK: Properties
 
   let conetext = CoreDataService.shared.context
-
+  var coin: BehaviorSubject = BehaviorSubject<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: ""))
   var coinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
-  var coinListBasic: [CoinInfo] = []
+  var realTimeCoinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
   var sections: BehaviorRelay<[CoinListSection]> = BehaviorRelay<[CoinListSection]>(value: [])
   let searchingText: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
 
@@ -173,10 +173,6 @@ extension VirtualMoneyViewModel: WebSocketDelegate {
         coin.prices = tickerData
 
         listValue[index] = coin
-
-        Observable.just(listValue)
-          .bind(to: self.coinList)
-          .disposed(by: bag)
 
         self.coinList.accept(listValue)
       } catch {

@@ -33,8 +33,10 @@ class VirtualMoneyListViewController: UIViewController {
   // MARK: Bind
 
   private func bindSections() {
-    self.viewModel.sections
-      .bind(to: self.tableView.rx.items(dataSource: self.dataSource))
+    self.viewModel.realTimeCoinList
+      .bind(to: self.tableView.rx.items(cellIdentifier: ReuseIdentifier.coinListCell, cellType: CoinCell.self)) { index, item, cell in
+        cell.set(coinData: item)
+      }
       .disposed(by: bag)
 
     self.tableView.rx.setDelegate(self)
