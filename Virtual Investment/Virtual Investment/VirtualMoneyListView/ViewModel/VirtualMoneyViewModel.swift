@@ -54,86 +54,34 @@ class VirtualMoneyViewModel {
         return coinList
       }
     }
-    .map{ [CoinListSection(header: "list", items: $0)] }
-    .bind(to: self.sections)
+    .bind(to: self.realTimeCoinList)
     .disposed(by: bag)
-  }
-
-  func loadCoin(completion: @escaping (Result<(), APIError>) -> Void) {
-    var maxCount = 0
-    APIService.lookupCoinListRx()
-      .flatMap{ emptyCoins -> Observable<CoinInfo> in
-        maxCount = emptyCoins.count
-        return self.APIService.loadCoinsTickerDataRx(coins: emptyCoins)
-          .flatMap{ Observable.zip(Observable.from(emptyCoins), Observable.from($0)) { coin, ticker -> CoinInfo in
-            return CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
-          }}
-      }
-      .subscribe(onNext: { coin in
-        self.coinListBasic.append(coin)
-        if maxCount == self.coinListBasic.count {
-          completion(.success(()))
-        }
-      },onError: { error in
-        completion(.failure(APIError.requestAPIError))
-      })
   }
 
   func lookUpCoinList() -> Completable {
     var completedCoins: [CoinInfo] = []
-    //    let missingPriceCoins = self.APIService.lookupCoinListRx()
-    //      .flatMap{ Observable.from($0) }
-    //
-    //    let tickerData = Observable<Ticker>.create({ [weak self] oberver in
-    //      guard let self = self else { return Disposables.create() }
-    //      self.APIService.lookupCoinListRx()
-    //        .subscribe(onNext: {
-    //          self.APIService.loadCoinsTickerDataRx(coins: $0)
-    //            .flatMap({ Observable.from($0) })
-    //            .subscribe(onNext: {
-    //              oberver.onNext($0)
-    //            })
-    //            .disposed(by: self.bag)
-    //        })
-    //        .disposed(by: self.bag)
-    //      return Disposables.create()
-    //    })
-    //    return Completable.create(subscribe: { [weak self] observer in
-    //      guard let self = self else { return Disposables.create() }
-    //      Observable.zip(missingPriceCoins,tickerData) { coin, ticker -> CoinInfo in
-    //        let coinInfo = CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
-    //        return coinInfo
-    //      }
-    //      .subscribe(onNext: { [weak self] in
-    //        completedCoins.append($0)
-    //        self?.coinList.accept(completedCoins)
-    //      },onError: { error in
-    //        observer(.error(error))
-    //      })
-    //      .disposed(by: self.bag)
-    //
-    //      return Disposables.create()
-    //    })
-
     var maxCount = 0
-    self.APIService.lookupCoinListRx()
-      .flatMap{ coins -> Observable<CoinInfo> in
-        maxCount = coins.count
-        return self.APIService.loadCoinsTickerDataRx(coins: coins)
-          .flatMap{ Observable.zip(Observable.from(coins), Observable.from($0)) { coin, ticker -> CoinInfo in
-            return CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
-          }}
-      }
-      .subscribe(onNext: { [weak self] in
-        completedCoins.append($0)
-        if maxCount == completedCoins.count {
-          self?.coinList.accept(completedCoins)
-        }
-      })
-      .disposed(by: bag)
 
-    return Completable.create(subscribe: { observer in
-      observer(.completed)
+    return Completable.create(subscribe: { [weak self] observer in
+      guard let self = self else { return Disposables.create() }
+      self.APIService.lookupCoinListRx()
+        .flatMap{ coins -> Observable<CoinInfo> in
+          maxCount = coins.count
+          return self.APIService.loadCoinsTickerDataRx(coins: coins)
+            .flatMap{ Observable.zip(Observable.from(coins), Observable.from($0)) { coin, ticker -> CoinInfo in
+              return CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
+            }}
+        }
+        .subscribe(onNext: { [weak self] in
+          completedCoins.append($0)
+          if maxCount == completedCoins.count {
+            self?.coinList.accept(completedCoins)
+            observer(.completed)
+          }
+        }, onError: { error in
+          observer(.error(error))
+        })
+        .disposed(by: self.bag)
       return Disposables.create()
     })
   }
