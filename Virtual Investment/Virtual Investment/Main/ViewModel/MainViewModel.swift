@@ -63,7 +63,7 @@ class MainViewModel {
   // MARK: Make TabBarController
 
   func returnTabBarController() -> UITabBarController {
-    let firstVC = UINavigationController(rootViewController: VirtualMoneyListViewController(viewModel: VirtualMoneyViewModel(APIProtocol: APIService())))
+    let firstVC = UINavigationController(rootViewController: VirtualMoneyListViewController(viewModel: VirtualMoneyViewModel(coinService: CoinService())))
     let secondVC = UINavigationController(rootViewController: InvestedViewController(viewModel: PurchasedViewModel(APIProtocol: APIService())))
 
     firstVC.tabBarItem = UITabBarItem(title: "거래소", image: self.firstTabBarImage, tag: 0)

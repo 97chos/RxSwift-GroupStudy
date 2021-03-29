@@ -36,7 +36,7 @@ class PurchasedViewModel {
         .disposed(by: self.bag)
 
       if !coinList.isEmpty {
-        Observable.combineLatest(self.APIService.loadCoinsTickerDataRx(coins: coinList), AD.boughtCoins)
+        Observable.combineLatest(self.APIService.tickerList(coins: coinList).asObservable(), AD.boughtCoins)
           .take(1)
           .map{ tickerData, immutableList -> [CoinInfo] in
             var coinList = immutableList

@@ -75,6 +75,7 @@ class APIService: APIServiceProtocol {
     var urlComponents = URLComponents(url: Constants.tickerURL, resolvingAgainstBaseURL: false)
     urlComponents?.queryItems = [URLQueryItem(name: "markets", value: coins.map(\.code).joined(separator: ","))]
     guard let url = urlComponents?.url else { return .error(APIError.requestAPIError) }
+
     return URLSession.shared.rx.data(request: URLRequest(url: url))
       .map { try JSONDecoder().decode([APITicker].self, from: $0) }
       .map { $0.map(Ticker.init(apiTicker:)) }

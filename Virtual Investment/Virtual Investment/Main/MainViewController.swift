@@ -98,7 +98,7 @@ class MainViewController: UIViewController {
         let errorType = error as? valueError
         self?.alert(title: errorType?.description, message: nil, completion: nil)
       })
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
   }
 
 
@@ -108,7 +108,7 @@ class MainViewController: UIViewController {
     self.inputDeposit.rx.text.orEmpty
       .map { !$0.isEmpty }
       .bind(to: self.nextButton.rx.isEnabled)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
   }
 
   private func checkData() {
