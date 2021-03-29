@@ -24,3 +24,11 @@ struct Ticker: Codable, Hashable {
   }
 }
 
+extension Ticker {
+  init(apiTicker: APITicker) {
+    self.currentPrice = apiTicker.currentPrice
+    self.code = apiTicker.code
+    self.highPrice = apiTicker.highPrice
+    self.lowPrice = apiTicker.lowPrice
+  }
+}
