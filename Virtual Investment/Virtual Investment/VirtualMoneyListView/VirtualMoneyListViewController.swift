@@ -13,6 +13,29 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
+//class ViewController {
+//  private var _view: UIView?
+//  var view: UIView! {
+//    get {
+//      if _view == nil {
+//        self.loadView()
+//      }
+//      return self._view
+//    }
+//    set {
+//      self._view = newValue
+//    }
+//  }
+//
+//  func loadView() {
+//    self._view = UIView()
+//    self.viewDidLoad()
+//  }
+//
+//  func viewDidLoad() {
+//
+//  }
+//}
 
 class VirtualMoneyListViewController: UIViewController {
 
@@ -20,34 +43,6 @@ class VirtualMoneyListViewController: UIViewController {
 
   let viewModel: VirtualMoneyViewModel
   let bag = DisposeBag()
-
-  let dataSource = RxTableViewSectionedAnimatedDataSource<CoinListSection>(configureCell: { datasource, tableView, indexPath, item in
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: ReuseIdentifier.coinListCell, for: indexPath) as? CoinCell else {
-      return UITableViewCell()
-    }
-    cell.set(coinData: item)
-    return cell
-  })
-
-
-  // MARK: Bind
-
-  private func bindSections() {
-    self.viewModel.realTimeCoinList
-      .bind(to: self.tableView.rx.items(cellIdentifier: ReuseIdentifier.coinListCell, cellType: CoinCell.self)) { index, item, cell in
-        cell.set(coinData: item)
-      }
-      .disposed(by: bag)
-
-    self.tableView.rx.setDelegate(self)
-      .disposed(by: bag)
-  }
-
-  private func bindSeraching() {
-    self.searchBar.rx.text
-      .bind(to: self.viewModel.searchingText)
-      .disposed(by: bag)
-  }
 
 
   // MARK: UI
@@ -58,7 +53,6 @@ class VirtualMoneyListViewController: UIViewController {
     searchBar.searchTextField.backgroundColor = .white
     searchBar.keyboardType = .webSearch
     searchBar.enablesReturnKeyAutomatically = false
-    searchBar.delegate = self
     return searchBar
   }()
   private let tableView: UITableView = {
@@ -93,110 +87,103 @@ class VirtualMoneyListViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.configure()
-    self.bindSections()
-    self.bindSeraching()
-    self.viewModel.setData()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    viewModel.connect()
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    viewModel.disconnect()
+    self.configureViews()
+    self.layoutViews()
+    self.bind()
   }
 
   override func viewDidLayoutSubviews() {
-    self.layout()
+    super.viewDidLayoutSubviews()
+    self.searchBar.frame.origin = CGPoint(x: 0, y: self.view.safeAreaInsets.top)
   }
 
 
   // MARK: Configuration
 
-  private func configure() {
-    self.viewConfigure()
-    self.initDataConfigure()
-  }
-
-  private func viewConfigure() {
+  private func configureViews() {
     self.view.backgroundColor = .white
     self.title = "거래소"
-    self.viewModel.delegate = self
     self.navigationItem.rightBarButtonItem = self.barButton
+    self.configureTableView()
+  }
 
+  private func configureTableView() {
     self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.coinListCell)
     self.tableView.rowHeight = 60
   }
 
-  private func initDataConfigure() {
-    self.viewModel.lookUpCoinList()
-      .subscribe(onError: { [weak self] error in
-        let errorType = error as? APIError
-        self?.alert(title: errorType?.description, message: nil, completion: nil)
-      })
-      .disposed(by: bag)
-  }
-
   @objc private func barButtonClicked() {
     self.alert(title: "구매한 코인 기록도 초기화됩니다. 초기화하시겠어요?", message: nil) {
-      self.viewModel.resetData()
       self.dismiss(animated: true)
     }
   }
 
 
+  // MARK: Bind
+
+  private func bind() {
+    self.bindInitialize()
+    self.bindSections()
+    self.bindWebSocketConnection()
+    self.bindSelectCoin()
+  }
+
+  private func bindInitialize() {
+    self.rx.methodInvoked(#selector(UIViewController.viewWillAppear(_:)))
+      .map { _ in }
+      .take(1)
+      .bind(to: self.viewModel.input.didInitialized)
+      .disposed(by: self.bag)
+  }
+
+  private func bindSections() {
+    self.viewModel.output.coinCellViewModels
+      .bind(to: self.tableView.rx.items(cellIdentifier: ReuseIdentifier.coinListCell, cellType: CoinCell.self)) { index, viewModel, cell in
+        cell.set(viewModel: viewModel)
+      }
+      .disposed(by: self.bag)
+  }
+
+  private func bindWebSocketConnection() {
+    self.rx.methodInvoked(#selector(UIViewController.viewWillAppear(_:)))
+      .map { _ in }
+      .bind(to: self.viewModel.input.connectWebSocket)
+      .disposed(by: self.bag)
+
+    self.rx.methodInvoked(#selector(UIViewController.viewDidDisappear(_:)))
+      .map { _ in }
+      .bind(to: self.viewModel.input.disConnectWebSocket)
+      .disposed(by: self.bag)
+  }
+
+  private func bindSelectCoin() {
+    self.tableView.rx.modelSelected(CoinCellViewModel.self)
+      .flatMapLatest { viewModel -> Observable<CoinInfo> in
+        viewModel.tickerObservable
+          .take(1)
+          .map { ticker in
+          CoinInfo(coin: viewModel.coin, ticker: ticker)
+        }
+      }
+      .observe(on: MainScheduler.instance)
+      .subscribe(onNext: { [weak self] coinInfo in
+        let viewController = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: coinInfo))
+        self?.navigationController?.pushViewController(viewController, animated: true)
+      })
+      .disposed(by: self.bag)
+  }
+
+
   // MARK: Layout
 
-  private func layout() {
+  private func layoutViews() {
     self.view.addSubview(self.tableView)
     self.view.addSubview(self.searchBar)
     self.view.addSubview(self.loadingIndicator)
-    self.searchBar.frame.origin = CGPoint(x: 0, y: self.view.safeAreaInsets.top)
 
     self.tableView.snp.makeConstraints {
       $0.leading.trailing.bottom.equalToSuperview()
       $0.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(self.searchBar.frame.height)
     }
-  }
-}
-
-
-// MARK: TableView Delegation
-
-extension VirtualMoneyListViewController: UITableViewDelegate {
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let coin = viewModel.sections.value.first?.items[indexPath.row] else { return }
-
-    let vc = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: coin))
-    self.navigationController?.pushViewController(vc, animated: true)
-    self.view.endEditing(true)
-    tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
-  }
-
-  func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-    return 50
-  }
-
-  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-    self.view.endEditing(true)
-  }
-}
-
-
-// MARK: SearchBar Delegation
-
-extension VirtualMoneyListViewController: UISearchBarDelegate {
-  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    self.view.endEditing(true)
-  }
-}
-
-
-// MARK: WebSocket Delegation
-
-extension VirtualMoneyListViewController: WebSocektErrorDelegation {
-  func sendFailureResult(_ errorType: WebSocketError) {
-    self.alert(title: errorType.description, message: nil, completion: nil)
   }
 }
