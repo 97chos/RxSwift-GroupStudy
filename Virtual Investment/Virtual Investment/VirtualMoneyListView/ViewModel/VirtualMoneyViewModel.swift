@@ -18,172 +18,158 @@ protocol WebSocektErrorDelegation: class {
 
 class VirtualMoneyViewModel {
 
+  // MARK: Modules
+
+  private enum Constants {
+    static let webocketURL = URL(string: "wss://api.upbit.com/websocket/v1")!
+  }
+
+  struct Input {
+    let didInitialized = PublishSubject<Void>()
+    let connectWebSocket = PublishSubject<Void>()
+    let disConnectWebSocket = PublishSubject<Void>()
+  }
+
+  struct Output {
+    let coinCellViewModels: Observable<[CoinCellViewModel]>
+  }
+
+
   // MARK: Properties
 
-  let conetext = CoreDataService.shared.context
-  var coin: BehaviorSubject = BehaviorSubject<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: ""))
-  var coinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
-  var realTimeCoinList: BehaviorRelay = BehaviorRelay<[CoinInfo]>(value: [])
-  var sections: BehaviorRelay<[CoinListSection]> = BehaviorRelay<[CoinListSection]>(value: [])
-  let searchingText: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
+  let input = Input()
+  private(set) lazy var output = Output(coinCellViewModels: self.coinCellViewModels.asObservable())
 
-  var codeList: [String] = []
+  private let coinService: CoinServiceProtocol
   private let bag = DisposeBag()
-  private var request = URLRequest(url: URL(string: "wss://api.upbit.com/websocket/v1")!)
-  private var APIService: APIServiceProtocol
 
-  lazy var webSocket = WebSocket(request: self.request, certPinner: FoundationSecurity(allowSelfSigned: true))
-  weak var delegate: WebSocektErrorDelegation?
+  private let coinCellViewModels = BehaviorRelay<[CoinCellViewModel]>(value: [])
+  private let coinList = BehaviorRelay<[Coin]>(value: [])
+  private var tickerObservables: [String: BehaviorRelay<Ticker?>] = [:]
+  private lazy var webSocket = WebSocket(request: URLRequest(url: Constants.webocketURL), certPinner: FoundationSecurity(allowSelfSigned: true))
+
 
 
   // MARK: Initializing
 
-  init(APIProtocol: APIServiceProtocol) {
-    self.APIService = APIProtocol
-    self.bindSections()
+  init(coinService: CoinServiceProtocol) {
+    self.coinService = coinService
+    self.bindOutput()
   }
 
 
-  // MARK: Functions
+  // MARK: Binding
 
-  private func bindSections() {
-    Observable.combineLatest(self.coinList, self.searchingText) { coinList, searchingText -> [CoinInfo] in
-      if let searchingText = searchingText {
-        return coinList.filter{ $0.code.hasPrefix(searchingText) || $0.englishName.hasPrefix(searchingText) || $0.koreanName.hasPrefix(searchingText)}
-      } else {
-        return coinList
+  private func bindOutput() {
+    self.bindCoinCellViewModels()
+    self.bindTickers()
+    self.bindWebSocket()
+  }
+
+  private func bindCoinCellViewModels() {
+    let coinList = self.input.didInitialized
+      .flatMapLatest { [weak self] in
+        self?.coinService.coinList() ?? .never()
       }
-    }
-    .bind(to: self.realTimeCoinList)
-    .disposed(by: bag)
-  }
+      .catch { _ in Observable.empty() }
+      .share()
 
-  func lookUpCoinList() -> Completable {
-    var completedCoins: [CoinInfo] = []
-    var maxCount = 0
+    coinList.bind(to: self.coinList)
+      .disposed(by: self.bag)
 
-    return Completable.create(subscribe: { [weak self] observer in
-      guard let self = self else { return Disposables.create() }
-      self.APIService.lookupCoinListRx()
-        .flatMap{ coins -> Observable<CoinInfo> in
-          maxCount = coins.count
-          return self.APIService.loadCoinsTickerDataRx(coins: coins)
-            .flatMap{ Observable.zip(Observable.from(coins), Observable.from($0)) { coin, ticker -> CoinInfo in
-              return CoinInfo(koreanName: coin.koreanName, englishName: coin.englishName, code: coin.code, holdingCount: 0, totalBoughtPrice: 0, prices: ticker)
-            }}
+    coinList
+      .map { [weak self] coins in
+        coins.map { coin in
+          CoinCellViewModel(
+            coin: coin,
+            tickerObservable: self?.tickerObservable(code: coin.code).asObservable() ?? .empty()
+          )
         }
-        .subscribe(onNext: { [weak self] in
-          completedCoins.append($0)
-          if maxCount == completedCoins.count {
-            self?.coinList.accept(completedCoins)
-            observer(.completed)
-          }
-        }, onError: { error in
-          observer(.error(error))
-        })
-        .disposed(by: self.bag)
-      return Disposables.create()
-    })
+      }
+      .bind(to: self.coinCellViewModels)
+      .disposed(by: self.bag)
   }
 
-  func setData() {
-    AD.deposit
-      .subscribe(onNext: { deposit in
-        plist.set(deposit, forKey: UserDefaultsKey.remainingDeposit)
+  private func bindTickers() {
+    self.coinList.asObservable().filter { !$0.isEmpty }
+      .flatMapLatest { [weak self] coins in
+        self?.coinService.tickerList(coins: coins)
+          .asObservable()
+          .catch { _ in Observable.empty() } ?? .empty()
+      }
+      .subscribe(onNext: { [weak self] tickers in
+        tickers.forEach { ticker in
+          self?.tickerObservable(code: ticker.code).accept(ticker)
+        }
       })
-      .disposed(by: bag)
+      .disposed(by: self.bag)
 
-    plist.set(true, forKey: UserDefaultsKey.isCheckingUser)
-    plist.synchronize()
-
-    AD.boughtCoins
-      .subscribe(onNext: {
-        print($0[0].holdingCount)
-        guard let encodedData = try? PropertyListEncoder().encode($0) else { return }
-        guard let decodeData = try? PropertyListDecoder().decode([CoinInfo].self, from: encodedData) else { return }
-        print(decodeData[0].holdingCount)
-        plist.set(encodedData, forKey: "aa")
+    self.webSocket.rx.didReceive
+      .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+      .compactMap { event -> Data? in
+        guard case let .binary(response) = event else { return nil }
+        return response
+      }
+      .map { try JSONDecoder().decode(Ticker.self, from: $0) }
+      .catch { _ in Observable.empty() }
+      .subscribe(onNext: { [weak self] ticker in
+        self?.tickerObservable(code: ticker.code).accept(ticker)
       })
-      .disposed(by: bag)
-
+      .disposed(by: self.bag)
   }
 
-  func resetData() {
-    AD.boughtCoins.accept([])
-    AD.deposit.accept(0.0)
-    plist.set(false, forKey: UserDefaultsKey.isCheckingUser)
-    plist.synchronize()
-    coreData.clear()
-  }
-}
-
-
-// MARK: WebScoket Delegation
-
-extension VirtualMoneyViewModel: WebSocketDelegate {
-  func connect() {
-    request.timeoutInterval = 100
-    webSocket.delegate = self
-    webSocket.connect()
-  }
-
-  func disconnect() {
-    webSocket.disconnect()
-  }
-
-  func didReceive(event: WebSocketEvent, client: WebSocket) {
-    switch(event) {
-    case .connected(_):
-      let ticket = TicketField(ticket: "test")
-      let format = FormatField(format: "SIMPLE")
-      let type = TypeField(type: "ticker", codes: self.coinList.value.map{ $0.code }, isOnlySnapshot: false, isOnlyRealtime: true)
-
-      let encoder = JSONEncoder()
-
-      let parameterStrings = [
-        try? encoder.encode(ticket),
-        try? encoder.encode(format),
-        try? encoder.encode(type)
-      ]
-      .compactMap{$0}
-      .compactMap { String(data: $0, encoding: .utf8) }
-
-      let params = "[" + parameterStrings.joined(separator: ",") + "]"
-
-      guard let data = params.data(using: .utf8) else {
-        return
-      }
-      guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String:AnyObject]] else {
-        return
-      }
-      guard let jParams = try? JSONSerialization.data(withJSONObject: json, options: []) else {
-        return
-      }
-      client.write(string: String(data:jParams, encoding: .utf8) ?? "", completion: nil)
-
-    case .binary(let data):
-      do {
-        var listValue = self.coinList.value
-        let decoder = JSONDecoder()
-        let tickerData = try decoder.decode(Ticker.self, from: data)
-        let codeDic = Dictionary(grouping: listValue, by: { $0.code })
-
-        guard var coin = codeDic[tickerData.code]?.first else { return }
-        guard let index = listValue.firstIndex(where: { $0.code == coin.code }) else { return }
-        coin.prices = tickerData
-
-        listValue[index] = coin
-
-        self.coinList.accept(listValue)
-      } catch {
-        self.delegate?.sendFailureResult(WebSocketError.decodingError)
-      }
-
-    case .error(_):
-      self.delegate?.sendFailureResult(WebSocketError.connectError)
-
-    default:
-      break
+  private func tickerObservable(code: String) -> BehaviorRelay<Ticker?> {
+    if let tickerObservable = self.tickerObservables[code] {
+      return tickerObservable
     }
+    let tickerObservable = BehaviorRelay<Ticker?>(value: nil)
+    self.tickerObservables[code] = tickerObservable
+    return tickerObservable
+  }
+
+  private func bindWebSocket() {
+    self.input.connectWebSocket
+      .subscribe(onNext: { [weak self] in
+        self?.webSocket.connect()
+      })
+      .disposed(by: self.bag)
+
+    self.input.disConnectWebSocket
+      .subscribe(onNext: { [weak self] in
+        self?.webSocket.disconnect()
+      })
+      .disposed(by: self.bag)
+
+    let onConnected = self.webSocket.rx.didReceive
+      .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+      .compactMap { event -> [String: String]? in
+        guard case let .connected(response) = event else { return nil }
+        return response
+      }
+
+    Observable.combineLatest(onConnected, self.coinList.filter { !$0.isEmpty })
+      .subscribe(onNext: { [weak self] _, coinList in
+        self?.sendRequestTickers(coinList: coinList)
+      })
+      .disposed(by: self.bag)
+  }
+
+  private func sendRequestTickers(coinList: [Coin]) {
+    let ticket = TicketField(ticket: "test")
+    let format = FormatField(format: "SIMPLE")
+    let type = TypeField(type: "ticker", codes: coinList.map(\.code), isOnlySnapshot: false, isOnlyRealtime: true)
+    let encoder = JSONEncoder()
+    let parameterStrings = [
+      try? encoder.encode(ticket),
+      try? encoder.encode(format),
+      try? encoder.encode(type)
+    ]
+    .compactMap{$0}
+    .compactMap { String(data: $0, encoding: .utf8) }
+    let params = "[" + parameterStrings.joined(separator: ",") + "]"
+    guard let data = params.data(using: .utf8) else { return }
+    guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String:AnyObject]] else { return }
+    guard let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []) else { return }
+    self.webSocket.write(data: jsonData)
   }
 }
