@@ -34,9 +34,10 @@
 		FF42B02225E556F800CEA875 /* AmountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02125E556F800CEA875 /* AmountData.swift */; };
 		FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */; };
 		FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* Starscream */; };
-		FF83C16E25F2747200CB1139 /* SectionItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83C16D25F2747200CB1139 /* SectionItems.swift */; };
 		FF83C1BB25F3C30A00CB1139 /* CoinInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83C1BA25F3C30A00CB1139 /* CoinInformationViewModel.swift */; };
 		FF83C1C325F6519D00CB1139 /* ContainCoinResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83C1C225F6519D00CB1139 /* ContainCoinResult.swift */; };
+		FF8798EA261056F50099AAC2 /* RxWebSocketDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8798E9261056F50099AAC2 /* RxWebSocketDelegateProxy.swift */; };
+		FF8798F32610D1C60099AAC2 /* CoinCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8798F22610D1C60099AAC2 /* CoinCellViewModel.swift */; };
 		FF8FA7BA2603726C00942D4B /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7B92603726C00942D4B /* Ticker.swift */; };
 		FF8FA7BE2603729500942D4B /* APITicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7BD2603729500942D4B /* APITicker.swift */; };
 		FF8FA7DE2605F2B800942D4B /* UserDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7DC2605F2B800942D4B /* UserDataModel.xcdatamodeld */; };
@@ -74,9 +75,10 @@
 		FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMoneyListViewController.swift; sourceTree = "<group>"; };
 		FF42B02125E556F800CEA875 /* AmountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountData.swift; sourceTree = "<group>"; };
 		FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedViewController.swift; sourceTree = "<group>"; };
-		FF83C16D25F2747200CB1139 /* SectionItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionItems.swift; sourceTree = "<group>"; };
 		FF83C1BA25F3C30A00CB1139 /* CoinInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinInformationViewModel.swift; sourceTree = "<group>"; };
 		FF83C1C225F6519D00CB1139 /* ContainCoinResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainCoinResult.swift; sourceTree = "<group>"; };
+		FF8798E9261056F50099AAC2 /* RxWebSocketDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxWebSocketDelegateProxy.swift; sourceTree = "<group>"; };
+		FF8798F22610D1C60099AAC2 /* CoinCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCellViewModel.swift; sourceTree = "<group>"; };
 		FF8FA7B92603726C00942D4B /* Ticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
 		FF8FA7BD2603729500942D4B /* APITicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITicker.swift; sourceTree = "<group>"; };
 		FF8FA7DD2605F2B800942D4B /* UserDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 		FF36369525EBE2D10048C3F6 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				FF8798E8261056D50099AAC2 /* RxStarscream */,
 				FFD9C2F92608408B00C0C8AE /* Enum */,
 				FF8FA7E02605F44C00942D4B /* CoreData */,
 				FF3636B625ED3F130048C3F6 /* Errors */,
@@ -155,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				FF3636EA25EF46F70048C3F6 /* VirtualMoneyViewModel.swift */,
+				FF8798F22610D1C60099AAC2 /* CoinCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -181,7 +185,6 @@
 				FF41E35025E65015003139A7 /* CoinModel.swift */,
 				FF999DC1260238D30044C1F1 /* CoinInfoModel.swift */,
 				FFC31DE725E895A9009B0170 /* ParameterModel.swift */,
-				FF83C16D25F2747200CB1139 /* SectionItems.swift */,
 				FF8FA7B92603726C00942D4B /* Ticker.swift */,
 				FF8FA7BD2603729500942D4B /* APITicker.swift */,
 			);
@@ -322,6 +325,14 @@
 				FF83C1C225F6519D00CB1139 /* ContainCoinResult.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		FF8798E8261056D50099AAC2 /* RxStarscream */ = {
+			isa = PBXGroup;
+			children = (
+				FF8798E9261056F50099AAC2 /* RxWebSocketDelegateProxy.swift */,
+			);
+			path = RxStarscream;
 			sourceTree = "<group>";
 		};
 		FF8FA7E02605F44C00942D4B /* CoreData */ = {
@@ -499,6 +510,7 @@
 				FF8FA7E22605F45600942D4B /* CoreDataService.swift in Sources */,
 				FF42B02225E556F800CEA875 /* AmountData.swift in Sources */,
 				FF41E34C25E64C73003139A7 /* APIService.swift in Sources */,
+				FF8798EA261056F50099AAC2 /* RxWebSocketDelegateProxy.swift in Sources */,
 				FF8FA7BE2603729500942D4B /* APITicker.swift in Sources */,
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,
 				FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */,
@@ -522,7 +534,7 @@
 				FF36369725EBE2E90048C3F6 /* ReuseIdentifier.swift in Sources */,
 				FF42AF4F25E5331500CEA875 /* SceneDelegate.swift in Sources */,
 				FFD9C2FE26084C2F00C0C8AE /* CoreDataModelEntity.swift in Sources */,
-				FF83C16E25F2747200CB1139 /* SectionItems.swift in Sources */,
+				FF8798F32610D1C60099AAC2 /* CoinCellViewModel.swift in Sources */,
 				FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */,
 				FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */,
 				FF3636EB25EF46F70048C3F6 /* VirtualMoneyViewModel.swift in Sources */,
