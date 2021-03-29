@@ -34,7 +34,6 @@ struct CoinInfo: Codable {
     case prices
   }
 }
-
 extension CoinInfo: Equatable, Hashable {
   static func == (lhs: CoinInfo, rhs: CoinInfo) -> Bool {
     return lhs.code == rhs.code && lhs.koreanName == rhs.koreanName && lhs.englishName == rhs.englishName
@@ -49,3 +48,16 @@ extension CoinInfo: IdentifiableType {
   typealias Identity = String
 }
 
+extension CoinInfo {
+  init(coin: Coin, ticker: Ticker?) {
+    self.init(
+      koreanName: coin.koreanName,
+              englishName: coin.englishName,
+      code: coin.code,
+      holdingCount: 0,
+      totalBoughtPrice: 0,
+      prices: ticker,
+      objectID: nil
+    )
+  }
+}
