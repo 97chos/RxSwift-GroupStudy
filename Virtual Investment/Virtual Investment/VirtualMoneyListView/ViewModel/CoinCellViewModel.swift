@@ -1,5 +1,5 @@
 //
-//  CoinCellModel.swift
+//  CoinCellViewModel.swift
 //  Virtual Investment
 //
 //  Created by sangho Cho on 2021/03/29.

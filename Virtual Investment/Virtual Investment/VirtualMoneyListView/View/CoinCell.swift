@@ -8,8 +8,15 @@
 import Foundation
 import UIKit
 import SnapKit
+import RxSwift
+
 
 class CoinCell: UITableViewCell {
+
+  // MARK: Properties
+
+  private var disposeBag = DisposeBag()
+
 
   // MARK: UI
 
@@ -35,6 +42,7 @@ class CoinCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     self.layout()
+    self.selectionStyle = .none
   }
 
   required init?(coder: NSCoder) {
@@ -44,20 +52,32 @@ class CoinCell: UITableViewCell {
 
   // MARK: Set
 
-  func set(coinData: CoinInfo) {
-    self.koreanName.text = coinData.koreanName
-    self.englishName.text = coinData.englishName
-    if let price = coinData.prices {
-      self.currentPrice.text = price.currentPrice.cutDecimal()
-    }
+  func set(viewModel: CoinCellViewModel) {
+    self.disposeBag = DisposeBag()
 
-    self.koreanName.sizeToFit()
-    self.englishName.sizeToFit()
-    self.currentPrice.sizeToFit()
+    self.koreanName.text = viewModel.coin.koreanName
+    self.englishName.text = viewModel.coin.englishName
+    self.currentPrice.text = nil
+
+    viewModel.tickerObservable
+      .observe(on: MainScheduler.instance)
+      .subscribe(onNext: { [weak self] ticker in
+        self?.currentPrice.text = ticker?.currentPrice.cutDecimal()
+      })
+      .disposed(by: self.disposeBag)
+
+    self.setNeedsLayout()
   }
 
 
   // MARK: Layout
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    self.koreanName.sizeToFit()
+    self.englishName.sizeToFit()
+    self.currentPrice.sizeToFit()
+  }
 
   private func layout() {
     self.contentView.addSubview(self.koreanName)
