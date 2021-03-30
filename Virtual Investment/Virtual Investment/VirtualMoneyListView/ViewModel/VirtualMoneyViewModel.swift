@@ -28,6 +28,7 @@ class VirtualMoneyViewModel {
     let didInitialized = PublishSubject<Void>()
     let connectWebSocket = PublishSubject<Void>()
     let disConnectWebSocket = PublishSubject<Void>()
+    let didReseted = PublishSubject<Void>()
   }
 
   struct Output {
@@ -64,6 +65,7 @@ class VirtualMoneyViewModel {
     self.bindCoinCellViewModels()
     self.bindTickers()
     self.bindWebSocket()
+    self.bindReset()
   }
 
   private func bindCoinCellViewModels() {
@@ -171,5 +173,23 @@ class VirtualMoneyViewModel {
     guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String:AnyObject]] else { return }
     guard let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []) else { return }
     self.webSocket.write(data: jsonData)
+  }
+
+  private func bindReset() {
+    self.input.didReseted
+      .subscribe(onNext: {
+        coreData.clear()
+        plist.set(0, forKey: UserDefaultsKey.remainingDeposit)
+        plist.set(false, forKey: UserDefaultsKey.isCheckingUser)
+      })
+      .disposed(by: bag)
+
+    self.input.didReseted
+      .map { _ in
+        let empty: [CoinInfo] = []
+        return empty
+      }
+      .bind(to: AD.boughtCoins)
+      .disposed(by: bag)
   }
 }
