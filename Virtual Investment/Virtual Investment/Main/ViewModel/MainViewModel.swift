@@ -8,14 +8,30 @@
 import Foundation
 import UIKit
 import RxSwift
+import RxCocoa
 
 
 class MainViewModel {
 
+  // MARK: Modules
+
+  struct Input {
+    let checkSet = BehaviorSubject<Void>(value: ())
+  }
+
+  struct Output {
+    let checkDataResult = BehaviorSubject<Bool>(value: false)
+    let deposit = BehaviorSubject<Double>(value: 0)
+  }
+
+
   // MARK: Properties
 
   private let bag = DisposeBag()
+  let input = Input()
+  private(set) lazy var output = Output()
 
+  
   // MARK: UI
 
   private lazy var firstTabBarImage: UIImage = {
