@@ -48,6 +48,12 @@ class MainViewModel {
   }()
 
 
+  // MARK: Initializing
+
+  init() {
+    self.bindCheck()
+  }
+
   // MARK: Rx Logic
 
   func checkInputtedValue(_ inputtedValue: String?) -> Observable<Double> {
@@ -63,7 +69,7 @@ class MainViewModel {
   }
 
 
-  // MARK: Check Deposit
+  // MARK: Bind
 
   func checkData() -> Bool {
     guard plist.bool(forKey: UserDefaultsKey.isCheckingUser) == true else { return false }
@@ -72,6 +78,25 @@ class MainViewModel {
 
     AD.deposit.accept(deposit)
     return true
+  }
+
+  private func bindCheck() {
+    self.input.checkSet
+      .map{ return plist.bool(forKey: UserDefaultsKey.isCheckingUser) }
+      .bind(to: self.output.checkDataResult)
+      .disposed(by: bag)
+
+    Observable.combineLatest(self.input.checkSet, self.output.checkDataResult) { _, result in
+      if result {
+        coreData.fetch()
+        return plist.double(forKey: UserDefaultsKey.remainingDeposit)
+      } else {
+        return 0
+      }
+    }
+    .bind(to: self.output.deposit)
+    .disposed(by: bag)
+
   }
 
 
