@@ -11,7 +11,6 @@ import SnapKit
 import Starscream
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 //class ViewController {
 //  private var _view: UIView?
@@ -113,8 +112,9 @@ class VirtualMoneyListViewController: UIViewController {
   }
 
   @objc private func barButtonClicked() {
-    self.alert(title: "구매한 코인 기록도 초기화됩니다. 초기화하시겠어요?", message: nil) {
-      self.dismiss(animated: true)
+    self.alert(title: "구매한 코인 기록도 초기화됩니다. 초기화하시겠어요?", message: nil) { [weak self] in
+      self?.viewModel.input.didReseted.onNext(())
+      self?.dismiss(animated: true)
     }
   }
 
