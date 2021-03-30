@@ -126,6 +126,7 @@ class VirtualMoneyListViewController: UIViewController {
     self.bindSections()
     self.bindWebSocketConnection()
     self.bindSelectCoin()
+    self.bindDesposit()
   }
 
   private func bindInitialize() {
@@ -173,6 +174,13 @@ class VirtualMoneyListViewController: UIViewController {
       .disposed(by: self.bag)
   }
 
+  private func bindDesposit() {
+    AD.deposit
+      .subscribe(onNext: {
+        plist.set($0, forKey: UserDefaultsKey.remainingDeposit)
+      })
+      .disposed(by:bag)
+  }
 
   // MARK: Layout
 
