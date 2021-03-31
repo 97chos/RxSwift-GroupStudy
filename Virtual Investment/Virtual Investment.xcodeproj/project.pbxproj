@@ -7,19 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D73497472A16F72C7339B54B /* Pods_Virtual_Investment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAAFD8171714065AA747A442 /* Pods_Virtual_Investment.framework */; };
+		374C247D0CF6D31D4461C47E /* Pods_Virtual_Investment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFF0600D4229A6E07F136080 /* Pods_Virtual_Investment.framework */; };
 		FF36368D25EBDD0B0048C3F6 /* InvestedCoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36368C25EBDD0B0048C3F6 /* InvestedCoinCell.swift */; };
 		FF36369225EBDFF00048C3F6 /* InvestedSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36369125EBDFF00048C3F6 /* InvestedSectionHeaderView.swift */; };
 		FF36369725EBE2E90048C3F6 /* ReuseIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36369625EBE2E90048C3F6 /* ReuseIdentifier.swift */; };
-		FF36369E25EC92C60048C3F6 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FF36369D25EC92C60048C3F6 /* RxSwift */; };
-		FF3636A025EC92C60048C3F6 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = FF36369F25EC92C60048C3F6 /* RxCocoa */; };
-		FF3636A225EC92C60048C3F6 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636A125EC92C60048C3F6 /* RxRelay */; };
+		FF36369E25EC92C60048C3F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF36369D25EC92C60048C3F6 /* SwiftPackageProductDependency */; };
+		FF3636A025EC92C60048C3F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF36369F25EC92C60048C3F6 /* SwiftPackageProductDependency */; };
+		FF3636A225EC92C60048C3F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636A125EC92C60048C3F6 /* SwiftPackageProductDependency */; };
 		FF3636B825ED3F1B0048C3F6 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636B725ED3F1B0048C3F6 /* Error.swift */; };
 		FF3636BD25ED41380048C3F6 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636BC25ED41380048C3F6 /* MainViewModel.swift */; };
-		FF3636C125EE066B0048C3F6 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636C025EE066B0048C3F6 /* RxDataSources */; };
+		FF3636C125EE066B0048C3F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636C025EE066B0048C3F6 /* SwiftPackageProductDependency */; };
 		FF3636EB25EF46F70048C3F6 /* VirtualMoneyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636EA25EF46F70048C3F6 /* VirtualMoneyViewModel.swift */; };
 		FF3636F025F0C9870048C3F6 /* PurchasedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636EF25F0C9870048C3F6 /* PurchasedViewModel.swift */; };
-		FF41E34925E64C62003139A7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FF41E34825E64C62003139A7 /* Alamofire */; };
+		FF41E34925E64C62003139A7 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF41E34825E64C62003139A7 /* SwiftPackageProductDependency */; };
 		FF41E34C25E64C73003139A7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E34B25E64C73003139A7 /* APIService.swift */; };
 		FF41E35125E65015003139A7 /* CoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E35025E65015003139A7 /* CoinModel.swift */; };
 		FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E35C25E6805F003139A7 /* CoinCell.swift */; };
@@ -29,11 +29,11 @@
 		FF42AF5625E5331600CEA875 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF42AF5525E5331600CEA875 /* Assets.xcassets */; };
 		FF42AF5925E5331600CEA875 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF42AF5725E5331600CEA875 /* LaunchScreen.storyboard */; };
 		FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42AF6325E5349800CEA875 /* MainViewController.swift */; };
-		FF42B01525E5477000CEA875 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SocketIO */; };
+		FF42B01525E5477000CEA875 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SwiftPackageProductDependency */; };
 		FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */; };
 		FF42B02225E556F800CEA875 /* AmountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02125E556F800CEA875 /* AmountData.swift */; };
 		FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */; };
-		FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* Starscream */; };
+		FF42B03325E63CDC00CEA875 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* SwiftPackageProductDependency */; };
 		FF83C1BB25F3C30A00CB1139 /* CoinInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83C1BA25F3C30A00CB1139 /* CoinInformationViewModel.swift */; };
 		FF83C1C325F6519D00CB1139 /* ContainCoinResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83C1C225F6519D00CB1139 /* ContainCoinResult.swift */; };
 		FF8798EA261056F50099AAC2 /* RxWebSocketDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8798E9261056F50099AAC2 /* RxWebSocketDelegateProxy.swift */; };
@@ -51,9 +51,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A88B1E191F12A6935C0E4BC7 /* Pods-Virtual Investment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Virtual Investment.release.xcconfig"; path = "Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment.release.xcconfig"; sourceTree = "<group>"; };
-		B76FE9C6FE6728731BB1A2D1 /* Pods-Virtual Investment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Virtual Investment.debug.xcconfig"; path = "Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment.debug.xcconfig"; sourceTree = "<group>"; };
-		EAAFD8171714065AA747A442 /* Pods_Virtual_Investment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Virtual_Investment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		879CEB6D5238E9D33EF946F4 /* Pods-Virtual Investment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Virtual Investment.debug.xcconfig"; path = "Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment.debug.xcconfig"; sourceTree = "<group>"; };
+		CECFBB2B9166B851786361EE /* Pods-Virtual Investment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Virtual Investment.release.xcconfig"; path = "Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment.release.xcconfig"; sourceTree = "<group>"; };
+		EFF0600D4229A6E07F136080 /* Pods_Virtual_Investment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Virtual_Investment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF36368C25EBDD0B0048C3F6 /* InvestedCoinCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedCoinCell.swift; sourceTree = "<group>"; };
 		FF36369125EBDFF00048C3F6 /* InvestedSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestedSectionHeaderView.swift; sourceTree = "<group>"; };
 		FF36369625EBE2E90048C3F6 /* ReuseIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifier.swift; sourceTree = "<group>"; };
@@ -96,35 +96,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */,
-				FF3636A025EC92C60048C3F6 /* RxCocoa in Frameworks */,
-				FF3636A225EC92C60048C3F6 /* RxRelay in Frameworks */,
-				FF41E34925E64C62003139A7 /* Alamofire in Frameworks */,
-				FF36369E25EC92C60048C3F6 /* RxSwift in Frameworks */,
-				FF3636C125EE066B0048C3F6 /* RxDataSources in Frameworks */,
-				FF42B01525E5477000CEA875 /* SocketIO in Frameworks */,
-				D73497472A16F72C7339B54B /* Pods_Virtual_Investment.framework in Frameworks */,
+				FF42B03325E63CDC00CEA875 /* BuildFile in Frameworks */,
+				FF3636A025EC92C60048C3F6 /* BuildFile in Frameworks */,
+				FF3636A225EC92C60048C3F6 /* BuildFile in Frameworks */,
+				FF41E34925E64C62003139A7 /* BuildFile in Frameworks */,
+				FF36369E25EC92C60048C3F6 /* BuildFile in Frameworks */,
+				FF3636C125EE066B0048C3F6 /* BuildFile in Frameworks */,
+				FF42B01525E5477000CEA875 /* BuildFile in Frameworks */,
+				374C247D0CF6D31D4461C47E /* Pods_Virtual_Investment.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		060049F5FDA99259716F8D2B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EFF0600D4229A6E07F136080 /* Pods_Virtual_Investment.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4F3F0DD57D55E2D38983AAB7 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B76FE9C6FE6728731BB1A2D1 /* Pods-Virtual Investment.debug.xcconfig */,
-				A88B1E191F12A6935C0E4BC7 /* Pods-Virtual Investment.release.xcconfig */,
+				879CEB6D5238E9D33EF946F4 /* Pods-Virtual Investment.debug.xcconfig */,
+				CECFBB2B9166B851786361EE /* Pods-Virtual Investment.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		B0422BEFC9D3E0FEAD6E976D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				EAAFD8171714065AA747A442 /* Pods_Virtual_Investment.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		FF36369525EBE2D10048C3F6 /* Utilities */ = {
@@ -221,10 +221,10 @@
 		FF42AF4025E5331500CEA875 = {
 			isa = PBXGroup;
 			children = (
-				B0422BEFC9D3E0FEAD6E976D /* Frameworks */,
 				4F3F0DD57D55E2D38983AAB7 /* Pods */,
 				FF42AF4A25E5331500CEA875 /* Products */,
 				FF42AF4B25E5331500CEA875 /* Virtual Investment */,
+				060049F5FDA99259716F8D2B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -385,11 +385,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FF42AF5D25E5331600CEA875 /* Build configuration list for PBXNativeTarget "Virtual Investment" */;
 			buildPhases = (
-				81479F9D0A121373EA92C609 /* [CP] Check Pods Manifest.lock */,
+				BA3E885FFD4B34A6F7D5FAAB /* [CP] Check Pods Manifest.lock */,
 				FF42AF4525E5331500CEA875 /* Sources */,
 				FF42AF4625E5331500CEA875 /* Frameworks */,
 				FF42AF4725E5331500CEA875 /* Resources */,
-				928B5A4E4A44ADF62E052B2A /* [CP] Embed Pods Frameworks */,
+				7BAF4C12CF88249C5B11729E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -397,13 +397,13 @@
 			);
 			name = "Virtual Investment";
 			packageProductDependencies = (
-				FF42B01425E5477000CEA875 /* SocketIO */,
-				FF42B03225E63CDC00CEA875 /* Starscream */,
-				FF41E34825E64C62003139A7 /* Alamofire */,
-				FF36369D25EC92C60048C3F6 /* RxSwift */,
-				FF36369F25EC92C60048C3F6 /* RxCocoa */,
-				FF3636A125EC92C60048C3F6 /* RxRelay */,
-				FF3636C025EE066B0048C3F6 /* RxDataSources */,
+				FF42B01425E5477000CEA875 /* SwiftPackageProductDependency */,
+				FF42B03225E63CDC00CEA875 /* SwiftPackageProductDependency */,
+				FF41E34825E64C62003139A7 /* SwiftPackageProductDependency */,
+				FF36369D25EC92C60048C3F6 /* SwiftPackageProductDependency */,
+				FF36369F25EC92C60048C3F6 /* SwiftPackageProductDependency */,
+				FF3636A125EC92C60048C3F6 /* SwiftPackageProductDependency */,
+				FF3636C025EE066B0048C3F6 /* SwiftPackageProductDependency */,
 			);
 			productName = "Virtual Investment";
 			productReference = FF42AF4925E5331500CEA875 /* Virtual Investment.app */;
@@ -433,11 +433,11 @@
 			);
 			mainGroup = FF42AF4025E5331500CEA875;
 			packageReferences = (
-				FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
-				FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */,
-				FF41E34725E64C62003139A7 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */,
-				FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				FF42B01325E5477000CEA875 /* RemoteSwiftPackageReference */,
+				FF42B03125E63CDC00CEA875 /* RemoteSwiftPackageReference */,
+				FF41E34725E64C62003139A7 /* RemoteSwiftPackageReference */,
+				FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */,
+				FF3636BF25EE066B0048C3F6 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = FF42AF4A25E5331500CEA875 /* Products */;
 			projectDirPath = "";
@@ -461,7 +461,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		81479F9D0A121373EA92C609 /* [CP] Check Pods Manifest.lock */ = {
+		7BAF4C12CF88249C5B11729E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA3E885FFD4B34A6F7D5FAAB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -481,23 +498,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		928B5A4E4A44ADF62E052B2A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Virtual Investment/Pods-Virtual Investment-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -673,7 +673,7 @@
 		};
 		FF42AF5E25E5331600CEA875 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B76FE9C6FE6728731BB1A2D1 /* Pods-Virtual Investment.debug.xcconfig */;
+			baseConfigurationReference = 879CEB6D5238E9D33EF946F4 /* Pods-Virtual Investment.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -693,7 +693,7 @@
 		};
 		FF42AF5F25E5331600CEA875 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A88B1E191F12A6935C0E4BC7 /* Pods-Virtual Investment.release.xcconfig */;
+			baseConfigurationReference = CECFBB2B9166B851786361EE /* Pods-Virtual Investment.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -735,7 +735,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -743,7 +743,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+		FF3636BF25EE066B0048C3F6 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
 			requirement = {
@@ -751,7 +751,7 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		FF41E34725E64C62003139A7 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		FF41E34725E64C62003139A7 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -759,7 +759,7 @@
 				minimumVersion = 5.4.1;
 			};
 		};
-		FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+		FF42B01325E5477000CEA875 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
 			requirement = {
@@ -767,7 +767,7 @@
 				minimumVersion = 16.0.1;
 			};
 		};
-		FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */ = {
+		FF42B03125E63CDC00CEA875 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/daltoniam/Starscream.git";
 			requirement = {
@@ -778,39 +778,39 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FF36369D25EC92C60048C3F6 /* RxSwift */ = {
+		FF36369D25EC92C60048C3F6 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */;
 			productName = RxSwift;
 		};
-		FF36369F25EC92C60048C3F6 /* RxCocoa */ = {
+		FF36369F25EC92C60048C3F6 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */;
 			productName = RxCocoa;
 		};
-		FF3636A125EC92C60048C3F6 /* RxRelay */ = {
+		FF3636A125EC92C60048C3F6 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */;
 			productName = RxRelay;
 		};
-		FF3636C025EE066B0048C3F6 /* RxDataSources */ = {
+		FF3636C025EE066B0048C3F6 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			package = FF3636BF25EE066B0048C3F6 /* RemoteSwiftPackageReference */;
 			productName = RxDataSources;
 		};
-		FF41E34825E64C62003139A7 /* Alamofire */ = {
+		FF41E34825E64C62003139A7 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF41E34725E64C62003139A7 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = FF41E34725E64C62003139A7 /* RemoteSwiftPackageReference */;
 			productName = Alamofire;
 		};
-		FF42B01425E5477000CEA875 /* SocketIO */ = {
+		FF42B01425E5477000CEA875 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			package = FF42B01325E5477000CEA875 /* RemoteSwiftPackageReference */;
 			productName = SocketIO;
 		};
-		FF42B03225E63CDC00CEA875 /* Starscream */ = {
+		FF42B03225E63CDC00CEA875 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */;
+			package = FF42B03125E63CDC00CEA875 /* RemoteSwiftPackageReference */;
 			productName = Starscream;
 		};
 /* End XCSwiftPackageProductDependency section */

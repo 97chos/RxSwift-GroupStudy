@@ -2,6 +2,33 @@
   "object": {
     "pins": [
       {
+        "package": "Alamofire",
+        "repositoryURL": "https://github.com/Alamofire/Alamofire.git",
+        "state": {
+          "branch": null,
+          "revision": "eaf6e622dd41b07b251d8f01752eab31bc811493",
+          "version": "5.4.1"
+        }
+      },
+      {
+        "package": "RxDataSources",
+        "repositoryURL": "https://github.com/RxSwiftCommunity/RxDataSources.git",
+        "state": {
+          "branch": null,
+          "revision": "e4627ac4f5a8dc10719030561801825c443acfec",
+          "version": "5.0.1"
+        }
+      },
+      {
+        "package": "RxSwift",
+        "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "7e01c05f25c025143073eaa3be3532f9375c614b",
+          "version": "6.1.0"
+        }
+      },
+      {
         "package": "SocketIO",
         "repositoryURL": "https://github.com/socketio/socket.io-client-swift.git",
         "state": {
@@ -12,7 +39,7 @@
       },
       {
         "package": "Starscream",
-        "repositoryURL": "https://github.com/daltoniam/Starscream",
+        "repositoryURL": "https://github.com/daltoniam/Starscream.git",
         "state": {
           "branch": null,
           "revision": "df8d82047f6654d8e4b655d1b1525c64e1059d21",
