@@ -11,15 +11,15 @@
 		FF36368D25EBDD0B0048C3F6 /* InvestedCoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36368C25EBDD0B0048C3F6 /* InvestedCoinCell.swift */; };
 		FF36369225EBDFF00048C3F6 /* InvestedSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36369125EBDFF00048C3F6 /* InvestedSectionHeaderView.swift */; };
 		FF36369725EBE2E90048C3F6 /* ReuseIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF36369625EBE2E90048C3F6 /* ReuseIdentifier.swift */; };
-		FF36369E25EC92C60048C3F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF36369D25EC92C60048C3F6 /* SwiftPackageProductDependency */; };
-		FF3636A025EC92C60048C3F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF36369F25EC92C60048C3F6 /* SwiftPackageProductDependency */; };
-		FF3636A225EC92C60048C3F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636A125EC92C60048C3F6 /* SwiftPackageProductDependency */; };
+		FF36369E25EC92C60048C3F6 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FF36369D25EC92C60048C3F6 /* RxSwift */; };
+		FF3636A025EC92C60048C3F6 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = FF36369F25EC92C60048C3F6 /* RxCocoa */; };
+		FF3636A225EC92C60048C3F6 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636A125EC92C60048C3F6 /* RxRelay */; };
 		FF3636B825ED3F1B0048C3F6 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636B725ED3F1B0048C3F6 /* Error.swift */; };
 		FF3636BD25ED41380048C3F6 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636BC25ED41380048C3F6 /* MainViewModel.swift */; };
-		FF3636C125EE066B0048C3F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636C025EE066B0048C3F6 /* SwiftPackageProductDependency */; };
+		FF3636C125EE066B0048C3F6 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = FF3636C025EE066B0048C3F6 /* RxDataSources */; };
 		FF3636EB25EF46F70048C3F6 /* VirtualMoneyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636EA25EF46F70048C3F6 /* VirtualMoneyViewModel.swift */; };
 		FF3636F025F0C9870048C3F6 /* PurchasedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3636EF25F0C9870048C3F6 /* PurchasedViewModel.swift */; };
-		FF41E34925E64C62003139A7 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF41E34825E64C62003139A7 /* SwiftPackageProductDependency */; };
+		FF41E34925E64C62003139A7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = FF41E34825E64C62003139A7 /* Alamofire */; };
 		FF41E34C25E64C73003139A7 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E34B25E64C73003139A7 /* APIService.swift */; };
 		FF41E35125E65015003139A7 /* CoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E35025E65015003139A7 /* CoinModel.swift */; };
 		FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF41E35C25E6805F003139A7 /* CoinCell.swift */; };
@@ -29,15 +29,17 @@
 		FF42AF5625E5331600CEA875 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF42AF5525E5331600CEA875 /* Assets.xcassets */; };
 		FF42AF5925E5331600CEA875 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF42AF5725E5331600CEA875 /* LaunchScreen.storyboard */; };
 		FF42AF6425E5349800CEA875 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42AF6325E5349800CEA875 /* MainViewController.swift */; };
-		FF42B01525E5477000CEA875 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SwiftPackageProductDependency */; };
+		FF42B01525E5477000CEA875 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B01425E5477000CEA875 /* SocketIO */; };
 		FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B01D25E5551B00CEA875 /* VirtualMoneyListViewController.swift */; };
 		FF42B02225E556F800CEA875 /* AmountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02125E556F800CEA875 /* AmountData.swift */; };
 		FF42B02F25E55DCA00CEA875 /* InvestedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42B02E25E55DCA00CEA875 /* InvestedViewController.swift */; };
-		FF42B03325E63CDC00CEA875 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* SwiftPackageProductDependency */; };
+		FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = FF42B03225E63CDC00CEA875 /* Starscream */; };
 		FF83C1BB25F3C30A00CB1139 /* CoinInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83C1BA25F3C30A00CB1139 /* CoinInformationViewModel.swift */; };
 		FF83C1C325F6519D00CB1139 /* ContainCoinResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF83C1C225F6519D00CB1139 /* ContainCoinResult.swift */; };
 		FF8798EA261056F50099AAC2 /* RxWebSocketDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8798E9261056F50099AAC2 /* RxWebSocketDelegateProxy.swift */; };
 		FF8798F32610D1C60099AAC2 /* CoinCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8798F22610D1C60099AAC2 /* CoinCellViewModel.swift */; };
+		FF87992F2614C1A60099AAC2 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FF87992E2614C1A60099AAC2 /* RealmSwift */; };
+		FF8799312614C1A60099AAC2 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = FF8799302614C1A60099AAC2 /* Realm */; };
 		FF8FA7BA2603726C00942D4B /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7B92603726C00942D4B /* Ticker.swift */; };
 		FF8FA7BE2603729500942D4B /* APITicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7BD2603729500942D4B /* APITicker.swift */; };
 		FF8FA7DE2605F2B800942D4B /* UserDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7DC2605F2B800942D4B /* UserDataModel.xcdatamodeld */; };
@@ -96,13 +98,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF42B03325E63CDC00CEA875 /* BuildFile in Frameworks */,
-				FF3636A025EC92C60048C3F6 /* BuildFile in Frameworks */,
-				FF3636A225EC92C60048C3F6 /* BuildFile in Frameworks */,
-				FF41E34925E64C62003139A7 /* BuildFile in Frameworks */,
-				FF36369E25EC92C60048C3F6 /* BuildFile in Frameworks */,
-				FF3636C125EE066B0048C3F6 /* BuildFile in Frameworks */,
-				FF42B01525E5477000CEA875 /* BuildFile in Frameworks */,
+				FF42B03325E63CDC00CEA875 /* Starscream in Frameworks */,
+				FF3636A025EC92C60048C3F6 /* RxCocoa in Frameworks */,
+				FF3636A225EC92C60048C3F6 /* RxRelay in Frameworks */,
+				FF87992F2614C1A60099AAC2 /* RealmSwift in Frameworks */,
+				FF8799312614C1A60099AAC2 /* Realm in Frameworks */,
+				FF41E34925E64C62003139A7 /* Alamofire in Frameworks */,
+				FF36369E25EC92C60048C3F6 /* RxSwift in Frameworks */,
+				FF3636C125EE066B0048C3F6 /* RxDataSources in Frameworks */,
+				FF42B01525E5477000CEA875 /* SocketIO in Frameworks */,
 				374C247D0CF6D31D4461C47E /* Pods_Virtual_Investment.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,13 +401,15 @@
 			);
 			name = "Virtual Investment";
 			packageProductDependencies = (
-				FF42B01425E5477000CEA875 /* SwiftPackageProductDependency */,
-				FF42B03225E63CDC00CEA875 /* SwiftPackageProductDependency */,
-				FF41E34825E64C62003139A7 /* SwiftPackageProductDependency */,
-				FF36369D25EC92C60048C3F6 /* SwiftPackageProductDependency */,
-				FF36369F25EC92C60048C3F6 /* SwiftPackageProductDependency */,
-				FF3636A125EC92C60048C3F6 /* SwiftPackageProductDependency */,
-				FF3636C025EE066B0048C3F6 /* SwiftPackageProductDependency */,
+				FF42B01425E5477000CEA875 /* SocketIO */,
+				FF42B03225E63CDC00CEA875 /* Starscream */,
+				FF41E34825E64C62003139A7 /* Alamofire */,
+				FF36369D25EC92C60048C3F6 /* RxSwift */,
+				FF36369F25EC92C60048C3F6 /* RxCocoa */,
+				FF3636A125EC92C60048C3F6 /* RxRelay */,
+				FF3636C025EE066B0048C3F6 /* RxDataSources */,
+				FF87992E2614C1A60099AAC2 /* RealmSwift */,
+				FF8799302614C1A60099AAC2 /* Realm */,
 			);
 			productName = "Virtual Investment";
 			productReference = FF42AF4925E5331500CEA875 /* Virtual Investment.app */;
@@ -433,11 +439,12 @@
 			);
 			mainGroup = FF42AF4025E5331500CEA875;
 			packageReferences = (
-				FF42B01325E5477000CEA875 /* RemoteSwiftPackageReference */,
-				FF42B03125E63CDC00CEA875 /* RemoteSwiftPackageReference */,
-				FF41E34725E64C62003139A7 /* RemoteSwiftPackageReference */,
-				FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */,
-				FF3636BF25EE066B0048C3F6 /* RemoteSwiftPackageReference */,
+				FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
+				FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */,
+				FF41E34725E64C62003139A7 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				FF87992D2614C1A60099AAC2 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = FF42AF4A25E5331500CEA875 /* Products */;
 			projectDirPath = "";
@@ -735,7 +742,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */ = {
+		FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -743,7 +750,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		FF3636BF25EE066B0048C3F6 /* RemoteSwiftPackageReference */ = {
+		FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
 			requirement = {
@@ -751,7 +758,7 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		FF41E34725E64C62003139A7 /* RemoteSwiftPackageReference */ = {
+		FF41E34725E64C62003139A7 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -759,7 +766,7 @@
 				minimumVersion = 5.4.1;
 			};
 		};
-		FF42B01325E5477000CEA875 /* RemoteSwiftPackageReference */ = {
+		FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
 			requirement = {
@@ -767,7 +774,7 @@
 				minimumVersion = 16.0.1;
 			};
 		};
-		FF42B03125E63CDC00CEA875 /* RemoteSwiftPackageReference */ = {
+		FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/daltoniam/Starscream.git";
 			requirement = {
@@ -775,43 +782,61 @@
 				minimumVersion = 4.0.4;
 			};
 		};
+		FF87992D2614C1A60099AAC2 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:realm/realm-cocoa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.7.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		FF36369D25EC92C60048C3F6 /* SwiftPackageProductDependency */ = {
+		FF36369D25EC92C60048C3F6 /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */;
+			package = FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
-		FF36369F25EC92C60048C3F6 /* SwiftPackageProductDependency */ = {
+		FF36369F25EC92C60048C3F6 /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */;
+			package = FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
 		};
-		FF3636A125EC92C60048C3F6 /* SwiftPackageProductDependency */ = {
+		FF3636A125EC92C60048C3F6 /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF36369C25EC92C60048C3F6 /* RemoteSwiftPackageReference */;
+			package = FF36369C25EC92C60048C3F6 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
 		};
-		FF3636C025EE066B0048C3F6 /* SwiftPackageProductDependency */ = {
+		FF3636C025EE066B0048C3F6 /* RxDataSources */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF3636BF25EE066B0048C3F6 /* RemoteSwiftPackageReference */;
+			package = FF3636BF25EE066B0048C3F6 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
 		};
-		FF41E34825E64C62003139A7 /* SwiftPackageProductDependency */ = {
+		FF41E34825E64C62003139A7 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF41E34725E64C62003139A7 /* RemoteSwiftPackageReference */;
+			package = FF41E34725E64C62003139A7 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		FF42B01425E5477000CEA875 /* SwiftPackageProductDependency */ = {
+		FF42B01425E5477000CEA875 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF42B01325E5477000CEA875 /* RemoteSwiftPackageReference */;
+			package = FF42B01325E5477000CEA875 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
 			productName = SocketIO;
 		};
-		FF42B03225E63CDC00CEA875 /* SwiftPackageProductDependency */ = {
+		FF42B03225E63CDC00CEA875 /* Starscream */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FF42B03125E63CDC00CEA875 /* RemoteSwiftPackageReference */;
+			package = FF42B03125E63CDC00CEA875 /* XCRemoteSwiftPackageReference "Starscream" */;
 			productName = Starscream;
+		};
+		FF87992E2614C1A60099AAC2 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF87992D2614C1A60099AAC2 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+		FF8799302614C1A60099AAC2 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF87992D2614C1A60099AAC2 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
 		};
 /* End XCSwiftPackageProductDependency section */
 
