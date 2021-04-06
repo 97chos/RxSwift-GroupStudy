@@ -34,18 +34,11 @@ struct CoinInfo: Codable {
     case prices
   }
 }
+
 extension CoinInfo: Equatable, Hashable {
   static func == (lhs: CoinInfo, rhs: CoinInfo) -> Bool {
     return lhs.code == rhs.code && lhs.koreanName == rhs.koreanName && lhs.englishName == rhs.englishName
   }
-}
-
-extension CoinInfo: IdentifiableType {
-  var identity: String {
-    return self.code
-  }
-
-  typealias Identity = String
 }
 
 extension CoinInfo {

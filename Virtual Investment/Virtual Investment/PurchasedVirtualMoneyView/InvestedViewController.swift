@@ -214,6 +214,7 @@ class InvestedViewController: UIViewController {
     self.tableView.reloadData()
   }
 
+  
   // MARK: Layout
 
   private func layout() {
