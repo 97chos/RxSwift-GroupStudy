@@ -42,14 +42,11 @@
 		FF8799312614C1A60099AAC2 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = FF8799302614C1A60099AAC2 /* Realm */; };
 		FF8FA7BA2603726C00942D4B /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7B92603726C00942D4B /* Ticker.swift */; };
 		FF8FA7BE2603729500942D4B /* APITicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7BD2603729500942D4B /* APITicker.swift */; };
-		FF8FA7DE2605F2B800942D4B /* UserDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7DC2605F2B800942D4B /* UserDataModel.xcdatamodeld */; };
-		FF8FA7E22605F45600942D4B /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7E12605F45600942D4B /* CoreDataService.swift */; };
 		FF999DC2260238D30044C1F1 /* CoinInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF999DC1260238D30044C1F1 /* CoinInfoModel.swift */; };
 		FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DE725E895A9009B0170 /* ParameterModel.swift */; };
 		FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */; };
 		FFC31E0225E94E56009B0170 /* Double+cutDecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */; };
 		FFD9C2FB260840B200C0C8AE /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD9C2FA260840B200C0C8AE /* UserDefaultsKeys.swift */; };
-		FFD9C2FE26084C2F00C0C8AE /* CoreDataModelEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD9C2FD26084C2F00C0C8AE /* CoreDataModelEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,14 +80,11 @@
 		FF8798F22610D1C60099AAC2 /* CoinCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCellViewModel.swift; sourceTree = "<group>"; };
 		FF8FA7B92603726C00942D4B /* Ticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
 		FF8FA7BD2603729500942D4B /* APITicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITicker.swift; sourceTree = "<group>"; };
-		FF8FA7DD2605F2B800942D4B /* UserDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = UserDataModel.xcdatamodel; sourceTree = "<group>"; };
-		FF8FA7E12605F45600942D4B /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		FF999DC1260238D30044C1F1 /* CoinInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinInfoModel.swift; sourceTree = "<group>"; };
 		FFC31DE725E895A9009B0170 /* ParameterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterModel.swift; sourceTree = "<group>"; };
 		FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+cutDecimal.swift"; sourceTree = "<group>"; };
 		FFD9C2FA260840B200C0C8AE /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
-		FFD9C2FD26084C2F00C0C8AE /* CoreDataModelEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataModelEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,7 +130,6 @@
 			children = (
 				FF8798E8261056D50099AAC2 /* RxStarscream */,
 				FFD9C2F92608408B00C0C8AE /* Enum */,
-				FF8FA7E02605F44C00942D4B /* CoreData */,
 				FF3636B625ED3F130048C3F6 /* Errors */,
 			);
 			path = Utilities;
@@ -281,7 +274,6 @@
 			children = (
 				FF42AF5525E5331600CEA875 /* Assets.xcassets */,
 				FF42AF5A25E5331600CEA875 /* Info.plist */,
-				FF8FA7DC2605F2B800942D4B /* UserDataModel.xcdatamodeld */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -339,14 +331,6 @@
 			path = RxStarscream;
 			sourceTree = "<group>";
 		};
-		FF8FA7E02605F44C00942D4B /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				FF8FA7E12605F45600942D4B /* CoreDataService.swift */,
-			);
-			path = CoreData;
-			sourceTree = "<group>";
-		};
 		FFC31DEA25E8CCCA009B0170 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -377,7 +361,6 @@
 			children = (
 				FF36369625EBE2E90048C3F6 /* ReuseIdentifier.swift */,
 				FFD9C2FA260840B200C0C8AE /* UserDefaultsKeys.swift */,
-				FFD9C2FD26084C2F00C0C8AE /* CoreDataModelEntity.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -514,7 +497,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF8FA7E22605F45600942D4B /* CoreDataService.swift in Sources */,
 				FF42B02225E556F800CEA875 /* AmountData.swift in Sources */,
 				FF41E34C25E64C73003139A7 /* APIService.swift in Sources */,
 				FF8798EA261056F50099AAC2 /* RxWebSocketDelegateProxy.swift in Sources */,
@@ -522,7 +504,6 @@
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,
 				FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */,
 				FF83C1BB25F3C30A00CB1139 /* CoinInformationViewModel.swift in Sources */,
-				FF8FA7DE2605F2B800942D4B /* UserDataModel.xcdatamodeld in Sources */,
 				FF41E38625E78C9E003139A7 /* CoinInfromationViewController.swift in Sources */,
 				FF41E35125E65015003139A7 /* CoinModel.swift in Sources */,
 				FF83C1C325F6519D00CB1139 /* ContainCoinResult.swift in Sources */,
@@ -540,7 +521,6 @@
 				FF3636F025F0C9870048C3F6 /* PurchasedViewModel.swift in Sources */,
 				FF36369725EBE2E90048C3F6 /* ReuseIdentifier.swift in Sources */,
 				FF42AF4F25E5331500CEA875 /* SceneDelegate.swift in Sources */,
-				FFD9C2FE26084C2F00C0C8AE /* CoreDataModelEntity.swift in Sources */,
 				FF8798F32610D1C60099AAC2 /* CoinCellViewModel.swift in Sources */,
 				FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */,
 				FF42B01E25E5551B00CEA875 /* VirtualMoneyListViewController.swift in Sources */,
@@ -839,19 +819,6 @@
 			productName = Realm;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		FF8FA7DC2605F2B800942D4B /* UserDataModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				FF8FA7DD2605F2B800942D4B /* UserDataModel.xcdatamodel */,
-			);
-			currentVersion = FF8FA7DD2605F2B800942D4B /* UserDataModel.xcdatamodel */;
-			path = UserDataModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = FF42AF4125E5331500CEA875 /* Project object */;
 }
