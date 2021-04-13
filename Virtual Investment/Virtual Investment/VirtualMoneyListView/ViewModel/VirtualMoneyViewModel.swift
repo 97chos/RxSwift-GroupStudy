@@ -29,7 +29,7 @@ class VirtualMoneyViewModel {
     let connectWebSocket = PublishSubject<Void>()
     let disConnectWebSocket = PublishSubject<Void>()
     let didReseted = PublishSubject<Void>()
-    let inputtedSearchText = BehaviorSubject<String>(value: "")
+    let inputtedSearchText = BehaviorSubject<String?>(value: nil)
   }
 
   struct Output {
@@ -80,23 +80,23 @@ class VirtualMoneyViewModel {
     coinList.bind(to: self.coinList)
       .disposed(by: self.bag)
 
-    coinList
-      .map { [weak self] coins in
-        coins.map { coin in
-          CoinCellViewModel(
-            coin: coin,
-            tickerObservable: self?.tickerObservable(code: coin.code).asObservable() ?? .empty()
-          )
-        }
+    Observable.combineLatest(self.input.inputtedSearchText, coinList) { text, coinList -> [Coin] in
+      if let searchingText = text {
+        return coinList.filter{ $0.code.hasPrefix(searchingText) || $0.englishName.hasPrefix(searchingText) || $0.koreanName.hasPrefix(searchingText)}
+      } else {
+        return coinList
       }
-      .bind(to: self.coinCellViewModels)
-      .disposed(by: self.bag)
-  }
-
-  private func searchBarFilter() {
-    Observable.combineLatest(self.input.inputtedSearchText, self.output.coinCellViewModels) { text, models in
-
     }
+    .map{ [weak self] coins in
+      coins.map{ coin in
+        CoinCellViewModel(
+          coin: coin,
+          tickerObservable: self?.tickerObservable(code: coin.code).asObservable() ?? .empty()
+        )
+      }
+    }
+    .bind(to: self.coinCellViewModels)
+    .disposed(by: bag)
   }
 
   private func bindTickers() {
