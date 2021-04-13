@@ -19,17 +19,11 @@ class MainViewModel {
     let checkSet = BehaviorSubject<Void>(value: ())
   }
 
-  struct Output {
-    let checkDataResult = BehaviorSubject<Bool>(value: false)
-    let deposit = BehaviorSubject<Double>(value: 0)
-  }
-
 
   // MARK: Properties
 
   private let bag = DisposeBag()
   let input = Input()
-  private(set) lazy var output = Output()
 
   
   // MARK: UI
@@ -47,12 +41,6 @@ class MainViewModel {
     return image
   }()
 
-
-  // MARK: Initializing
-
-  init() {
-    self.bindCheck()
-  }
 
   // MARK: Rx Logic
 
@@ -82,26 +70,6 @@ class MainViewModel {
     AD.deposit.accept(deposit)
     return true
   }
-
-  private func bindCheck() {
-    self.input.checkSet
-      .map{ return plist.bool(forKey: UserDefaultsKey.isCheckingUser) }
-      .bind(to: self.output.checkDataResult)
-      .disposed(by: bag)
-
-    Observable.combineLatest(self.input.checkSet, self.output.checkDataResult) { _, result in
-      if result {
-        coreData.fetch()
-        return plist.double(forKey: UserDefaultsKey.remainingDeposit)
-      } else {
-        return 0
-      }
-    }
-    .bind(to: self.output.deposit)
-    .disposed(by: bag)
-
-  }
-
 
 
   // MARK: Make TabBarController

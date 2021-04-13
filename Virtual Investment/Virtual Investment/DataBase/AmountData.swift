@@ -8,7 +8,6 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import CoreData
 
 let AD = AmountData.shared
 let plist = UserDefaults.standard

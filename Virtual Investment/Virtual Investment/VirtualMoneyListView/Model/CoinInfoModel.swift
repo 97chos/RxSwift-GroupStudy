@@ -7,7 +7,6 @@
 
 import Foundation
 import RxDataSources
-import CoreData
 
 struct CoinInfo: Codable {
 
@@ -25,7 +24,6 @@ struct CoinInfo: Codable {
     }
   }
   var prices: Ticker?
-  var objectID: NSManagedObjectID?
 
   enum CodingKeys: String, CodingKey {
     case koreanName = "korean_name"
@@ -51,8 +49,7 @@ extension CoinInfo {
       code: coin.code,
       totalBoughtPrice: 0,
       holdingCount: 0,
-      prices: ticker,
-      objectID: nil
+      prices: ticker
     )
   }
 }
