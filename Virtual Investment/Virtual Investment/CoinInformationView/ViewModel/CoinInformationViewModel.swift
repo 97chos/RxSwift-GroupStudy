@@ -8,17 +8,15 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import CoreData
 
 class CoinInformationViewModel {
 
   // MARK: Properties
 
   var boughtCoinsIndex: Array<Coin>.Index?
-  var coin: BehaviorRelay<CoinInfo> = BehaviorRelay<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: "", holdingCount: 0, totalBoughtPrice: 0, prices: nil))
+  var coin: BehaviorRelay<CoinInfo> = BehaviorRelay<CoinInfo>(value: CoinInfo(koreanName: "", englishName: "", code: "", totalBoughtPrice: 0, holdingCount: 0, prices: nil))
   var holdingCount: Int?
   let bag = DisposeBag()
-  let context = coreData.context
 
 
   // MARK: Initializing
@@ -106,6 +104,20 @@ class CoinInformationViewModel {
     .disposed(by: bag)
   }
 
+  func setBoughtCoins() {
+    AD.boughtCoins
+      .map{ coins -> Data? in
+        let encodingData = try? PropertyListEncoder().encode(coins)
+        return encodingData
+      }
+      .filter{ $0 != nil }
+      .catch{ _ in Observable.empty() }
+      .subscribe(onNext: {
+        plist.setValue($0, forKey: UserDefaultsKey.boughtCoinList)
+      })
+      .disposed(by: bag)
+  }
+
   func buy(count: Int, completion: @escaping (Result<(),CoreDataError>) -> Void) {
     var currentDeposit = AD.deposit.value
     var list = AD.boughtCoins.value
@@ -123,13 +135,8 @@ class CoinInformationViewModel {
       list.append(currentCoin)
       self.boughtCoinsIndex = list.firstIndex(of: currentCoin)
 
-      if coreData.insert(coin: currentCoin) {
-        AD.boughtCoins.accept(list)
-        self.coin.accept(currentCoin)
-        completion(.success(()))
-      } else {
-        completion(.failure(.fetchError))
-      }
+      AD.boughtCoins.accept(list)
+      self.coin.accept(currentCoin)
     } else {                                                                   // 코인을 현재 보유하고 있는 경우 (재구매)
       let totalPrice: Double = (currentCoin.prices?.currentPrice ?? 0) * Double(count)
 
@@ -140,16 +147,10 @@ class CoinInformationViewModel {
 
       list[index].holdingCount += count
       list[index].totalBoughtPrice += totalPrice
-
-      if coreData.edit(list[index].objectID ?? NSManagedObjectID(), count: list[index].holdingCount, boughtPrice: list[index].totalBoughtPrice) {
-        self.coin.accept(list[index])
-        AD.boughtCoins.accept(list)
-        completion(.success(()))
-      } else {
-        completion(.failure(.fetchError))
-      }
+      self.coin.accept(list[index])
+      AD.boughtCoins.accept(list)
     }
-    coreData.fetch()
+    completion(.success(()))
   }
 
   func sell(count: Int, completion: (Result<(),CoreDataError>) -> Void) {
@@ -169,25 +170,16 @@ class CoinInformationViewModel {
 
     switch coinAtIndex.holdingCount == 0 {
     case true:
-      if coreData.delete(coinAtIndex.objectID ?? NSManagedObjectID()) {
-        boughtList.remove(at: coinIndex)
-        AD.deposit.accept(deposit)
-        AD.boughtCoins.accept(boughtList)
-        completion(.success(()))
-      } else {
-        completion(.failure(.fetchError))
-      }
+      boughtList.remove(at: coinIndex)
+      AD.deposit.accept(deposit)
+      AD.boughtCoins.accept(boughtList)
     case false:
-      if coreData.edit(coinAtIndex.objectID ?? NSManagedObjectID(), count: coinAtIndex.holdingCount, boughtPrice: coinAtIndex.totalBoughtPrice) {
-        boughtList[coinIndex].holdingCount = coinAtIndex.holdingCount
-        boughtList[coinIndex].totalBoughtPrice = coinAtIndex.totalBoughtPrice
-        AD.boughtCoins.accept(boughtList)
-        AD.deposit.accept(deposit)
-        completion(.success(()))
-      } else {
-        completion(.failure(.fetchError))
-      }
+      boughtList[coinIndex].holdingCount = coinAtIndex.holdingCount
+      boughtList[coinIndex].totalBoughtPrice = coinAtIndex.totalBoughtPrice
+      AD.boughtCoins.accept(boughtList)
+      AD.deposit.accept(deposit)
     }
+    completion(.success(()))
   }
 
   func buyAction(count: Int, completion: @escaping () -> Void) {
