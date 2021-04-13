@@ -10,4 +10,5 @@ import Foundation
 enum UserDefaultsKey {
   static let isCheckingUser = "isExistingUser"
   static let remainingDeposit = "remainingDeposit"
+  static let boughtCoinList = "boughtCoinList"
 }
