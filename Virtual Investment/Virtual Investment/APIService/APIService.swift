@@ -10,16 +10,14 @@ import Foundation
 import Alamofire
 import RxSwift
 
-typealias CoinServiceProtocol = APIServiceProtocol
-
-protocol APIServiceProtocol {
+protocol CoinServiceProtocol {
   func coinList() -> Single<[Coin]>
   func tickerList(coins: [Coin]) -> Single<[Ticker]>
 }
 
 typealias CoinService = APIService
 
-class APIService: APIServiceProtocol {
+class APIService: CoinServiceProtocol {
 
   private enum Constants {
     static let marketAllURL = URL(string: "https://api.upbit.com/v1/market/all")!

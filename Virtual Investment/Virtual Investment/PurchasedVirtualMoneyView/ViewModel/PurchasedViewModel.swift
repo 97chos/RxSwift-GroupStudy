@@ -13,12 +13,12 @@ class PurchasedViewModel {
 
   // MARK: Properties
 
-  private let APIService: APIServiceProtocol
+  private let APIService: CoinServiceProtocol
   private let bag = DisposeBag()
 
   // MARK: Initializing
 
-  init(APIProtocol: APIServiceProtocol) {
+  init(APIProtocol: CoinServiceProtocol) {
     self.APIService = APIProtocol
   }
 
