@@ -51,7 +51,6 @@ class VirtualMoneyViewModel {
   private lazy var webSocket = WebSocket(request: URLRequest(url: Constants.webocketURL), certPinner: FoundationSecurity(allowSelfSigned: true))
 
 
-
   // MARK: Initializing
 
   init(coinService: CoinServiceProtocol) {

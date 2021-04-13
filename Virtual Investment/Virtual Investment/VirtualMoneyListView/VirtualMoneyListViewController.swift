@@ -109,6 +109,7 @@ class VirtualMoneyListViewController: UIViewController {
   private func configureTableView() {
     self.tableView.register(CoinCell.self, forCellReuseIdentifier: ReuseIdentifier.coinListCell)
     self.tableView.rowHeight = 60
+    self.tableView.tableFooterView = UIView()
   }
 
   @objc private func barButtonClicked() {
@@ -127,6 +128,7 @@ class VirtualMoneyListViewController: UIViewController {
     self.bindWebSocketConnection()
     self.bindSelectCoin()
     self.bindDesposit()
+    self.bindSearchText()
   }
 
   private func bindInitialize() {
@@ -180,6 +182,12 @@ class VirtualMoneyListViewController: UIViewController {
         plist.set($0, forKey: UserDefaultsKey.remainingDeposit)
       })
       .disposed(by:bag)
+  }
+
+  private func bindSearchText() {
+    self.searchBar.rx.text
+      .bind(to: self.viewModel.input.inputtedSearchText)
+      .disposed(by: bag)
   }
 
   // MARK: Layout
