@@ -57,8 +57,8 @@ class CoreDataService: CoreDataServiceProtocol {
         let coinInfo = CoinInfo(koreanName: $0.koreanName ?? "",
                                 englishName: $0.englishName ?? "",
                                 code: $0.code ?? "",
-                                holdingCount: Int($0.holdingCount),
                                 totalBoughtPrice: $0.totalBoughtPrice,
+                                holdingCount: Int($0.holdingCount),
                                 prices: price,
                                 objectID: $0.objectID)
 
