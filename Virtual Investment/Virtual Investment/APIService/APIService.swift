@@ -17,8 +17,8 @@ protocol APIServiceProtocol {
   func tickerList(coins: [Coin]) -> Single<[Ticker]>
 }
 
-
 typealias CoinService = APIService
+
 class APIService: APIServiceProtocol {
 
   private enum Constants {

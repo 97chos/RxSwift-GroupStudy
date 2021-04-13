@@ -29,6 +29,7 @@ class VirtualMoneyViewModel {
     let connectWebSocket = PublishSubject<Void>()
     let disConnectWebSocket = PublishSubject<Void>()
     let didReseted = PublishSubject<Void>()
+    let inputtedSearchText = BehaviorSubject<String>(value: "")
   }
 
   struct Output {
@@ -90,6 +91,12 @@ class VirtualMoneyViewModel {
       }
       .bind(to: self.coinCellViewModels)
       .disposed(by: self.bag)
+  }
+
+  private func searchBarFilter() {
+    Observable.combineLatest(self.input.inputtedSearchText, self.output.coinCellViewModels) { text, models in
+
+    }
   }
 
   private func bindTickers() {
