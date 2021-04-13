@@ -8,9 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import RxDataSources
 import Starscream
-import CoreData
 
 protocol WebSocektErrorDelegation: class {
   func sendFailureResult(_ errorType: WebSocketError)
@@ -184,9 +182,9 @@ class VirtualMoneyViewModel {
   private func bindReset() {
     self.input.didReseted
       .subscribe(onNext: {
-        coreData.clear()
         plist.set(0, forKey: UserDefaultsKey.remainingDeposit)
         plist.set(false, forKey: UserDefaultsKey.isCheckingUser)
+        //plist.set([], forKey: UserDefaultsKey.boughtCoinList)
       })
       .disposed(by: bag)
 
