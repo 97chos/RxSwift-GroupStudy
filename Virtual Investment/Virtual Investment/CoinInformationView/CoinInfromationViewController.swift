@@ -138,15 +138,8 @@ class CoinInformationViewController: UIViewController {
   private func buyButtonAction() {
     viewModel.checkInputtedCount(self.buyButton.tag, text: self.inputCount.text)
       .subscribe(onNext: { [weak self] count in
-        self?.viewModel.buy(count: count) { result in
-          switch result {
-          case .success():
-            self?.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
-          case .failure(let error):
-            self?.alert(title: error.description, message: nil) {
-              self?.navigationController?.popViewController(animated: true)
-            }
-          }
+        self?.viewModel.buy(count: count) {
+          self?.alert(title: "매수 체결이 완료되었습니다.", message: nil, completion: nil)
         }
       },onError: { [weak self] error in
         let errorType = error as? inputCountError
@@ -158,15 +151,8 @@ class CoinInformationViewController: UIViewController {
   private func sellButtonAction() {
     viewModel.checkInputtedCount(self.sellButton.tag, text: self.inputCount.text)
       .subscribe(onNext: { [weak self] count in
-        self?.viewModel.sell(count: count) { result in
-          switch result {
-          case .success():
-            self?.alert(title: "매도 체결이 완료되었습니다.", message: nil, completion: nil)
-          case .failure(let error):
-            self?.alert(title: error.description, message: nil) {
-              self?.navigationController?.popViewController(animated: true)
-            }
-          }
+        self?.viewModel.sell(count: count) {
+          self?.alert(title: "매도 체결이 완료되었습니다.", message: nil, completion: nil)
         }
       },onError: { [weak self] error in
         let errorType = error as? inputCountError

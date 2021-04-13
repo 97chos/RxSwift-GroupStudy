@@ -118,7 +118,7 @@ class CoinInformationViewModel {
       .disposed(by: bag)
   }
 
-  func buy(count: Int, completion: @escaping (Result<(),CoreDataError>) -> Void) {
+  func buy(count: Int, completion: @escaping () -> Void) {
     var currentDeposit = AD.deposit.value
     var list = AD.boughtCoins.value
     var currentCoin = self.coin.value
@@ -150,10 +150,10 @@ class CoinInformationViewModel {
       self.coin.accept(list[index])
       AD.boughtCoins.accept(list)
     }
-    completion(.success(()))
+    completion()
   }
 
-  func sell(count: Int, completion: (Result<(),CoreDataError>) -> Void) {
+  func sell(count: Int, completion: () -> Void) {
     var deposit = AD.deposit.value
     let currentCoin = self.coin.value
     var boughtList: [CoinInfo] = AD.boughtCoins.value
@@ -179,7 +179,7 @@ class CoinInformationViewModel {
       AD.boughtCoins.accept(boughtList)
       AD.deposit.accept(deposit)
     }
-    completion(.success(()))
+    completion()
   }
 
   func buyAction(count: Int, completion: @escaping () -> Void) {
