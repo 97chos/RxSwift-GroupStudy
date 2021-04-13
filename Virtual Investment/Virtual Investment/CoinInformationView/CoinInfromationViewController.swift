@@ -188,6 +188,7 @@ class CoinInformationViewController: UIViewController {
     self.view.backgroundColor = .systemBackground
     self.viewModel.bindHoldingCount()
     self.viewModel.isContainCoinInBoughtList()
+    self.viewModel.setBoughtCoins()
   }
 
   private func bindLabel() {
