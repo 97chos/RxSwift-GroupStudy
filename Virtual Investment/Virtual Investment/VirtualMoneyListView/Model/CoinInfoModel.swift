@@ -16,14 +16,14 @@ struct CoinInfo: Codable {
   let koreanName: String
   let englishName: String
   let code: String
-  var holdingCount: Int = 0 {
+  var totalBoughtPrice: Double
+  var holdingCount: Int {
     didSet {
       if holdingCount == 0 {
         self.totalBoughtPrice = 0
       }
     }
   }
-  var totalBoughtPrice: Double = 0
   var prices: Ticker?
   var objectID: NSManagedObjectID?
 
@@ -31,6 +31,8 @@ struct CoinInfo: Codable {
     case koreanName = "korean_name"
     case englishName = "english_name"
     case code = "market"
+    case totalBoughtPrice
+    case holdingCount
     case prices
   }
 }
@@ -47,8 +49,8 @@ extension CoinInfo {
       koreanName: coin.koreanName,
               englishName: coin.englishName,
       code: coin.code,
-      holdingCount: 0,
       totalBoughtPrice: 0,
+      holdingCount: 0,
       prices: ticker,
       objectID: nil
     )
