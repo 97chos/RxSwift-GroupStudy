@@ -11,16 +11,31 @@ import RxSwift
 
 class PurchasedViewModel {
 
+  // MARK: Modules
+
+  struct Input {
+    let didInitialized = PublishSubject<Void>()
+    let connectWebSocket = PublishSubject<Void>()
+    let disConnectWebSocket = PublishSubject<Void>()
+  }
+
+  struct Output {
+    let coinCellViewModel: Observable<[CoinCellViewModel]>
+  }
+
+
   // MARK: Properties
 
   private let APIService: CoinServiceProtocol
   private let bag = DisposeBag()
+
 
   // MARK: Initializing
 
   init(APIProtocol: CoinServiceProtocol) {
     self.APIService = APIProtocol
   }
+
 
   // MARK: Functions
 
