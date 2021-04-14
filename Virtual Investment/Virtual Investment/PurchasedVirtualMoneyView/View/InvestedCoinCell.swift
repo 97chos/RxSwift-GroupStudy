@@ -14,7 +14,7 @@ class InvestedCoinCell: UITableViewCell {
 
   // MARK: Properties
 
-  let bag = DisposeBag()
+  var bag = DisposeBag()
 
   // MARK: UI
 
@@ -53,6 +53,24 @@ class InvestedCoinCell: UITableViewCell {
 
 
   // MARK: Set
+
+  func setViewModel(viewModel: InvestCoinCellViewModel) {
+    self.bag = DisposeBag()
+
+    self.nameLabel.text = "\(viewModel.coin.koreanName)(\(viewModel.coin.code))"
+    self.holdingCountLabel.text = "보유 수량 : \(viewModel.coin.holdingCount)"
+    self.totalBoughtPriceLabel.text = "\(viewModel.coin.totalBoughtPrice)"
+    self.evaluatedPriceLabel.text = nil
+
+    viewModel.tickerObservable
+      .observe(on: MainScheduler.instance)
+      .subscribe(onNext: { [weak self] ticker in
+        self?.evaluatedPriceLabel.text = Double(ticker?.currentPrice ?? 0 * Double(viewModel.coin.holdingCount)).cutDecimal()
+      })
+      .disposed(by: self.bag)
+
+    self.setNeedsLayout()
+  }
 
   func set(coinIndex: Int) {
     AD.boughtCoins
