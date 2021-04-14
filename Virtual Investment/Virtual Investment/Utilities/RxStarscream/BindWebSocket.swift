@@ -17,18 +17,27 @@ protocol InputProtocol {
 
 class RxWebSocket {
 
-  let input: InputProtocol
-
-  init(input: InputProtocol) {
-    self.input = input
-  }
+  // MARK: Constants
 
   private enum Constants {
     static let webocketURL = URL(string: "wss://api.upbit.com/websocket/v1")!
   }
 
+
+  // MARK: Properties
+
+  let input: InputProtocol
   private lazy var webSocket = WebSocket(request: URLRequest(url: Constants.webocketURL), certPinner: FoundationSecurity(allowSelfSigned: true))
 
+
+  // MARK: Initializing
+
+  init(input: InputProtocol) {
+    self.input = input
+  }
+
+
+  // MARK: WebSocket Delegation
 
   func webSocketDidRecieve(bag: DisposeBag, completion: @escaping (Ticker) -> Void) {
     self.webSocket.rx.didReceive
@@ -44,6 +53,9 @@ class RxWebSocket {
       })
       .disposed(by: bag)
   }
+
+
+  // MARK: WebSocket Life-Cycle
 
   func bindWebSocketLifeCycle(coinList: BehaviorRelay<[Coin]>, bag: DisposeBag) {
     self.input.connectWebSocket
@@ -71,6 +83,9 @@ class RxWebSocket {
       })
       .disposed(by: bag)
   }
+
+
+  // MARK: Ticker Request Method
 
   func sendRequestTickers(coinList: [Coin]) {
     let ticket = TicketField(ticket: "test")
