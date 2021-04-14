@@ -93,7 +93,7 @@ class InvestedViewController: UIViewController {
     view.backgroundColor = .systemBackground
     return view
   }()
-  private let tableView: UITableView = {
+  private var tableView: UITableView = {
     let tableView = UITableView()
     return tableView
   }()
@@ -119,7 +119,7 @@ class InvestedViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.configure()
+    self.configureViews()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -130,10 +130,10 @@ class InvestedViewController: UIViewController {
 
   // MARK: Configuration
 
-  private func configure() {
+  private func configureViews() {
     self.viewConfigure()
     self.layout()
-    self.tableViewConfigure()
+    self.configureTableView()
     self.RxConfigure()
   }
 
@@ -143,7 +143,7 @@ class InvestedViewController: UIViewController {
     self.navigationItem.rightBarButtonItem = self.refreshButton
   }
 
-  private func tableViewConfigure() {
+  private func configureTableView() {
     self.tableView.register(InvestedCoinCell.self, forCellReuseIdentifier: ReuseIdentifier.investedCoinListCell)
     self.tableView.register(InvestedSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifier.investeSectionHeaderView)
     self.tableView.delegate = self
@@ -190,6 +190,63 @@ class InvestedViewController: UIViewController {
       }
     })
     .disposed(by: bag)
+  }
+
+
+  // MARK: Bind
+
+  private func bindSections() {
+    self.viewModel.output.coinCellViewModels
+      .bind(to: self.tableView.rx.items(cellIdentifier: ReuseIdentifier.investedCoinListCell, cellType: InvestedCoinCell.self)) { index, viewModel, cell in
+        cell.setViewModel(viewModel: viewModel)
+      }
+      .disposed(by: self.bag)
+  }
+
+  private func bindInitialize() {
+    self.rx.methodInvoked(#selector(UIViewController.viewWillAppear(_:)))
+      .map{ _ in }
+      .take(1)
+      .bind(to: self.viewModel.input.didInitialized)
+      .disposed(by: self.bag)
+  }
+
+  private func bindWebSocketConnection() {
+    self.rx.methodInvoked(#selector(UIViewController.viewWillAppear(_:)))
+      .map{ _ in }
+      .bind(to: self.viewModel.input.connectWebSocket)
+      .disposed(by: self.bag)
+
+    self.rx.methodInvoked(#selector(UIViewController.viewDidDisappear(_:)))
+      .map{ _ in }
+      .bind(to: self.viewModel.input.disConnectWebSocket)
+      .disposed(by: self.bag)
+  }
+
+  private func bindSelectCoin() {
+    self.tableView.rx.modelSelected(InvestCoinCellViewModel.self)
+      .flatMapLatest{ viewModel -> Observable<CoinInfo> in
+        viewModel.tickerObservable
+          .take(1)
+          .map{ ticker -> CoinInfo in
+            viewModel.coin.prices = ticker
+            return viewModel.coin
+          }
+      }
+      .observe(on: MainScheduler.instance)
+      .subscribe(onNext: { [weak self] coinInfo in
+        let viewController = CoinInformationViewController(viewModel: CoinInformationViewModel(coin: coinInfo))
+        self?.navigationController?.pushViewController(viewController, animated: true)
+      })
+      .disposed(by: self.bag)
+  }
+
+  private func bindHeaderView() {
+    let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifier.investeSectionHeaderView) as? InvestedSectionHeaderView
+
+    Observable.just(50)
+      .bind(to: self.tableView.rx.sectionHeaderHeight)
+      .disposed(by: self.bag)
   }
 
 
