@@ -22,10 +22,10 @@ class VirtualMoneyViewModel {
     static let webocketURL = URL(string: "wss://api.upbit.com/websocket/v1")!
   }
 
-  struct Input {
+  struct Input: InputProtocol {
     let didInitialized = PublishSubject<Void>()
-    let connectWebSocket = PublishSubject<Void>()
-    let disConnectWebSocket = PublishSubject<Void>()
+    var connectWebSocket = PublishSubject<Void>()
+    var disConnectWebSocket = PublishSubject<Void>()
     let didReseted = PublishSubject<Void>()
     let inputtedSearchText = BehaviorSubject<String?>(value: nil)
   }
@@ -46,7 +46,8 @@ class VirtualMoneyViewModel {
   private let coinCellViewModels = BehaviorRelay<[CoinCellViewModel]>(value: [])
   private let coinList = BehaviorRelay<[Coin]>(value: [])
   private var tickerObservables: [String: BehaviorRelay<Ticker?>] = [:]
-  private lazy var webSocket = WebSocket(request: URLRequest(url: Constants.webocketURL), certPinner: FoundationSecurity(allowSelfSigned: true))
+
+  private lazy var rxWebSocket = RxWebSocket(input: self.input)
 
 
   // MARK: Initializing
@@ -62,7 +63,7 @@ class VirtualMoneyViewModel {
   private func bindOutput() {
     self.bindCoinCellViewModels()
     self.bindTickers()
-    self.bindWebSocket()
+    self.rxWebSocket.bindWebSocketLifeCycle(coinList: self.coinList, bag: self.bag)
     self.bindReset()
   }
 
@@ -110,18 +111,9 @@ class VirtualMoneyViewModel {
       })
       .disposed(by: self.bag)
 
-    self.webSocket.rx.didReceive
-      .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-      .compactMap { event -> Data? in
-        guard case let .binary(response) = event else { return nil }
-        return response
-      }
-      .map { try JSONDecoder().decode(Ticker.self, from: $0) }
-      .catch { _ in Observable.empty() }
-      .subscribe(onNext: { [weak self] ticker in
-        self?.tickerObservable(code: ticker.code).accept(ticker)
-      })
-      .disposed(by: self.bag)
+    self.rxWebSocket.webSocketDidRecieve(bag: self.bag) { ticker in
+      self.tickerObservable(code: ticker.code).accept(ticker)
+    }
   }
 
   private func tickerObservable(code: String) -> BehaviorRelay<Ticker?> {
@@ -131,52 +123,6 @@ class VirtualMoneyViewModel {
     let tickerObservable = BehaviorRelay<Ticker?>(value: nil)
     self.tickerObservables[code] = tickerObservable
     return tickerObservable
-  }
-
-  private func bindWebSocket() {
-    self.input.connectWebSocket
-      .subscribe(onNext: { [weak self] in
-        self?.webSocket.connect()
-      })
-      .disposed(by: self.bag)
-
-    self.input.disConnectWebSocket
-      .subscribe(onNext: { [weak self] in
-        self?.webSocket.disconnect()
-      })
-      .disposed(by: self.bag)
-
-    let onConnected = self.webSocket.rx.didReceive
-      .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-      .compactMap { event -> [String: String]? in
-        guard case let .connected(response) = event else { return nil }
-        return response
-      }
-
-    Observable.combineLatest(onConnected, self.coinList.filter { !$0.isEmpty })
-      .subscribe(onNext: { [weak self] _, coinList in
-        self?.sendRequestTickers(coinList: coinList)
-      })
-      .disposed(by: self.bag)
-  }
-
-  private func sendRequestTickers(coinList: [Coin]) {
-    let ticket = TicketField(ticket: "test")
-    let format = FormatField(format: "SIMPLE")
-    let type = TypeField(type: "ticker", codes: coinList.map(\.code), isOnlySnapshot: false, isOnlyRealtime: true)
-    let encoder = JSONEncoder()
-    let parameterStrings = [
-      try? encoder.encode(ticket),
-      try? encoder.encode(format),
-      try? encoder.encode(type)
-    ]
-    .compactMap{$0}
-    .compactMap { String(data: $0, encoding: .utf8) }
-    let params = "[" + parameterStrings.joined(separator: ",") + "]"
-    guard let data = params.data(using: .utf8) else { return }
-    guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [[String:AnyObject]] else { return }
-    guard let jsonData = try? JSONSerialization.data(withJSONObject: json, options: []) else { return }
-    self.webSocket.write(data: jsonData)
   }
 
   private func bindReset() {
