@@ -44,6 +44,7 @@
 		FF8FA7BE2603729500942D4B /* APITicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF8FA7BD2603729500942D4B /* APITicker.swift */; };
 		FF999DC2260238D30044C1F1 /* CoinInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF999DC1260238D30044C1F1 /* CoinInfoModel.swift */; };
 		FFB8CA5B2627388500A04249 /* BindWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB8CA5A2627388500A04249 /* BindWebSocket.swift */; };
+		FFB8CA5E26275ADC00A04249 /* InvestCoinCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB8CA5D26275ADC00A04249 /* InvestCoinCellViewModel.swift */; };
 		FFC31DE825E895A9009B0170 /* ParameterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DE725E895A9009B0170 /* ParameterModel.swift */; };
 		FFC31DFC25E94161009B0170 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */; };
 		FFC31E0225E94E56009B0170 /* Double+cutDecimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */; };
@@ -83,6 +84,7 @@
 		FF8FA7BD2603729500942D4B /* APITicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITicker.swift; sourceTree = "<group>"; };
 		FF999DC1260238D30044C1F1 /* CoinInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinInfoModel.swift; sourceTree = "<group>"; };
 		FFB8CA5A2627388500A04249 /* BindWebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindWebSocket.swift; sourceTree = "<group>"; };
+		FFB8CA5D26275ADC00A04249 /* InvestCoinCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCoinCellViewModel.swift; sourceTree = "<group>"; };
 		FFC31DE725E895A9009B0170 /* ParameterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterModel.swift; sourceTree = "<group>"; };
 		FFC31DFB25E94161009B0170 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		FFC31E0125E94E56009B0170 /* Double+cutDecimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+cutDecimal.swift"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				FF3636EF25F0C9870048C3F6 /* PurchasedViewModel.swift */,
+				FFB8CA5D26275ADC00A04249 /* InvestCoinCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -506,6 +509,7 @@
 				FF8FA7BE2603729500942D4B /* APITicker.swift in Sources */,
 				FF42AF4D25E5331500CEA875 /* AppDelegate.swift in Sources */,
 				FF41E35D25E6805F003139A7 /* CoinCell.swift in Sources */,
+				FFB8CA5E26275ADC00A04249 /* InvestCoinCellViewModel.swift in Sources */,
 				FFB8CA5B2627388500A04249 /* BindWebSocket.swift in Sources */,
 				FF83C1BB25F3C30A00CB1139 /* CoinInformationViewModel.swift in Sources */,
 				FF41E38625E78C9E003139A7 /* CoinInfromationViewController.swift in Sources */,
