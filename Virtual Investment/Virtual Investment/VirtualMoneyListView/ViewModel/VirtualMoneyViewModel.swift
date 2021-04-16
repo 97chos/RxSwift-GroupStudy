@@ -18,10 +18,6 @@ class VirtualMoneyViewModel {
 
   // MARK: Modules
 
-  private enum Constants {
-    static let webocketURL = URL(string: "wss://api.upbit.com/websocket/v1")!
-  }
-
   struct Input: InputProtocol {
     let didInitialized = PublishSubject<Void>()
     var connectWebSocket = PublishSubject<Void>()
